@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
+import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
+import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 
 @Composable
 fun SetupNavGraph(
@@ -24,6 +26,11 @@ fun SetupNavGraph(
             route = Screen.Register.route
         ){
             RegisterScreenFragment(navController = navController, viewModel = RegisterViewModel(validationName = ValidateName(), validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), validationConfirmPassword = ValidateConfPass(), registerUseCase = RegisterUseCase(AuthDataImplementation())))
+        }
+        composable(
+            route = Screen.Login.route
+        ){
+            LoginScreenFragment(navController = navController, viewModel = LoginViewModel(validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), loginUseCase = LoginUseCase(AuthDataImplementation())))
         }
 
     }

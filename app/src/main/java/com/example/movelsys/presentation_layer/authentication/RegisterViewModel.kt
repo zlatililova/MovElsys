@@ -34,13 +34,13 @@ class RegisterViewModel(
     fun checkValues(): String{
         var errors = ""
         if(errors.isEmpty()){
-            errors += validationEmail.execute(email).errors
-        }
-        if(errors.isEmpty()){
             errors += validationName.execute(fname).errors
         }
         if(errors.isEmpty()){
             errors += validationName.execute(lname).errors
+        }
+        if(errors.isEmpty()){
+            errors += validationEmail.execute(email).errors
         }
         if(errors.isEmpty()){
             errors += validationPassword.execute(password).errors

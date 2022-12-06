@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,10 +22,12 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,9 +50,9 @@ fun RegisterScreenFragment(
     viewModel: RegisterViewModel
 ) {
     val context = LocalContext.current
-    Column(
+    LazyColumn(
         modifier = Modifier.padding(20.dp),
-    ) {
+    ) { item{
         Text(
             text = "Register today!",
             fontFamily = FontFamily.Default,
@@ -159,10 +163,23 @@ fun RegisterScreenFragment(
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 50.dp, bottom = 10.dp)
+                .padding(top = 10.dp, bottom = 10.dp)
         ) {
             Text(text = "Register", textAlign = TextAlign.Center, color = White)
         }
+        Text(
+            text = "Already have an account? Sign in here!",
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary,
+            style = TextStyle(textDecoration = TextDecoration.Underline),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(Screen.Login.route)
+                }
+                .fillMaxWidth()
+                .padding(bottom = 200.dp)
+        )
+    }
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current

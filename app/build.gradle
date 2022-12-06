@@ -35,9 +35,11 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        //kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion "1.2.0";
     }
     packagingOptions {
         resources {
@@ -46,8 +48,12 @@ android {
     }
 }
 
-dependencies {
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
+dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
@@ -61,11 +67,11 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha04"
 
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
-
 }

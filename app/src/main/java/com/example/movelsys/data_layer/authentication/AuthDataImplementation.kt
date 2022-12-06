@@ -55,6 +55,7 @@ class AuthDataImplementation: AuthDataInt{
                     onRegister.onSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
+                    println(task.exception.toString())
                     onRegister.onError(task.exception.toString());
                     //onRegister.onError("Firebase: Cannot create the user!")
                 }

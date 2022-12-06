@@ -183,10 +183,10 @@ fun RegisterScreenFragment(
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    observeViewModel(lifecycleOwner, viewModel, context)
+    observeViewModel(lifecycleOwner, viewModel, context, navController)
 }
 
-private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: RegisterViewModel, context:Context) {
+private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: RegisterViewModel, context:Context, navController: NavController) {
 
 
     lifecycleOwner.lifecycleScope.launch {
@@ -199,7 +199,7 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
-
+                        navController.navigate()
                     }
                     is RegisterUIState.Error -> {
                         Toast.makeText(

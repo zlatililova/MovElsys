@@ -126,10 +126,10 @@ fun LoginScreenFragment(
 
 
     val lifecycleOwner = LocalLifecycleOwner.current
-    observeViewModel(lifecycleOwner, viewModel, context)
+    observeViewModel(lifecycleOwner, viewModel, context, navController)
 }
 
-private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginViewModel, context: Context) {
+private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginViewModel, context: Context, navController: NavController) {
 
 
     lifecycleOwner.lifecycleScope.launch {
@@ -142,7 +142,7 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginVie
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
-
+                        navController.navigate(Screen.Main.route)
                     }
                     is LoginUIState.Error -> {
                         Toast.makeText(

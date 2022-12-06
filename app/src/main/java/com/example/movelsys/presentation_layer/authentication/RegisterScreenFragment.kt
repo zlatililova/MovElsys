@@ -199,7 +199,7 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
-                        navController.navigate()
+                        navController.navigate(Screen.Main.route)
                     }
                     is RegisterUIState.Error -> {
                         Toast.makeText(

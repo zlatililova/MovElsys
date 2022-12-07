@@ -1,13 +1,12 @@
-package com.example.movelsys
+package com.example.movelsys.presentation_layer.authentication
 
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.AuthDataInt
+import com.example.movelsys.data_layer.authentication.OnRegister
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.states.RegisterUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,11 +30,9 @@ class RegisterViewModel(
     private val _uiStateFlow = MutableStateFlow<RegisterUIState>(RegisterUIState.Initial)
     val uiStateFlow : StateFlow<RegisterUIState> = _uiStateFlow
 
-    fun checkValues(): String{
+    fun errorCheck(): String{
         var errors = ""
-        if(errors.isEmpty()){
-            errors += validationName.execute(fname).errors
-        }
+        errors += validationName.execute(fname).errors
         if(errors.isEmpty()){
             errors += validationName.execute(lname).errors
         }
@@ -56,7 +53,7 @@ class RegisterViewModel(
             _uiStateFlow.emit(RegisterUIState.Loading)
         }
 
-        registerUseCase.execute(email = email, pass = password, fname = fname, lname = lname, confpass = confpass, onRegister = object : AuthDataInt.OnRegister {
+        registerUseCase.execute(email = email, pass = password, fname = fname, lname = lname, confpass = confpass, onRegister = object : OnRegister {
             override fun onSuccess() {
                 viewModelScope.launch {
                     _uiStateFlow.emit(RegisterUIState.Success)

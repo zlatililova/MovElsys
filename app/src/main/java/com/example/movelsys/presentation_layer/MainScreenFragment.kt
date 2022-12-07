@@ -7,8 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,7 +18,7 @@ import com.google.firebase.ktx.Firebase
 fun MainScreenFragment() {
 
     val user = Firebase.auth.currentUser
-    var text: String = ""
+    var text = ""
     if (user != null) {
         text = user.uid
     }

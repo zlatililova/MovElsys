@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -90,7 +89,7 @@ fun LoginScreenFragment(
         )
         OutlinedButton(
             onClick = {
-                var error = viewModel.checkValues()
+                val error = viewModel.errorCheck()
                 if(error.isNotEmpty()){
                     Toast.makeText(
                         context,
@@ -114,24 +113,15 @@ fun LoginScreenFragment(
             color = MaterialTheme.colors.primary,
             style = TextStyle(textDecoration = TextDecoration.Underline),
             modifier = Modifier
-                .clickable {
-                navController.navigate(Screen.Register.route)
-            }
+                .clickable { navController.navigate(Screen.Register.route) }
                 .fillMaxWidth()
         )
-
-
     }
-
-
-
     val lifecycleOwner = LocalLifecycleOwner.current
     observeViewModel(lifecycleOwner, viewModel, context, navController)
 }
 
 private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginViewModel, context: Context, navController: NavController) {
-
-
     lifecycleOwner.lifecycleScope.launch {
         viewModel.uiStateFlow.collectLatest{
             viewModel.uiStateFlow.onEach {
@@ -153,13 +143,10 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginVie
 
                     }
                     is LoginUIState.Loading -> {
-
-
                     }
                     else ->{}
                 }
             }.launchIn(this)
         }
-
     }
 }

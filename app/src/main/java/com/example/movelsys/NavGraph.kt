@@ -9,6 +9,8 @@ import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.MainScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
+import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
+import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
 
 @Composable
 fun SetupNavGraph(

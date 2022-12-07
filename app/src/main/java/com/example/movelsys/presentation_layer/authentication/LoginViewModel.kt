@@ -6,9 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.AuthDataInt
+import com.example.movelsys.data_layer.authentication.OnLogin
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.states.LoginUIState
-import com.example.movelsys.presentation_layer.states.RegisterUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -25,11 +25,9 @@ class LoginViewModel(
     private val _uiStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Initial)
     val uiStateFlow : StateFlow<LoginUIState> = _uiStateFlow
 
-    fun checkValues(): String{
+    fun errorCheck(): String{
         var errors = ""
-        if(errors.isEmpty()){
-            errors += validationEmail.execute(email).errors
-        }
+        errors += validationEmail.execute(email).errors
         if(errors.isEmpty()){
             errors += validationPassword.execute(password).errors
         }
@@ -44,7 +42,7 @@ class LoginViewModel(
         loginUseCase.execute(
             email = email,
             pass = password,
-            onLogin = object : AuthDataInt.OnLogin {
+            onLogin = object : OnLogin {
                 override fun onSuccess() {
                     viewModelScope.launch {
                         _uiStateFlow.emit(LoginUIState.Success)

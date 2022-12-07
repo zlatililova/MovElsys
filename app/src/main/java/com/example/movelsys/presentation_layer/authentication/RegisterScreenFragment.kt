@@ -193,6 +193,7 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
                         navController.navigate(Screen.Main.route)
                     }
                     is RegisterUIState.Error -> {
+                        navController.navigate(Screen.Register.route)
                         Toast.makeText(
                             context,
                             "Error: " + it.error,
@@ -201,8 +202,7 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
 
                     }
                     is RegisterUIState.Loading -> {
-
-
+                        navController.navigate(Screen.Load.route)
                     }
                     else ->{}
                 }
@@ -211,9 +211,3 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
 
     }
 }
-/*
-@Composable
-@Preview(showBackground = true)
-fun RegisterScreenPreview() {
-    RegisterScreenFragment(navController = rememberNavController(), viewModel = RegisterViewModel())
-}*/

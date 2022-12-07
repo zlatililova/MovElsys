@@ -1,5 +1,6 @@
 package com.example.movelsys.data_layer.authentication
 
+import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -13,7 +14,7 @@ class AuthDataImplementation: AuthDataInt{
     ) {
         auth = Firebase.auth
         auth.signInWithEmailAndPassword(email, pass)
-            .addOnCompleteListener{ task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     onLogin.onSuccess()

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movelsys.data_layer.authentication.AuthDataInt
 import com.example.movelsys.data_layer.authentication.OnLogin
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.states.LoginUIState
@@ -45,13 +44,15 @@ class LoginViewModel(
             onLogin = object : OnLogin {
                 override fun onSuccess() {
                     viewModelScope.launch {
-                        _uiStateFlow.emit(LoginUIState.Success)
-                    }
+
+                                _uiStateFlow.emit(LoginUIState.Success)
+
+                }
                 }
 
                 override fun onError(string: String?) {
                     viewModelScope.launch {
-                        _uiStateFlow.emit(LoginUIState.Error(string))
+                                _uiStateFlow.emit(LoginUIState.Error(string))
                     }
                 }
 

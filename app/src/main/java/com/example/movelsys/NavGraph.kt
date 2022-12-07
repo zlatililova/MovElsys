@@ -40,6 +40,11 @@ fun SetupNavGraph(
         ){
             MainScreenFragment()
         }
+        composable(
+            route = Screen.Load.route
+        ){
+            LoadingAnimation()
+        }
 
     }
 }

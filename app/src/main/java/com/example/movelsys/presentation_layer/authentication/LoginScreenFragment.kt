@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,16 +25,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.example.movelsys.LoadingAnimation
 import com.example.movelsys.Screen
 import com.example.movelsys.presentation_layer.states.LoginUIState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+private var load = false
 
 @Composable
 fun LoginScreenFragment(
@@ -107,6 +112,9 @@ fun LoginScreenFragment(
         ) {
             Text(text = "Login", textAlign = TextAlign.Center, color = Color.White)
         }
+        if(load){
+            LoadingAnimation()
+        }
         Text(
             text = "Don't have an account? Sign up here!",
             textAlign = TextAlign.Center,
@@ -119,6 +127,7 @@ fun LoginScreenFragment(
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     observeViewModel(lifecycleOwner, viewModel, context, navController)
+
 }
 
 private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginViewModel, context: Context, navController: NavController) {
@@ -135,14 +144,16 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginVie
                         navController.navigate(Screen.Main.route)
                     }
                     is LoginUIState.Error -> {
+                        navController.navigate(Screen.Login.route)
                         Toast.makeText(
                             context,
                             "Error: " + it.error,
                             Toast.LENGTH_LONG
                         ).show()
-
+                        load = false
                     }
                     is LoginUIState.Loading -> {
+                        navController.navigate(Screen.Load.route)
                     }
                     else ->{}
                 }
@@ -150,3 +161,5 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: LoginVie
         }
     }
 }
+
+

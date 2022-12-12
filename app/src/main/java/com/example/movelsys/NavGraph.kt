@@ -15,34 +15,46 @@ import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
 @Composable
 fun SetupNavGraph(
     navController: NavHostController
-){
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Welcome.route
     ) {
         composable(
             route = Screen.Welcome.route
-        ){
+        ) {
             WelcomeScreenFragment(navController = navController)
         }
         composable(
             route = Screen.Register.route
-        ){
-            RegisterScreenFragment(navController = navController, viewModel = RegisterViewModel(registerUseCase = RegisterUseCase(AuthDataImplementation()), validateCredentials = ValidateCredentials()))
+        ) {
+            RegisterScreenFragment(
+                navController = navController,
+                viewModel = RegisterViewModel(
+                    registerUseCase = RegisterUseCase(AuthDataImplementation()),
+                    validateCredentials = ValidateCredentials()
+                )
+            )
         }
         composable(
             route = Screen.Login.route
-        ){
-            LoginScreenFragment(navController = navController, viewModel = LoginViewModel(loginUseCase = LoginUseCase(AuthDataImplementation()), validateCredentials = ValidateCredentials()))
+        ) {
+            LoginScreenFragment(
+                navController = navController,
+                viewModel = LoginViewModel(
+                    loginUseCase = LoginUseCase(AuthDataImplementation()),
+                    validateCredentials = ValidateCredentials()
+                )
+            )
         }
         composable(
             route = Screen.Main.route
-        ){
+        ) {
             MainScreenFragment()
         }
         composable(
             route = Screen.Load.route
-        ){
+        ) {
             LoadingAnimation()
         }
 

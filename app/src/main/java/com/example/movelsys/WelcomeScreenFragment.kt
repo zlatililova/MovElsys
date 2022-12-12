@@ -19,15 +19,13 @@ import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
 import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
 
-
 @Composable
 fun WelcomeScreenFragment(
     navController: NavController,
-    ) {
+) {
     Column(
         modifier = Modifier.padding(20.dp),
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.movelsys_logo),
             contentDescription = "MovElsys Logo",
@@ -35,10 +33,7 @@ fun WelcomeScreenFragment(
             modifier = Modifier
                 .fillMaxWidth()
                 .size(450.dp)
-
-
         )
-
         OutlinedButton(
             onClick = {
                 navController.navigate(Screen.Login.route)
@@ -48,7 +43,12 @@ fun WelcomeScreenFragment(
                 .fillMaxWidth()
                 .padding(top = 20.dp, bottom = 20.dp)
         ) {
-            Text(text = "Login", textAlign = TextAlign.Center, color = Color.White, fontSize = 20.sp)
+            Text(
+                text = "Login",
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                fontSize = 20.sp
+            )
         }
         OutlinedButton(
             onClick = {
@@ -59,17 +59,12 @@ fun WelcomeScreenFragment(
                 .fillMaxWidth()
                 .padding(top = 20.dp, bottom = 20.dp)
         ) {
-            Text(text = "Register", textAlign = TextAlign.Center, color = Color.White, fontSize = 20.sp)
+            Text(
+                text = "Register",
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                fontSize = 20.sp
+            )
         }
     }
 }
-
-/*@Composable
-@Preview(showBackground = true)
-fun WelcomeScreenFragmentPreview() {
-    RegisterScreenFragment(navController = rememberNavController(), viewModel = RegisterViewModel(validationName = ValidateName(), validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), validationConfirmPassword = ValidateConfPass(), registerUseCase = RegisterUseCase(
-        AuthDataImplementation()
-    )
-    )
-    )
-}*/

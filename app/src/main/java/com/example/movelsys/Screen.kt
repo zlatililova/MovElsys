@@ -6,5 +6,4 @@ sealed class Screen(val route: String){
     object Login: Screen(route = "login_screen")
     object Main: Screen(route = "main_screen")
     object Load: Screen(route = "load_screen")
-
 }

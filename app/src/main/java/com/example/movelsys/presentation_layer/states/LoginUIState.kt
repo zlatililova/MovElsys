@@ -5,5 +5,4 @@ sealed class LoginUIState {
     object Success: LoginUIState()
     object Loading: LoginUIState()
     class Error(val error: String?): LoginUIState()
-
 }

@@ -9,10 +9,10 @@ class AuthDataImplementation : AuthData {
     private lateinit var auth: FirebaseAuth
 
     override fun login(
-        email: String, pass: String, onLogin: OnLogin
+        email: String, password: String, onLogin: OnLogin
     ) {
         auth = Firebase.auth
-        auth.signInWithEmailAndPassword(email, pass)
+        auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onLogin.onSuccess()
@@ -20,20 +20,18 @@ class AuthDataImplementation : AuthData {
                     onLogin.onError(Errors.INVALID_CREDENTIALS.Message)
                 }
             }
-
     }
 
     override fun register(
         email: String,
-        pass: String,
-        fname: String,
-        lname: String,
-        confpass: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        confirmationPassword: String,
         onRegister: OnRegister
-
     ) {
         auth = Firebase.auth
-        auth.createUserWithEmailAndPassword(email, pass)
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onRegister.onSuccess()

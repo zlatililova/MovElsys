@@ -38,7 +38,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-private var load = false
 
 @Composable
 fun LoginScreenFragment(
@@ -132,7 +131,6 @@ fun LoginScreenFragment(
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     observeViewModel(lifecycleOwner, viewModel, context, navController)
-
 }
 
 private fun observeViewModel(
@@ -160,7 +158,6 @@ private fun observeViewModel(
                             "Error: " + it.error,
                             Toast.LENGTH_LONG
                         ).show()
-                        load = false
                     }
                     is LoginUIState.Loading -> {
                         navController.navigate(Screen.Load.route)

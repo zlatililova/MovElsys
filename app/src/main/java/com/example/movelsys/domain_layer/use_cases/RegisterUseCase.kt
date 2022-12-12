@@ -6,12 +6,12 @@ import com.example.movelsys.data_layer.authentication.OnRegister
 class RegisterUseCase(private val authData: AuthData) {
     fun StartBusinessLogic(
         email: String,
-        pass: String,
-        fname: String,
-        lname: String,
-        confpass: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        confirmationPassword: String,
         onRegister: OnRegister
     ) {
-        authData.register(email, pass, fname, lname, confpass, onRegister)
+        authData.register(email, password, firstName, lastName, confirmationPassword, onRegister)
     }
 }

@@ -5,8 +5,8 @@ import com.example.movelsys.data_layer.authentication.OnLogin
 
 class LoginUseCase(private val authData: AuthData) {
     fun StartBusinessLogic(
-        email: String, pass: String, onLogin: OnLogin
+        email: String, password: String, onLogin: OnLogin
     ) {
-        authData.login(email, pass, onLogin)
+        authData.login(email, password, onLogin)
     }
 }

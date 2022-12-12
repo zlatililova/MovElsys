@@ -16,20 +16,18 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoadingAnimation(){
+fun LoadingAnimation() {
     val circleSize = 25.dp
     val circleColor = MaterialTheme.colors.primary
     val spaceBetween = 10.dp
     val travelDistance = 20.dp
-
     val circles = listOf(
         remember { Animatable(initialValue = 0f) },
         remember { Animatable(initialValue = 0f) },
         remember { Animatable(initialValue = 0f) },
     )
-
-    circles.forEachIndexed{ index, animatable ->
-        LaunchedEffect(key1 = animatable){
+    circles.forEachIndexed { index, animatable ->
+        LaunchedEffect(key1 = animatable) {
             delay(index * 100L)
             animatable.animateTo(
                 targetValue = 1f,
@@ -50,7 +48,7 @@ fun LoadingAnimation(){
     }
 
     val circlesValue = circles.map { it.value }
-    val distance = with(LocalDensity.current){ travelDistance.toPx()}
+    val distance = with(LocalDensity.current) { travelDistance.toPx() }
     val lastCircle = circlesValue.size - 1
 
     Column(
@@ -60,9 +58,7 @@ fun LoadingAnimation(){
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
-        Row(
-
-        ) {
+        Row() {
             circlesValue.forEachIndexed { index, value ->
                 Box(
                     modifier = Modifier
@@ -76,14 +72,10 @@ fun LoadingAnimation(){
                         )
                 )
 
-                if(index != lastCircle){
+                if (index != lastCircle) {
                     Spacer(modifier = Modifier.width(spaceBetween))
                 }
             }
         }
     }
-    }
-
-
-
-
+}

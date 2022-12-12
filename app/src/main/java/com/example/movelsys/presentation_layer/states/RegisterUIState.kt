@@ -5,6 +5,5 @@ sealed class RegisterUIState{
     object Success: RegisterUIState()
     object Loading: RegisterUIState()
     class Error(val error: String?): RegisterUIState()
-
 }
 

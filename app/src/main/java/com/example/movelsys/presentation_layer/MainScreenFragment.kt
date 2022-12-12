@@ -16,13 +16,11 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun MainScreenFragment() {
-
     val user = Firebase.auth.currentUser
     var text = ""
     if (user != null) {
         text = user.uid
     }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()

@@ -92,7 +92,6 @@ class RegisterViewModel(
             isConfirmationPasswordWrong = false
         }
     }
-
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =
@@ -105,10 +104,10 @@ class RegisterViewModel(
         }
         registerUseCase.StartBusinessLogic(
             email = email,
-            pass = password,
-            fname = firstName,
-            lname = lastName,
-            confpass = confirmationPass,
+            password = password,
+            firstName = firstName,
+            lastName = lastName,
+            confirmationPassword = confirmationPass,
             onRegister = object : OnRegister {
                 override fun onSuccess() {
                     viewModelScope.launch {

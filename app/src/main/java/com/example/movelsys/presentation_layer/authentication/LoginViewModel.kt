@@ -23,8 +23,6 @@ class LoginViewModel(
     var emailErrorCheck: Boolean = false
     var passwordError: String by mutableStateOf("Enter a valid password")
     var passwordErrorCheck: Boolean = false
-
-
     private val _uiStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Initial)
     val uiStateFlow: StateFlow<LoginUIState> = _uiStateFlow
 
@@ -52,30 +50,28 @@ class LoginViewModel(
 
     var areCredentialsRight: Boolean = false
     fun enableButton() {
-        areCredentialsRight = passwordError == Errors.VALID.Message && emailError == Errors.VALID.Message
+        areCredentialsRight =
+            passwordError == Errors.VALID.Message && emailError == Errors.VALID.Message
     }
 
     fun login() {
         viewModelScope.launch {
             _uiStateFlow.emit(LoginUIState.Loading)
         }
-
         loginUseCase.StartBusinessLogic(
             email = email,
-            pass = password,
+            password = password,
             onLogin = object : OnLogin {
                 override fun onSuccess() {
                     viewModelScope.launch {
                         _uiStateFlow.emit(LoginUIState.Success)
                     }
                 }
-
                 override fun onError(string: String?) {
                     viewModelScope.launch {
                         _uiStateFlow.emit(LoginUIState.Error(string))
                     }
                 }
-
             })
     }
 }

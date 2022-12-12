@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.movelsys.ui.theme.MovelsysTheme
 
 class MainActivity : ComponentActivity() {
-
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -50,160 +50,173 @@ fun RegisterScreenFragment(
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.padding(20.dp),
-    ) { item{
+    ) {
+        item {
+            Image(
+                painter = painterResource(id = R.drawable.running_person),
+                contentDescription = "MovElsys Logo",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(300.dp)
+            )
+            OutlinedTextField(
+                value = viewModel.firstName,
+                onValueChange = {
+                    viewModel.firstName = it
+                    viewModel.errorCheckFirstName()
+                    viewModel.enableButton()
+                },
+                label = { Text(viewModel.firstNameError) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isFirstNameWrong,
+                leadingIcon = {
+                    Icon(Icons.Default.Person, contentDescription = "Person")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                placeholder = { Text("Enter your first name") },
 
-        Image(
-            painter = painterResource(id = R.drawable.running_person),
-            contentDescription = "MovElsys Logo",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(300.dp)
-        )
-        OutlinedTextField(
-            value = viewModel.firstName,
-            onValueChange = { viewModel.firstName = it
-                            viewModel.errorCheckFirstName()
-                viewModel.enableButton()},
-            label = { Text(viewModel.firstNameError) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary,
-                errorBorderColor = Color.Red
-            ),
-            isError = viewModel.isFirstNameWrong,
-            leadingIcon = {
-                Icon(Icons.Default.Person, contentDescription = "Person")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp),
-            placeholder = { Text("Enter your first name") },
+                )
+            OutlinedTextField(
+                value = viewModel.lastName,
+                onValueChange = {
+                    viewModel.lastName = it
+                    viewModel.errorCheckLastName()
+                    viewModel.enableButton()
+                },
+                label = { Text(viewModel.lastNameError) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isLastNameWrong,
+                leadingIcon = {
+                    Icon(Icons.Default.Person, contentDescription = "Person")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                placeholder = { Text("Enter your first name") },
 
-        )
-        OutlinedTextField(
-            value = viewModel.lastName,
-            onValueChange = { viewModel.lastName = it
-                            viewModel.errorCheckLastName()
-                viewModel.enableButton()},
-            label = { Text(viewModel.lastNameError) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary,
-                errorBorderColor = Color.Red
-            ),
-            isError = viewModel.isLastNameWrong,
-            leadingIcon = {
-                Icon(Icons.Default.Person, contentDescription = "Person")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp),
-            placeholder = { Text("Enter your first name") },
+                )
+            OutlinedTextField(
+                value = viewModel.email,
+                onValueChange = {
+                    viewModel.email = it
+                    viewModel.errorCheckEmail()
+                    viewModel.enableButton()
+                },
+                label = { Text(text = viewModel.emailError) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isEmailWrong,
+                leadingIcon = {
+                    Icon(Icons.Default.Email, contentDescription = "Email")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                placeholder = { Text("Enter your email") },
 
-        )
-        OutlinedTextField(
-            value = viewModel.email,
-            onValueChange = { viewModel.email = it
-                            viewModel.errorCheckEmail()
-                viewModel.enableButton()},
-            label = { Text(text = viewModel.emailError) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary,
-                errorBorderColor = Color.Red
-            ),
-            isError = viewModel.isEmailWrong,
-            leadingIcon = {
-                Icon(Icons.Default.Email, contentDescription = "Email")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp),
-            placeholder = { Text("Enter your email") },
-
-        )
-        OutlinedTextField(
-            value = viewModel.password,
-            onValueChange = { viewModel.password = it
-                            viewModel.errorCheckPassword()
-                viewModel.enableButton()},
-            label ={ Text(viewModel.passwordError) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary,
-                errorBorderColor = Color.Red
-            ),
-            isError = viewModel.isPasswordWrong,
-            leadingIcon = {
-                Icon(Icons.Default.Info, contentDescription = "Password")
-            },
-            placeholder = { Text("Enter your password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp),
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-        OutlinedTextField(
-            value = viewModel.confirmationPass,
-            onValueChange = { viewModel.confirmationPass = it
-                            viewModel.errorCheckConfirmationPassword()
-                viewModel.enableButton()},
-            label = { Text(viewModel.confirmationPasswordError) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary,
-                errorBorderColor = Color.Red
-            ),
-            isError = viewModel.isConfirmationPasswordWrong,
-            leadingIcon = {
-                Icon(Icons.Default.Info, contentDescription = "Password")
-            },
-            placeholder = { Text("Enter your password again") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp),
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-        OutlinedButton(
-            onClick = {
-                viewModel.register()
-            },
-            enabled = viewModel.areCredentialsRight,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp, bottom = 10.dp)
-        ) {
-            Text(text = "Register", textAlign = TextAlign.Center, color = White)
+                )
+            OutlinedTextField(
+                value = viewModel.password,
+                onValueChange = {
+                    viewModel.password = it
+                    viewModel.errorCheckPassword()
+                    viewModel.enableButton()
+                },
+                label = { Text(viewModel.passwordError) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isPasswordWrong,
+                leadingIcon = {
+                    Icon(Icons.Default.Info, contentDescription = "Password")
+                },
+                placeholder = { Text("Enter your password") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
+            OutlinedTextField(
+                value = viewModel.confirmationPass,
+                onValueChange = {
+                    viewModel.confirmationPass = it
+                    viewModel.errorCheckConfirmationPassword()
+                    viewModel.enableButton()
+                },
+                label = { Text(viewModel.confirmationPasswordError) },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isConfirmationPasswordWrong,
+                leadingIcon = {
+                    Icon(Icons.Default.Info, contentDescription = "Password")
+                },
+                placeholder = { Text("Enter your password again") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
+            OutlinedButton(
+                onClick = {
+                    viewModel.register()
+                },
+                enabled = viewModel.areCredentialsRight,
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp, bottom = 10.dp)
+            ) {
+                Text(text = "Register", textAlign = TextAlign.Center, color = White)
+            }
+            Text(
+                text = "Already have an account? Sign in here!",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colors.primary,
+                style = TextStyle(textDecoration = TextDecoration.Underline),
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(Screen.Login.route)
+                    }
+                    .fillMaxWidth()
+                    .padding(bottom = 200.dp)
+            )
+            Spacer(modifier = Modifier.padding(100.dp))
         }
-        Text(
-            text = "Already have an account? Sign in here!",
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary,
-            style = TextStyle(textDecoration = TextDecoration.Underline),
-            modifier = Modifier
-                .clickable {
-                    navController.navigate(Screen.Login.route)
-                }
-                .fillMaxWidth()
-                .padding(bottom = 200.dp)
-        )
-        Spacer(modifier = Modifier.padding(100.dp))
-    }
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     observeViewModel(lifecycleOwner, viewModel, context, navController)
 }
 
-private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: RegisterViewModel, context:Context, navController: NavController) {
-
-
+private fun observeViewModel(
+    lifecycleOwner: LifecycleOwner,
+    viewModel: RegisterViewModel,
+    context: Context,
+    navController: NavController
+) {
     lifecycleOwner.lifecycleScope.launch {
-        viewModel.uiStateFlow.collectLatest{
+        viewModel.uiStateFlow.collectLatest {
             viewModel.uiStateFlow.onEach {
                 when (it) {
                     is RegisterUIState.Success -> {
@@ -226,10 +239,9 @@ private fun observeViewModel(lifecycleOwner: LifecycleOwner, viewModel: Register
                     is RegisterUIState.Loading -> {
                         navController.navigate(Screen.Load.route)
                     }
-                    else ->{}
+                    else -> {}
                 }
             }.launchIn(this)
         }
-
     }
 }

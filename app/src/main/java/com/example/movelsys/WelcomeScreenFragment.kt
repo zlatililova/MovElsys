@@ -64,7 +64,7 @@ fun WelcomeScreenFragment(
     }
 }
 
-@Composable
+/*@Composable
 @Preview(showBackground = true)
 fun WelcomeScreenFragmentPreview() {
     RegisterScreenFragment(navController = rememberNavController(), viewModel = RegisterViewModel(validationName = ValidateName(), validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), validationConfirmPassword = ValidateConfPass(), registerUseCase = RegisterUseCase(
@@ -72,4 +72,4 @@ fun WelcomeScreenFragmentPreview() {
     )
     )
     )
-}
+}*/

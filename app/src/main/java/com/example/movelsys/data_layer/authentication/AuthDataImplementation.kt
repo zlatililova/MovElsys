@@ -1,11 +1,10 @@
 package com.example.movelsys.data_layer.authentication
 
-import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AuthDataImplementation: AuthDataInt{
+class AuthDataImplementation : AuthData {
 
     private lateinit var auth: FirebaseAuth
 
@@ -16,11 +15,9 @@ class AuthDataImplementation: AuthDataInt{
         auth.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     onLogin.onSuccess()
                 } else {
-                    // If sign in fails, display a message to the user.
-                    onLogin.onError("This user is not in the database")
+                    onLogin.onError(Errors.INVALID_CREDENTIALS.Message)
                 }
             }
 
@@ -39,13 +36,9 @@ class AuthDataImplementation: AuthDataInt{
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     onRegister.onSuccess()
                 } else {
-                    // If sign in fails, display a message to the user.
-                    println(task.exception.toString())
                     onRegister.onError(task.exception.toString())
-                    //onRegister.onError("Firebase: Cannot create the user!")
                 }
             }
     }

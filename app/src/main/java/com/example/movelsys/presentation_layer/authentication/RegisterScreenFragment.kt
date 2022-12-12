@@ -2,9 +2,12 @@ package com.example.movelsys.presentation_layer.authentication
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -14,9 +17,12 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.example.movelsys.R
 import com.example.movelsys.Screen
 import com.example.movelsys.presentation_layer.states.RegisterUIState
 import kotlinx.coroutines.flow.collectLatest
@@ -44,75 +51,94 @@ fun RegisterScreenFragment(
     LazyColumn(
         modifier = Modifier.padding(20.dp),
     ) { item{
-        Text(
-            text = "Register today!",
-            fontFamily = FontFamily.Default,
-            textAlign = TextAlign.Center,
-            fontSize = 48.sp,
-            color = MaterialTheme.colors.primary,
+
+        Image(
+            painter = painterResource(id = R.drawable.running_person),
+            contentDescription = "MovElsys Logo",
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 20.dp)
+                .size(300.dp)
         )
         OutlinedTextField(
-            value = viewModel.fname,
-            onValueChange = { viewModel.fname = it },
-            label = { Text("Enter your First name") },
+            value = viewModel.firstName,
+            onValueChange = { viewModel.firstName = it
+                            viewModel.errorCheckFirstName()
+                viewModel.enableButton()},
+            label = { Text(viewModel.firstNameError) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                errorBorderColor = Color.Red
             ),
+            isError = viewModel.isFirstNameWrong,
             leadingIcon = {
                 Icon(Icons.Default.Person, contentDescription = "Person")
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp)
+                .padding(bottom = 20.dp, top = 10.dp),
+            placeholder = { Text("Enter your first name") },
 
         )
         OutlinedTextField(
-            value = viewModel.lname,
-            onValueChange = { viewModel.lname = it },
-            label = { Text("Enter your Last name") },
+            value = viewModel.lastName,
+            onValueChange = { viewModel.lastName = it
+                            viewModel.errorCheckLastName()
+                viewModel.enableButton()},
+            label = { Text(viewModel.lastNameError) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                errorBorderColor = Color.Red
             ),
+            isError = viewModel.isLastNameWrong,
             leadingIcon = {
                 Icon(Icons.Default.Person, contentDescription = "Person")
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp)
+                .padding(bottom = 20.dp, top = 10.dp),
+            placeholder = { Text("Enter your first name") },
 
         )
         OutlinedTextField(
             value = viewModel.email,
-            onValueChange = { viewModel.email = it },
-            label = { Text("Enter your email") },
+            onValueChange = { viewModel.email = it
+                            viewModel.errorCheckEmail()
+                viewModel.enableButton()},
+            label = { Text(text = viewModel.emailError) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                errorBorderColor = Color.Red
             ),
+            isError = viewModel.isEmailWrong,
             leadingIcon = {
                 Icon(Icons.Default.Email, contentDescription = "Email")
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 20.dp, top = 10.dp)
+                .padding(bottom = 20.dp, top = 10.dp),
+            placeholder = { Text("Enter your email") },
 
         )
         OutlinedTextField(
             value = viewModel.password,
-            onValueChange = { viewModel.password = it },
-            label = { Text("Enter your password") },
+            onValueChange = { viewModel.password = it
+                            viewModel.errorCheckPassword()
+                viewModel.enableButton()},
+            label ={ Text(viewModel.passwordError) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                errorBorderColor = Color.Red
             ),
+            isError = viewModel.isPasswordWrong,
             leadingIcon = {
                 Icon(Icons.Default.Info, contentDescription = "Password")
             },
+            placeholder = { Text("Enter your password") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 20.dp, top = 10.dp),
@@ -120,16 +146,21 @@ fun RegisterScreenFragment(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
         OutlinedTextField(
-            value = viewModel.confpass,
-            onValueChange = { viewModel.confpass = it },
-            label = { Text("Enter your password again") },
+            value = viewModel.confirmationPass,
+            onValueChange = { viewModel.confirmationPass = it
+                            viewModel.errorCheckConfirmationPassword()
+                viewModel.enableButton()},
+            label = { Text(viewModel.confirmationPasswordError) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = MaterialTheme.colors.secondary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                errorBorderColor = Color.Red
             ),
+            isError = viewModel.isConfirmationPasswordWrong,
             leadingIcon = {
                 Icon(Icons.Default.Info, contentDescription = "Password")
             },
+            placeholder = { Text("Enter your password again") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 20.dp, top = 10.dp),
@@ -138,19 +169,9 @@ fun RegisterScreenFragment(
         )
         OutlinedButton(
             onClick = {
-                val error = viewModel.errorCheck()
-                if(error.isNotEmpty()){
-                    Toast.makeText(
-                        context,
-                        error,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }else{
-                    viewModel.register()
-                }
-
-
+                viewModel.register()
             },
+            enabled = viewModel.areCredentialsRight,
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier
                 .fillMaxWidth()
@@ -170,6 +191,7 @@ fun RegisterScreenFragment(
                 .fillMaxWidth()
                 .padding(bottom = 200.dp)
         )
+        Spacer(modifier = Modifier.padding(100.dp))
     }
     }
 

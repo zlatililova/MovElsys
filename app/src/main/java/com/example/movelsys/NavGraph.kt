@@ -28,12 +28,12 @@ fun SetupNavGraph(
         composable(
             route = Screen.Register.route
         ){
-            RegisterScreenFragment(navController = navController, viewModel = RegisterViewModel(validationName = ValidateName(), validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), validationConfirmPassword = ValidateConfPass(), registerUseCase = RegisterUseCase(AuthDataImplementation())))
+            RegisterScreenFragment(navController = navController, viewModel = RegisterViewModel(registerUseCase = RegisterUseCase(AuthDataImplementation()), validateCredentials = ValidateCredentials()))
         }
         composable(
             route = Screen.Login.route
         ){
-            LoginScreenFragment(navController = navController, viewModel = LoginViewModel(validationEmail = ValidateEmail(), validationPassword = ValidatePassword(), loginUseCase = LoginUseCase(AuthDataImplementation())))
+            LoginScreenFragment(navController = navController, viewModel = LoginViewModel(loginUseCase = LoginUseCase(AuthDataImplementation()), validateCredentials = ValidateCredentials()))
         }
         composable(
             route = Screen.Main.route

@@ -24,13 +24,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -67,7 +65,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckFirstName()
                     viewModel.enableButton()
                 },
-                label = { Text(viewModel.firstNameError) },
+                label = { viewModel.firstNameError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
@@ -90,7 +88,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckLastName()
                     viewModel.enableButton()
                 },
-                label = { Text(viewModel.lastNameError) },
+                label = { viewModel.lastNameError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
@@ -113,7 +111,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckEmail()
                     viewModel.enableButton()
                 },
-                label = { Text(text = viewModel.emailError) },
+                label = { viewModel.emailError?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
@@ -136,7 +134,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckPassword()
                     viewModel.enableButton()
                 },
-                label = { Text(viewModel.passwordError) },
+                label = { viewModel.passwordError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
@@ -160,7 +158,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckConfirmationPassword()
                     viewModel.enableButton()
                 },
-                label = { Text(viewModel.confirmationPasswordError) },
+                label = { viewModel.confirmationPasswordError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,

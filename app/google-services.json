@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "777344893766",
+    "project_id": "movelsys-android",
+    "storage_bucket": "movelsys-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777344893766:android:13450c547fcdf40c119b47",
+        "android_client_info": {
+          "package_name": "com.example.movelsys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777344893766-1j34iuu8rin15arhk88keid44maaded5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.movelsys",
+            "certificate_hash": "5ca8a539cf991b5251732bd8072832da9ba04ae2"
+          }
+        },
+        {
+          "client_id": "777344893766-dmch6erref36quke5d6r4u4kepnttk77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcRY_hHsMHYoatm82uKtHC74pxzNZExX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777344893766-dmch6erref36quke5d6r4u4kepnttk77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

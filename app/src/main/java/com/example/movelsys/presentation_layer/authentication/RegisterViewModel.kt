@@ -25,62 +25,62 @@ class RegisterViewModel(
     private val _uiStateFlow = MutableStateFlow<RegisterUIState>(RegisterUIState.Initial)
     val uiStateFlow: StateFlow<RegisterUIState> = _uiStateFlow
 
-    var emailError: String by mutableStateOf("Enter your email")
+    var emailError: String? by mutableStateOf("Enter your email")
     var isEmailWrong: Boolean = false
     fun errorCheckEmail() {
-        val error: Errors? = validateCredentials.IsEmailValid(email)
+        val error: Errors? = validateCredentials.emailErrorCheck(email)
         if (error != null) {
             emailError = error.Message
             isEmailWrong = true
         } else {
-            emailError = Errors.VALID.Message
+            emailError = null
             isEmailWrong = false
         }
     }
 
-    var firstNameError: String by mutableStateOf("Enter your first name")
+    var firstNameError: String? by mutableStateOf("Enter your first name")
     var isFirstNameWrong: Boolean = false
     fun errorCheckFirstName() {
-        val error: Errors? = validateCredentials.IsNameValid(firstName)
+        val error: Errors? = validateCredentials.nameErrorCheck(firstName)
         if (error != null) {
             firstNameError = error.Message
             isFirstNameWrong = true
         } else {
-            firstNameError = Errors.VALID.Message
+            firstNameError = null
             isFirstNameWrong = false
         }
     }
 
-    var lastNameError: String by mutableStateOf("Enter your last name")
+    var lastNameError: String? by mutableStateOf("Enter your last name")
     var isLastNameWrong: Boolean = false
     fun errorCheckLastName() {
-        val error: Errors? = validateCredentials.IsNameValid(lastName)
+        val error: Errors? = validateCredentials.nameErrorCheck(lastName)
         if (error != null) {
             lastNameError = error.Message
             isLastNameWrong = true
         } else {
-            lastNameError = Errors.VALID.Message
+            lastNameError = null
             isLastNameWrong = false
         }
     }
 
-    var passwordError: String by mutableStateOf("Enter your password")
+    var passwordError: String? by mutableStateOf("Enter your password")
     var isPasswordWrong: Boolean = false
     fun errorCheckPassword() {
-        val error: Errors? = validateCredentials.IsPasswordValid(password)
+        val error: Errors? = validateCredentials.passwordErrorCheck(password)
         if (error != null) {
             passwordError = error.Message
             isPasswordWrong = true
         } else {
-            passwordError = Errors.VALID.Message
+            passwordError = null
             isPasswordWrong = false
         }
     }
 
-    var confirmationPasswordError: String by mutableStateOf("Enter your password again")
+    var confirmationPasswordError: String? by mutableStateOf("Enter your password again")
     var isConfirmationPasswordWrong: Boolean = false
     fun errorCheckConfirmationPassword() {
-        val error: Errors? = validateCredentials.IsConfirmationPasswordValid(
+        val error: Errors? = validateCredentials.confirmationPasswordErrorCheck(
             password = password,
             confirmPassword = confirmationPass
         )
@@ -88,21 +88,21 @@ class RegisterViewModel(
             confirmationPasswordError = error.Message
             isConfirmationPasswordWrong = true
         } else {
-            confirmationPasswordError = Errors.VALID.Message
+            confirmationPasswordError = null
             isConfirmationPasswordWrong = false
         }
     }
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =
-            emailError == Errors.VALID.Message && firstNameError == Errors.VALID.Message && lastNameError == Errors.VALID.Message && passwordError == Errors.VALID.Message && confirmationPasswordError == Errors.VALID.Message
+            emailError == null && firstNameError == null && lastNameError == null && passwordError == null && confirmationPasswordError == null
     }
 
     fun register() {
         viewModelScope.launch {
             _uiStateFlow.emit(RegisterUIState.Loading)
         }
-        registerUseCase.StartBusinessLogic(
+        registerUseCase.startBusinessLogic(
             email = email,
             password = password,
             firstName = firstName,

@@ -19,31 +19,31 @@ class LoginViewModel(
 ) : ViewModel() {
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
-    var emailError: String by mutableStateOf("Enter a valid email")
+    var emailError: String? by mutableStateOf("Enter a valid email")
     var emailErrorCheck: Boolean = false
-    var passwordError: String by mutableStateOf("Enter a valid password")
+    var passwordError: String? by mutableStateOf("Enter a valid password")
     var passwordErrorCheck: Boolean = false
     private val _uiStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Initial)
     val uiStateFlow: StateFlow<LoginUIState> = _uiStateFlow
 
     fun errorCheckEmail() {
-        val error: Errors? = validateCredentials.IsEmailValid(email)
+        val error: Errors? = validateCredentials.emailErrorCheck(email)
         if (error != null) {
             emailError = error.Message
             emailErrorCheck = true
         } else {
-            emailError = Errors.VALID.Message
+            emailError = null
             emailErrorCheck = false
         }
     }
 
     fun errorCheckPassword() {
-        val error: Errors? = validateCredentials.IsPasswordValid(password)
+        val error: Errors? = validateCredentials.passwordErrorCheck(password)
         if (error != null) {
             passwordError = error.Message
             passwordErrorCheck = true
         } else {
-            passwordError = Errors.VALID.Message
+            passwordError = null
             passwordErrorCheck = false
         }
     }
@@ -51,14 +51,14 @@ class LoginViewModel(
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =
-            passwordError == Errors.VALID.Message && emailError == Errors.VALID.Message
+            passwordError == null && emailError == null
     }
 
     fun login() {
         viewModelScope.launch {
             _uiStateFlow.emit(LoginUIState.Loading)
         }
-        loginUseCase.StartBusinessLogic(
+        loginUseCase.startBusinessLogic(
             email = email,
             password = password,
             onLogin = object : OnLogin {

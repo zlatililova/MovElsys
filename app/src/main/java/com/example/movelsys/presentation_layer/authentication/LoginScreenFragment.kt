@@ -50,7 +50,7 @@ fun LoginScreenFragment(
     ) {
         item {
             Image(
-                painter = painterResource(id = R.drawable.running_person),
+                painter = painterResource(id = R.drawable.running_person_no_background),
                 contentDescription = "MovElsys Logo",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -168,5 +168,3 @@ private fun observeViewModel(
         }
     }
 }
-
-

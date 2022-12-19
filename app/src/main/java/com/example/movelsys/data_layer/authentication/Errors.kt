@@ -6,5 +6,4 @@ enum class Errors(val Message: String) {
     INVALID_EMAIL("The email is not valid"),
     INVALID_PASSWORD("The password should be longer than 6 characters"),
     PASSWORDS_NOT_MATCHING("The passwords are not matching"),
-    VALID("")
 }

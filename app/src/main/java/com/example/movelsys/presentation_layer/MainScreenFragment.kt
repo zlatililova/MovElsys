@@ -12,8 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
-
 @Composable
 fun MainScreenFragment() {
     val user = Firebase.auth.currentUser

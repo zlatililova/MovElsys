@@ -7,14 +7,14 @@ class ValidateCredentials {
 
     private val minimalPasswordLength = 6
 
-    fun IsNameValid(name: String): Errors? {
+    fun nameErrorCheck(name: String): Errors? {
         if (TextUtils.isEmpty(name)) {
             return Errors.OBLIGATORY
         }
         return null
     }
 
-    fun IsEmailValid(email: String): Errors? {
+    fun emailErrorCheck(email: String): Errors? {
         if (TextUtils.isEmpty(email)) {
             return Errors.OBLIGATORY
         }
@@ -24,14 +24,14 @@ class ValidateCredentials {
         return null
     }
 
-    fun IsPasswordValid(password: String): Errors? {
+    fun passwordErrorCheck(password: String): Errors? {
         if (password.length <= minimalPasswordLength) {
             return Errors.INVALID_PASSWORD
         }
         return null
     }
 
-    fun IsConfirmationPasswordValid(password: String, confirmPassword: String): Errors? {
+    fun confirmationPasswordErrorCheck(password: String, confirmPassword: String): Errors? {
         if (password != confirmPassword) {
             return Errors.PASSWORDS_NOT_MATCHING
         }

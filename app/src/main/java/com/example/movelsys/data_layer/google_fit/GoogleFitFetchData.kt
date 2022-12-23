@@ -26,12 +26,15 @@ class GoogleFitFetchData(
             // sources. Alternatively, a specific DataSource can be used.
             .subscribe(DataType.TYPE_STEP_COUNT_DELTA)
             .addOnSuccessListener {
-                Log.i(TAG, "Successfully subscribed!")
+                Log.i(TAG, "Successfully subscribed! Step sub")
             }
             .addOnFailureListener { e ->
-                Log.w(TAG, "There was a problem subscribing.", e)
+                Log.w(TAG, "There was a problem subscribing. - step sub", e)
             }
 
+    }
+
+    fun listActiveSubscriptions(){
         Fitness.getRecordingClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
             .listSubscriptions()
             .addOnSuccessListener { subscriptions ->

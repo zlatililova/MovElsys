@@ -18,11 +18,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovelsysTheme {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    GoogleFitPermissions(appContext = this, activity = this).detectIfPermissionIsGiven()
-                }
                 navController = rememberNavController()
                 SetupNavGraph(navController = navController)
+
+
             }
         }
     }

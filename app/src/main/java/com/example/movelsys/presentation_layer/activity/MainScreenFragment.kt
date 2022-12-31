@@ -1,11 +1,13 @@
 package com.example.movelsys.presentation_layer
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.Handler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,42 +16,39 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.movelsys.data_layer.google_fit.GoogleFitFetchData
+import com.example.movelsys.LoadingAnimation
+import com.example.movelsys.data_layer.google_fit.GoogleFetchData
+import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
 import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
+import com.example.movelsys.data_layer.google_fit.Responses
+import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
+import com.example.movelsys.presentation_layer.activity.HistoryRowFragment
+import com.example.movelsys.presentation_layer.activity.MainViewModel
+import com.example.movelsys.presentation_layer.activity.TopBarFragment
+import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreenFragment() {
-    val context = LocalContext.current
-    val activity = context as Activity
-    val googleFitFetchData = GoogleFitFetchData(context = context, activity = activity)
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        GoogleFitPermissions(appContext = context, activity = activity).detectIfPermissionIsGiven()
+fun MainScreenFragment(
+    viewModel: MainViewModel
+) {
+    TopBarFragment()
+    viewModel.startGoogleFit(LocalContext.current, LocalContext.current as Activity)
+    while(viewModel.googleFitHistory.isEmpty()){
+        LoadingAnimation()
     }
-    Handler().postDelayed({
-        googleFitFetchData.subscribeToStepsListener()
-        googleFitFetchData.listActiveSubscriptions()
-    }, 10000)
+    LazyColumn {
+        //for (data in steps){
+            item{
+                HistoryRowFragment(datapoint = viewModel.googleFitHistory[0])
+            }
 
-    googleFitFetchData.fetchPastWeekStepCount()
 
-    val user = Firebase.auth.currentUser
-    var text = ""
-    if (user != null) {
-        text = user.uid
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-    ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary,
-            fontSize = 20.sp
-        )
     }
 }
+
+

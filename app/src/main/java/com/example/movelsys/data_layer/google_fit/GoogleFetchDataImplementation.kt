@@ -17,17 +17,22 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
-class GoogleFitFetchData(
-    val activity: Activity,
-    val context: Context
-) {
+class GoogleFetchDataImplementation: GoogleFetchData {
+
+    private var dataPointsList = mutableListOf<DataPoint>()
+    private lateinit var activity: Activity
+    private lateinit var context: Context
+
     private val fitnessOptions = FitnessOptions.builder()
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .build()
 
-    fun subscribeToStepsListener(){
-        Fitness.getRecordingClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+    override fun subscribeToStepsListener() {
+        Fitness.getRecordingClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .subscribe(DataType.TYPE_STEP_COUNT_DELTA)
             .addOnSuccessListener {
                 Log.i(TAG, "Successfully subscribed to STEP_COUNT_DELTA!")
@@ -38,8 +43,11 @@ class GoogleFitFetchData(
 
     }
 
-    fun listActiveSubscriptions(){
-        Fitness.getRecordingClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+    override fun listActiveSubscriptions() {
+        Fitness.getRecordingClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .listSubscriptions()
             .addOnSuccessListener { subscriptions ->
                 for (sc in subscriptions) {
@@ -51,7 +59,7 @@ class GoogleFitFetchData(
             }
     }
 
-    fun fetchPastWeekStepCount(){
+    override fun fetchPastWeekStepCount(responses: Responses) {
         // Read the data that's been collected throughout the past week.
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneId.systemDefault())
@@ -64,60 +72,77 @@ class GoogleFitFetchData(
 
         val readRequest =
             DataReadRequest.Builder()
-                // The data request can specify multiple data types to return,
-                // effectively combining multiple data queries into one call.
-                // This example demonstrates aggregating only one data type.
                 .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
-                // Analogous to a "Group By" in SQL, defines how data should be
-                // aggregated.
-                // bucketByTime allows for a time span, whereas bucketBySession allows
-                // bucketing by <a href="/fit/android/using-sessions">sessions</a>.
                 .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(startTime.toEpochSecond(), endTime.toEpochSecond(),
+                .setTimeRange(
+                    startTime.toEpochSecond(), endTime.toEpochSecond(),
                     TimeUnit.SECONDS
                 )
                 .build()
 
-        Fitness.getHistoryClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+        Fitness.getHistoryClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .readData(readRequest)
             .addOnSuccessListener { response ->
-                // The aggregate query puts datasets into buckets, so flatten into a
-                // single list of datasets
                 for (dataSet in response.buckets.flatMap { it.dataSets }) {
+                    Log.i(TAG, "DATA SET")
                     dumpDataSet(dataSet)
                 }
+                checkDataList()
+                responses.onSuccess(dataPointsList)
             }
             .addOnFailureListener { e ->
-                Log.w(TAG,"There was an error reading data from Google Fit", e)
+                Log.w(TAG, "There was an error reading data from Google Fit", e)
+                responses.onError("There was an error reading data from Google Fit")
             }
     }
 
     private fun dumpDataSet(dataSet: DataSet) {
-        Log.i(TAG, "Data returned for Data type: ${dataSet.dataType.name}")
         for (dp in dataSet.dataPoints) {
-            Log.i(TAG,"Data point:")
-            Log.i(TAG,"\tType: ${dp.dataType.name}")
-            Log.i(TAG,"\tStart: ${dp.getStartTimeString()}")
-            Log.i(TAG,"\tEnd: ${dp.getEndTimeString()}")
-            for (field in dp.dataType.fields) {
-                Log.i(TAG,"\tField: ${field.name.toString()} Value: ${dp.getValue(field)}")
-            }
+            dataPointsList.add(dp)
         }
+
     }
 
-    private fun DataPoint.getStartTimeString() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime().toString()
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
+    fun DataPoint.getStartTimeString() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime().toString()
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
 
-    private fun DataPoint.getEndTimeString() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    fun DataPoint.getEndTimeString() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         Instant.ofEpochSecond(this.getEndTime(TimeUnit.SECONDS))
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime().toString()
     } else {
         TODO("VERSION.SDK_INT < O")
     }
+
+    private fun checkDataList() {
+        for (dp in dataPointsList) {
+            Log.i(TAG, "Data point:")
+            Log.i(TAG, "\tType: ${dp.dataType.name}")
+            Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
+            Log.i(TAG, "\tEnd: ${dp.getEndTimeString()}")
+            for (field in dp.dataType.fields) {
+                Log.i(TAG, "\tField: ${field.name} Value: ${dp.getValue(field)}")
+            }
+        }
+    }
+
+    override fun getActivityandContext(activity: Activity, context: Context){
+        this.activity = activity
+        this.context = context
+    }
+
+    override fun getDataPointList(): List<DataPoint>{
+        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointsList.size.toString())
+        return dataPointsList.toList().subList(0,2)
+    }
+
 }

@@ -5,8 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
+import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.MainScreenFragment
+import com.example.movelsys.presentation_layer.activity.MainViewModel
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
@@ -50,7 +52,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.Main.route
         ) {
-            MainScreenFragment()
+            MainScreenFragment(viewModel = MainViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation())))
         }
         composable(
             route = Screen.Load.route

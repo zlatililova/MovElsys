@@ -7,7 +7,7 @@ import com.example.movelsys.data_layer.google_fit.Responses
 import com.google.android.gms.fitness.data.DataPoint
 
 class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
-    fun startBussinessLogic(responses: Responses){
+    fun startBusinessLogic(responses: Responses){
         googleFetchData.subscribeToStepsListener()
         googleFetchData.fetchPastWeekStepCount(responses)
     }
@@ -15,7 +15,7 @@ class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
         googleFetchData.getActivityandContext(activity, context)
     }
 
-    fun getDataPoints(): List<DataPoint>{
+    /*fun getDataPoints(): List<DataPoint>{
         return googleFetchData.getDataPointList()
-    }
+    }*/
 }

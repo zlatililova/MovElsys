@@ -4,6 +4,6 @@ import com.google.android.gms.fitness.data.DataPoint
 import com.google.android.gms.fitness.data.DataSet
 
 interface Responses {
-    fun onSuccess(dataSet: MutableList<DataPoint>)
+    fun onSuccess()
     fun onError(error: String)
 }

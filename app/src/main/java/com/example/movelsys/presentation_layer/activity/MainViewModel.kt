@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.movelsys.data_layer.google_fit.GoogleFetchData
 import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
@@ -29,8 +28,8 @@ class MainViewModel(
                     appContext = context,
                     activity = activity
                 ).detectIfPermissionIsGiven()
-                googleFetchUseCase.startBussinessLogic(responses = object: Responses {
-                    override fun onSuccess(dataSet: MutableList<DataPoint>) {
+                googleFetchUseCase.startBusinessLogic(responses = object: Responses {
+                    override fun onSuccess() {
                         Log.i(TAG, "OnSuccess")
                     }
                     override fun onError(error: String) {
@@ -39,7 +38,7 @@ class MainViewModel(
                 })
 
             }
-            googleFitHistory = googleFetchUseCase.getDataPoints()
+            //googleFitHistory = googleFetchUseCase.getDataPoints()
         }
     }
 

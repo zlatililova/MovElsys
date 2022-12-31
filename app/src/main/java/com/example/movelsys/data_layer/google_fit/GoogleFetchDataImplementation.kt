@@ -15,11 +15,13 @@ import com.google.android.gms.fitness.request.DataReadRequest
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation: GoogleFetchData {
 
-    private var dataPointsList = mutableListOf<DataPoint>()
+    //private var dataPointsList = mutableListOf<DataPoint>()
+    var dataPointMap = mutableMapOf<String, Int>()
     private lateinit var activity: Activity
     private lateinit var context: Context
 
@@ -91,7 +93,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
                     dumpDataSet(dataSet)
                 }
                 checkDataList()
-                responses.onSuccess(dataPointsList)
+                responses.onSuccess()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "There was an error reading data from Google Fit", e)
@@ -101,7 +103,12 @@ class GoogleFetchDataImplementation: GoogleFetchData {
 
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
-            dataPointsList.add(dp)
+            var startTimeMillis = dp.getStartTimeString()
+            //var date = Date(startTimeMillis)
+            val field = dp.dataType.fields[0]
+            val steps = dp.getValue(field).asInt()
+            dataPointMap.put(startTimeMillis,steps)
+            //dataPointsList.add(dp)
         }
 
     }
@@ -110,7 +117,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
                 .atZone(ZoneId.systemDefault())
-                .toLocalDateTime().toString()
+                .toLocalDate().toString()
         } else {
             TODO("VERSION.SDK_INT < O")
         }
@@ -124,7 +131,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
     }
 
     private fun checkDataList() {
-        for (dp in dataPointsList) {
+        /*for (dp in dataPointsList) {
             Log.i(TAG, "Data point:")
             Log.i(TAG, "\tType: ${dp.dataType.name}")
             Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
@@ -132,6 +139,10 @@ class GoogleFetchDataImplementation: GoogleFetchData {
             for (field in dp.dataType.fields) {
                 Log.i(TAG, "\tField: ${field.name} Value: ${dp.getValue(field)}")
             }
+        }*/
+        for(i in dataPointMap){
+            Log.i(TAG, "Date: " + i.key)
+            Log.i(TAG, "Steps: " + i.value)
         }
     }
 
@@ -140,9 +151,10 @@ class GoogleFetchDataImplementation: GoogleFetchData {
         this.context = context
     }
 
-    override fun getDataPointList(): List<DataPoint>{
+    /*override fun getDataPointList(): List<DataPoint>{
         Log.i(TAG, "DATA POINT LIST SIZE " + dataPointsList.size.toString())
-        return dataPointsList.toList().subList(0,2)
-    }
+        return listOf()
+        //return dataPointsList.toList()
+    }*/
 
 }

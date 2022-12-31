@@ -38,17 +38,17 @@ fun MainScreenFragment(
 ) {
     TopBarFragment()
     viewModel.startGoogleFit(LocalContext.current, LocalContext.current as Activity)
-    while(viewModel.googleFitHistory.isEmpty()){
+    /*while(viewModel.googleFitHistory.isEmpty()){
         LoadingAnimation()
-    }
-    LazyColumn {
+    }*/
+    /*LazyColumn {
         //for (data in steps){
             item{
                 HistoryRowFragment(datapoint = viewModel.googleFitHistory[0])
             }
 
 
-    }
+    }*/
 }
 
 

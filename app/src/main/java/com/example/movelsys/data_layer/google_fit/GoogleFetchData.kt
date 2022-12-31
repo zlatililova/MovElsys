@@ -9,5 +9,5 @@ interface GoogleFetchData {
     fun listActiveSubscriptions()
     fun fetchPastWeekStepCount(responses: Responses)
     fun getActivityandContext(activity: Activity, context: Context)
-    fun getDataPointList(): List<DataPoint>
+    //fun getDataPointList(): List<DataPoint>
 }

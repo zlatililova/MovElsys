@@ -31,24 +31,30 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MainScreenFragment(
     viewModel: MainViewModel
 ) {
+    val context = LocalContext.current
+    val activity = context as Activity
     TopBarFragment()
-    viewModel.startGoogleFit(LocalContext.current, LocalContext.current as Activity)
+    viewModel.startGoogleFit(context, activity)
+
     /*while(viewModel.googleFitHistory.isEmpty()){
         LoadingAnimation()
     }*/
-    /*LazyColumn {
-        //for (data in steps){
-            item{
-                HistoryRowFragment(datapoint = viewModel.googleFitHistory[0])
+    LazyColumn {
+        viewModel.googleFitHistory.forEach { it ->
+            item {
+                HistoryRowFragment(datapoint = it)
             }
 
 
-    }*/
+        }
+    }
 }
+
 
 

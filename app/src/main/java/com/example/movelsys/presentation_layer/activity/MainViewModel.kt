@@ -5,25 +5,29 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
-import com.google.android.gms.fitness.data.DataPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val googleFetchUseCase: GoogleFetchUseCase
 ): ViewModel() {
 
-    var googleFitHistory = listOf<DataPoint>()
+    var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
 
     fun startGoogleFit(context: Context, activity: Activity){
         googleFetchUseCase.getNecessaryParameters(activity, context)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            GlobalScope.launch(Dispatchers.Main) {
+            viewModelScope.launch {
                 GoogleFitPermissions(
                     appContext = context,
                     activity = activity
@@ -36,11 +40,18 @@ class MainViewModel(
                         Log.i(TAG, "OnError")
                     }
                 })
-
+            delay(1500)
+                fetchGoogleData()
             }
-            //googleFitHistory = googleFetchUseCase.getDataPoints()
         }
     }
 
 
+    fun fetchGoogleData(){
+        val gson = Gson()
+        googleFitHistory = gson.fromJson(googleFetchUseCase.getDataPoints(), object : TypeToken<Map<String, Int>>() {}.type)
+        googleFitHistory.forEach{
+            Log.i(TAG, it.key + ": " + it.value)
+        }
+    }
 }

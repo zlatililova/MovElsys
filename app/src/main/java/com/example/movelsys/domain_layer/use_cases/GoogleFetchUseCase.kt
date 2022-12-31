@@ -15,7 +15,5 @@ class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
         googleFetchData.getActivityandContext(activity, context)
     }
 
-    /*fun getDataPoints(): List<DataPoint>{
-        return googleFetchData.getDataPointList()
-    }*/
+    fun getDataPoints() = googleFetchData.getDataPointList()
 }

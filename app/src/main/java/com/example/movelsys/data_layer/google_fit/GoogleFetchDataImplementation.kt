@@ -12,6 +12,7 @@ import com.google.android.gms.fitness.data.DataPoint
 import com.google.android.gms.fitness.data.DataSet
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
+import com.google.gson.Gson
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -131,15 +132,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
     }
 
     private fun checkDataList() {
-        /*for (dp in dataPointsList) {
-            Log.i(TAG, "Data point:")
-            Log.i(TAG, "\tType: ${dp.dataType.name}")
-            Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
-            Log.i(TAG, "\tEnd: ${dp.getEndTimeString()}")
-            for (field in dp.dataType.fields) {
-                Log.i(TAG, "\tField: ${field.name} Value: ${dp.getValue(field)}")
-            }
-        }*/
+        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointMap.size.toString())
         for(i in dataPointMap){
             Log.i(TAG, "Date: " + i.key)
             Log.i(TAG, "Steps: " + i.value)
@@ -151,10 +144,13 @@ class GoogleFetchDataImplementation: GoogleFetchData {
         this.context = context
     }
 
-    /*override fun getDataPointList(): List<DataPoint>{
-        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointsList.size.toString())
-        return listOf()
-        //return dataPointsList.toList()
-    }*/
+    override fun getDataPointList(): String {
+        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointMap.size.toString())
+        val gson = Gson()
+        val json = gson.toJson(dataPointMap)
+        Log.i(TAG, json.toString())
+        return json
+
+    }
 
 }

@@ -14,7 +14,7 @@ import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun HistoryRowFragment(datapoint: DataPoint){
+fun HistoryRowFragment(datapoint: Map.Entry<String, Int>){
     Row{
         Text(text = "LALALA", fontFamily = FontFamily.Serif, fontSize = 5.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
         //Text(text = datapoint.getStartTimeString(), fontFamily = FontFamily.Serif, fontSize = 5.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )

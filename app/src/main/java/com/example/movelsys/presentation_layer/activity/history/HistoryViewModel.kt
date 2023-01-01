@@ -1,4 +1,4 @@
-package com.example.movelsys.presentation_layer.activity
+package com.example.movelsys.presentation_layer.activity.history
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -20,11 +20,14 @@ import kotlinx.coroutines.launch
 
 class HistoryViewModel(
     private val googleFetchUseCase: GoogleFetchUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
+    private var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
+    var googleFitDates: List<String> by mutableStateOf(listOf())
+    var googleFitSteps: List<Int> by mutableStateOf(listOf())
 
-    fun startGoogleFit(context: Context, activity: Activity){
+
+    fun startGoogleFit(context: Context, activity: Activity) {
         googleFetchUseCase.getNecessaryParameters(activity, context)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             viewModelScope.launch {
@@ -32,7 +35,7 @@ class HistoryViewModel(
                     appContext = context,
                     activity = activity
                 ).detectIfPermissionIsGiven()
-                googleFetchUseCase.startBusinessLogic(responses = object: Responses {
+                googleFetchUseCase.startBusinessLogic(responses = object : Responses {
                     override fun onSuccess() {
                         Log.i(TAG, "OnSuccess")
                     }
@@ -40,18 +43,20 @@ class HistoryViewModel(
                         Log.i(TAG, "OnError")
                     }
                 })
-            delay(1500)
+                delay(1500)
                 fetchGoogleData()
             }
         }
     }
 
 
-    fun fetchGoogleData(){
+    fun fetchGoogleData() {
         val gson = Gson()
-        googleFitHistory = gson.fromJson(googleFetchUseCase.getDataPoints(), object : TypeToken<Map<String, Int>>() {}.type)
-        googleFitHistory.forEach{
-            Log.i(TAG, it.key + ": " + it.value)
-        }
+        googleFitHistory = gson.fromJson(
+            googleFetchUseCase.getDataPoints(),
+            object : TypeToken<Map<String, Int>>() {}.type
+        )
+        googleFitDates = googleFitHistory.keys.toList()
+        googleFitSteps = googleFitHistory.values.toList()
     }
 }

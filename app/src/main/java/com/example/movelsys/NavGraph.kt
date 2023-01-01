@@ -9,7 +9,7 @@ import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity.ActivityScreenFragment
-import com.example.movelsys.presentation_layer.activity.HistoryViewModel
+import com.example.movelsys.presentation_layer.activity.history.HistoryViewModel
 import com.example.movelsys.presentation_layer.activity.RankingScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel

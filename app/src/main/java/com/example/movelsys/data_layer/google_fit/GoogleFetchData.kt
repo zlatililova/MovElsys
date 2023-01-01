@@ -10,4 +10,5 @@ interface GoogleFetchData {
     fun fetchPastWeekStepCount(responses: Responses)
     fun getActivityandContext(activity: Activity, context: Context)
     fun getDataPointList(): String
+    fun checkIfFetchIsFinished(): Boolean
 }

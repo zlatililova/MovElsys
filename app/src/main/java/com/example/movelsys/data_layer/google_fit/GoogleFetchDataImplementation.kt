@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation: GoogleFetchData {
 
-    //private var dataPointsList = mutableListOf<DataPoint>()
+    var isFetchFinished = false
     var dataPointMap = mutableMapOf<String, Int>()
     private lateinit var activity: Activity
     private lateinit var context: Context
@@ -69,9 +69,9 @@ class GoogleFetchDataImplementation: GoogleFetchData {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
-        val startTime = endTime.minusWeeks(1)
-        Log.i(TAG, "Range Start: $startTime")
-        Log.i(TAG, "Range End: $endTime")
+        val startTime = endTime.minusWeeks(4)
+        /*Log.i(TAG, "Range Start: $startTime")
+        Log.i(TAG, "Range End: $endTime")*/
 
         val readRequest =
             DataReadRequest.Builder()
@@ -90,22 +90,21 @@ class GoogleFetchDataImplementation: GoogleFetchData {
             .readData(readRequest)
             .addOnSuccessListener { response ->
                 for (dataSet in response.buckets.flatMap { it.dataSets }) {
-                    Log.i(TAG, "DATA SET")
                     dumpDataSet(dataSet)
                 }
-                checkDataList()
+                //checkDataList()
                 responses.onSuccess()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "There was an error reading data from Google Fit", e)
                 responses.onError("There was an error reading data from Google Fit")
             }
+        isFetchFinished = true
     }
 
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
             var startTimeMillis = dp.getStartTimeString()
-            //var date = Date(startTimeMillis)
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
             dataPointMap.put(startTimeMillis,steps)
@@ -123,14 +122,6 @@ class GoogleFetchDataImplementation: GoogleFetchData {
             TODO("VERSION.SDK_INT < O")
         }
 
-    fun DataPoint.getEndTimeString() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Instant.ofEpochSecond(this.getEndTime(TimeUnit.SECONDS))
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime().toString()
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
-
     private fun checkDataList() {
         Log.i(TAG, "DATA POINT LIST SIZE " + dataPointMap.size.toString())
         for(i in dataPointMap){
@@ -145,7 +136,6 @@ class GoogleFetchDataImplementation: GoogleFetchData {
     }
 
     override fun getDataPointList(): String {
-        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointMap.size.toString())
         val gson = Gson()
         val json = gson.toJson(dataPointMap)
         Log.i(TAG, json.toString())
@@ -153,4 +143,43 @@ class GoogleFetchDataImplementation: GoogleFetchData {
 
     }
 
+    override fun checkIfFetchIsFinished(): Boolean = isFetchFinished
+
 }
+
+/*
+ val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().atZone(ZoneId.systemDefault())
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val startTime = endTime.minusWeeks(1)
+        /*Log.i(TAG, "Range Start: $startTime")
+        Log.i(TAG, "Range End: $endTime")*/
+
+        val readRequest =
+            DataReadRequest.Builder()
+                .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
+                .bucketByTime(1, TimeUnit.DAYS)
+                .setTimeRange(
+                    startTime.toEpochSecond(), endTime.toEpochSecond(),
+                    TimeUnit.SECONDS
+                )
+                .build()
+
+        Fitness.getHistoryClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
+            .readData(readRequest)
+            .addOnSuccessListener { response ->
+                for (dataSet in response.buckets.flatMap { it.dataSets }) {
+                    dumpDataSet(dataSet)
+                }
+                //checkDataList()
+                responses.onSuccess()
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "There was an error reading data from Google Fit", e)
+                responses.onError("There was an error reading data from Google Fit")
+            }*/

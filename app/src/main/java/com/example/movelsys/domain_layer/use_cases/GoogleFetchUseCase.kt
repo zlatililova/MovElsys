@@ -16,4 +16,6 @@ class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
     }
 
     fun getDataPoints() = googleFetchData.getDataPointList()
+
+    fun isFetchFinished() = googleFetchData.checkIfFetchIsFinished()
 }

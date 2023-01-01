@@ -1,4 +1,4 @@
-package com.example.movelsys.presentation_layer.activity
+package com.example.movelsys.presentation_layer.activity_tracking
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun ActivityScreenFragment(navController: NavController){
+fun RankingScreenFragment(navController: NavController){
     Column {
         Column(
             modifier = Modifier
@@ -17,7 +17,7 @@ fun ActivityScreenFragment(navController: NavController){
                 .weight(1f)
         ) {
             TopBarFragment()
-            Text(text = "Activity!")
+            Text(text = "Ranking!")
         }
         Row {
             BottomBarFragment(navController = navController)
@@ -25,3 +25,4 @@ fun ActivityScreenFragment(navController: NavController){
     }
 
 }
+

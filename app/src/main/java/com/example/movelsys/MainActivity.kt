@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.movelsys.presentation_layer.activity.TopBarFragment
 import com.example.movelsys.ui.theme.MovelsysTheme
 
 class MainActivity : ComponentActivity() {

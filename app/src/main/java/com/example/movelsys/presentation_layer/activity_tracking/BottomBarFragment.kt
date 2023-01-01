@@ -1,4 +1,4 @@
-package com.example.movelsys.presentation_layer.activity
+package com.example.movelsys.presentation_layer.activity_tracking
 
 import androidx.compose.material.Icon
 import androidx.compose.material.Tab
@@ -7,8 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController

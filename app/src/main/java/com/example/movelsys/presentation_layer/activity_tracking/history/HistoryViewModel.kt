@@ -1,4 +1,4 @@
-package com.example.movelsys.presentation_layer.activity.history
+package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -22,6 +22,10 @@ class HistoryViewModel(
     private val googleFetchUseCase: GoogleFetchUseCase
 ) : ViewModel() {
 
+    val loading =  mutableStateOf(false)
+
+    val isFetchFinished = googleFetchUseCase.isFetchFinished()
+
     private var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
     var googleFitDates: List<String> by mutableStateOf(listOf())
     var googleFitSteps: List<Int> by mutableStateOf(listOf())
@@ -31,13 +35,14 @@ class HistoryViewModel(
         googleFetchUseCase.getNecessaryParameters(activity, context)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             viewModelScope.launch {
+                loading.value = true
                 GoogleFitPermissions(
                     appContext = context,
                     activity = activity
                 ).detectIfPermissionIsGiven()
                 googleFetchUseCase.startBusinessLogic(responses = object : Responses {
                     override fun onSuccess() {
-                        Log.i(TAG, "OnSuccess")
+                        Log.i(TAG, "OnSuccess - viewModel")
                     }
                     override fun onError(error: String) {
                         Log.i(TAG, "OnError")
@@ -45,18 +50,22 @@ class HistoryViewModel(
                 })
                 delay(1500)
                 fetchGoogleData()
+                loading.value = false
             }
         }
     }
 
 
-    fun fetchGoogleData() {
+    private fun fetchGoogleData() {
         val gson = Gson()
         googleFitHistory = gson.fromJson(
             googleFetchUseCase.getDataPoints(),
             object : TypeToken<Map<String, Int>>() {}.type
         )
         googleFitDates = googleFitHistory.keys.toList()
+        googleFitDates = googleFitDates.reversed()
         googleFitSteps = googleFitHistory.values.toList()
+        googleFitSteps = googleFitSteps.reversed()
+        loading.value = false
     }
 }

@@ -1,4 +1,4 @@
-package com.example.movelsys.presentation_layer.activity
+package com.example.movelsys.presentation_layer.activity_tracking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding

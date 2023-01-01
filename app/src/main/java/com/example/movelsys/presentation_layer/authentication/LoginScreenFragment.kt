@@ -149,7 +149,7 @@ private fun observeViewModel(
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
-                        navController.navigate(Screen.Main.route)
+                        navController.navigate(Screen.Activity.route)
                     }
                     is LoginUIState.Error -> {
                         navController.navigate(Screen.Login.route)

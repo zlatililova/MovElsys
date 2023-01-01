@@ -7,8 +7,10 @@ import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
 import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
-import com.example.movelsys.presentation_layer.MainScreenFragment
-import com.example.movelsys.presentation_layer.activity.MainViewModel
+import com.example.movelsys.presentation_layer.HistoryScreenFragment
+import com.example.movelsys.presentation_layer.activity.ActivityScreenFragment
+import com.example.movelsys.presentation_layer.activity.HistoryViewModel
+import com.example.movelsys.presentation_layer.activity.RankingScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
@@ -50,14 +52,24 @@ fun SetupNavGraph(
             )
         }
         composable(
-            route = Screen.Main.route
+            route = Screen.History.route
         ) {
-            MainScreenFragment(viewModel = MainViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation())))
+            HistoryScreenFragment(navController, viewModel = HistoryViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation())))
         }
         composable(
             route = Screen.Load.route
         ) {
             LoadingAnimation()
+        }
+        composable(
+            route = Screen.Activity.route
+        ) {
+            ActivityScreenFragment(navController)
+        }
+        composable(
+            route = Screen.Ranking.route
+        ) {
+            RankingScreenFragment(navController)
         }
 
     }

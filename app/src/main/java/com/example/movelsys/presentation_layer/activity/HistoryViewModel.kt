@@ -18,7 +18,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class HistoryViewModel(
     private val googleFetchUseCase: GoogleFetchUseCase
 ): ViewModel() {
 

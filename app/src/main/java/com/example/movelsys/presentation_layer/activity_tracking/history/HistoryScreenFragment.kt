@@ -1,8 +1,6 @@
 package com.example.movelsys.presentation_layer
 
 import android.app.Activity
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
@@ -12,9 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +26,6 @@ import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
-import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryRowFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 import com.example.movelsys.ui.theme.MovelsysTheme
 

@@ -6,7 +6,7 @@ import com.google.android.gms.fitness.data.DataPoint
 
 interface GoogleFetchData {
     fun subscribeToStepsListener()
-    fun listActiveSubscriptions()
+    fun isUserSubscribedToStepsListener(): Boolean
     fun fetchPastWeekStepCount(responses: Responses)
     fun getActivityandContext(activity: Activity, context: Context)
     fun getDataPointList(): String

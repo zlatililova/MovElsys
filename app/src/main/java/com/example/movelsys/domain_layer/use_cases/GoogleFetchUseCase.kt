@@ -8,9 +8,14 @@ import com.google.android.gms.fitness.data.DataPoint
 
 class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
     fun startBusinessLogic(responses: Responses){
-        googleFetchData.subscribeToStepsListener()
+       // googleFetchData.subscribeToStepsListener()
         googleFetchData.fetchPastWeekStepCount(responses)
     }
+
+    fun subscribeToStepsListener(){
+        googleFetchData.subscribeToStepsListener()
+    }
+
     fun getNecessaryParameters(activity: Activity, context: Context){
         googleFetchData.getActivityandContext(activity, context)
     }
@@ -18,4 +23,6 @@ class GoogleFetchUseCase(private val googleFetchData: GoogleFetchData) {
     fun getDataPoints() = googleFetchData.getDataPointList()
 
     fun isFetchFinished() = googleFetchData.checkIfFetchIsFinished()
+
+    fun isUserSubscribed() = googleFetchData.isUserSubscribedToStepsListener()
 }

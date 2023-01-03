@@ -16,7 +16,6 @@ import com.google.gson.Gson
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation: GoogleFetchData {
@@ -46,7 +45,8 @@ class GoogleFetchDataImplementation: GoogleFetchData {
 
     }
 
-    override fun listActiveSubscriptions() {
+    override fun isUserSubscribedToStepsListener(): Boolean {
+        var isSubscribed = false
         Fitness.getRecordingClient(
             activity,
             GoogleSignIn.getAccountForExtension(context, fitnessOptions)
@@ -56,22 +56,25 @@ class GoogleFetchDataImplementation: GoogleFetchData {
                 for (sc in subscriptions) {
                     val dt = sc.dataType
                     if (dt != null) {
+                        if(dt.name == "TYPE_STEP_COUNT_DELTA"){
+                            isSubscribed = true
+                        }
                         Log.i(TAG, "Active subscription for data type: ${dt.name}")
                     }
                 }
             }
+        return isSubscribed
     }
 
     override fun fetchPastWeekStepCount(responses: Responses) {
-        // Read the data that's been collected throughout the past week.
+        // Read the data that's been collected throughout the past 4 weeks.
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneId.systemDefault())
         } else {
             TODO("VERSION.SDK_INT < O")
         }
         val startTime = endTime.minusWeeks(4)
-        /*Log.i(TAG, "Range Start: $startTime")
-        Log.i(TAG, "Range End: $endTime")*/
+
 
         val readRequest =
             DataReadRequest.Builder()
@@ -146,40 +149,3 @@ class GoogleFetchDataImplementation: GoogleFetchData {
     override fun checkIfFetchIsFinished(): Boolean = isFetchFinished
 
 }
-
-/*
- val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().atZone(ZoneId.systemDefault())
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-        val startTime = endTime.minusWeeks(1)
-        /*Log.i(TAG, "Range Start: $startTime")
-        Log.i(TAG, "Range End: $endTime")*/
-
-        val readRequest =
-            DataReadRequest.Builder()
-                .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
-                .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(
-                    startTime.toEpochSecond(), endTime.toEpochSecond(),
-                    TimeUnit.SECONDS
-                )
-                .build()
-
-        Fitness.getHistoryClient(
-            activity,
-            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
-        )
-            .readData(readRequest)
-            .addOnSuccessListener { response ->
-                for (dataSet in response.buckets.flatMap { it.dataSets }) {
-                    dumpDataSet(dataSet)
-                }
-                //checkDataList()
-                responses.onSuccess()
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "There was an error reading data from Google Fit", e)
-                responses.onError("There was an error reading data from Google Fit")
-            }*/

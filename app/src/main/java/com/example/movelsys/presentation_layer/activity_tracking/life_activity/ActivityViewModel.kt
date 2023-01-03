@@ -27,7 +27,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) {
         googleSensorDataImplementation.addRawDataListener()
     }
     fun UpdateStepCount() {
-        val mainHandler = Handler(Looper.getMainLooper())
+        /*val mainHandler = Handler(Looper.getMainLooper())
         val googleSensorDataImplementation = GoogleSensorDataImplementation()
         val updateTextTask = object : Runnable {
             override fun run() {
@@ -36,7 +36,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) {
                 mainHandler.postDelayed(this, 1000)
             }
         }
-        mainHandler.post(updateTextTask)
+        mainHandler.post(updateTextTask)*/
     }
 
 }

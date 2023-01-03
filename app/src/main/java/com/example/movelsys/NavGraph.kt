@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
-import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
+import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment

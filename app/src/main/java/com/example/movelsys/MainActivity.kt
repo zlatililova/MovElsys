@@ -11,8 +11,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.movelsys.data_layer.google_fit.GoogleFetchDataImplementation
-import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import com.example.movelsys.ui.theme.MovelsysTheme
 
 class MainActivity : ComponentActivity() {

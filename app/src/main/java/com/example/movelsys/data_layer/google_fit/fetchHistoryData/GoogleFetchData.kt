@@ -1,14 +1,13 @@
-package com.example.movelsys.data_layer.google_fit
+package com.example.movelsys.data_layer.google_fit.fetchHistoryData
 
 import android.app.Activity
 import android.content.Context
-import com.google.android.gms.fitness.data.DataPoint
+import com.example.movelsys.data_layer.google_fit.Responses
 
 interface GoogleFetchData {
     fun subscribeToStepsListener()
     fun isUserSubscribedToStepsListener(): Boolean
     fun fetchPastWeekStepCount(responses: Responses)
-    fun getActivityandContext(activity: Activity, context: Context)
+    fun getActivityAndContext(activity: Activity, context: Context)
     fun getDataPointList(): String
-    fun checkIfFetchIsFinished(): Boolean
 }

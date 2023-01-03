@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
@@ -19,7 +22,7 @@ class GoogleSensorDataImplementation {
     private lateinit var activity: Activity
     private lateinit var context: Context
     private val fitnessOptions = FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
-    private var addStepCount = 0
+    private var addStepCount by mutableStateOf(0)
 
     fun getActivityAndContext(activity: Activity, context: Context){
         this.activity = activity
@@ -52,9 +55,9 @@ class GoogleSensorDataImplementation {
         val listener = OnDataPointListener { dataPoint ->
             for (field in dataPoint.dataType.fields) {
                 val value = dataPoint.getValue(field)
-                addStepCount = value.asInt()
+                addStepCount += value.asInt()
                 Log.i(TAG, "Detected DataPoint field: ${field.name}")
-                Log.i(TAG, "Detected DataPoint value: $value")
+                Log.i(TAG, "Detected DataPoint value: $addStepCount")
 
             }
         }
@@ -64,13 +67,12 @@ class GoogleSensorDataImplementation {
                    // .setDataSource(listAvailableDataSources()) // Optional but recommended for custom
                     // data sets.
                     .setDataType(DataType.TYPE_STEP_COUNT_DELTA) // Can't be omitted.
-                    .setSamplingRate(10, TimeUnit.SECONDS)
+                    .setSamplingRate(3, TimeUnit.SECONDS)
                     .build(),
                 listener
             )
             .addOnSuccessListener {
                 Log.i(TAG, "Listener registered!")
-                listener
             }
             .addOnFailureListener {
                 Log.e(TAG, "Listener not registered.", it)

@@ -1,10 +1,11 @@
-package com.example.movelsys.data_layer.google_fit
+package com.example.movelsys.data_layer.google_fit.fetchHistoryData
 
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.example.movelsys.data_layer.google_fit.Responses
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
@@ -18,9 +19,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
-class GoogleFetchDataImplementation: GoogleFetchData {
-
-    var isFetchFinished = false
+class GoogleFetchDataImplementation : GoogleFetchData {
     var dataPointMap = mutableMapOf<String, Int>()
     private lateinit var activity: Activity
     private lateinit var context: Context
@@ -56,7 +55,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
                 for (sc in subscriptions) {
                     val dt = sc.dataType
                     if (dt != null) {
-                        if(dt.name == "TYPE_STEP_COUNT_DELTA"){
+                        if (dt.name == "TYPE_STEP_COUNT_DELTA") {
                             isSubscribed = true
                         }
                         Log.i(TAG, "Active subscription for data type: ${dt.name}")
@@ -69,13 +68,11 @@ class GoogleFetchDataImplementation: GoogleFetchData {
     override fun fetchPastWeekStepCount(responses: Responses) {
         // Read the data that's been collected throughout the past 4 weeks.
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().atZone(ZoneId.systemDefault())
+            LocalDateTime.now().atZone(ZoneId.systemDefault()).minusDays(1)
         } else {
             TODO("VERSION.SDK_INT < O")
         }
         val startTime = endTime.minusWeeks(4)
-
-
         val readRequest =
             DataReadRequest.Builder()
                 .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
@@ -85,7 +82,6 @@ class GoogleFetchDataImplementation: GoogleFetchData {
                     TimeUnit.SECONDS
                 )
                 .build()
-
         Fitness.getHistoryClient(
             activity,
             GoogleSignIn.getAccountForExtension(context, fitnessOptions)
@@ -95,29 +91,29 @@ class GoogleFetchDataImplementation: GoogleFetchData {
                 for (dataSet in response.buckets.flatMap { it.dataSets }) {
                     dumpDataSet(dataSet)
                 }
-                //checkDataList()
                 responses.onSuccess()
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "There was an error reading data from Google Fit", e)
                 responses.onError("There was an error reading data from Google Fit")
             }
-        isFetchFinished = true
     }
 
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
             var startTimeMillis = dp.getStartTimeString()
+            Log.e("Start TIME", startTimeMillis)
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
-            dataPointMap.put(startTimeMillis,steps)
+            dataPointMap.put(startTimeMillis, steps)
             //dataPointsList.add(dp)
         }
 
     }
 
-    fun DataPoint.getStartTimeString() =
+    private fun DataPoint.getStartTimeString() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.e("GET START TIME", this.getStartTime(TimeUnit.DAYS).toString())
             Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().toString()
@@ -125,15 +121,7 @@ class GoogleFetchDataImplementation: GoogleFetchData {
             TODO("VERSION.SDK_INT < O")
         }
 
-    private fun checkDataList() {
-        Log.i(TAG, "DATA POINT LIST SIZE " + dataPointMap.size.toString())
-        for(i in dataPointMap){
-            Log.i(TAG, "Date: " + i.key)
-            Log.i(TAG, "Steps: " + i.value)
-        }
-    }
-
-    override fun getActivityandContext(activity: Activity, context: Context){
+    override fun getActivityAndContext(activity: Activity, context: Context) {
         this.activity = activity
         this.context = context
     }
@@ -145,7 +133,4 @@ class GoogleFetchDataImplementation: GoogleFetchData {
         return json
 
     }
-
-    override fun checkIfFetchIsFinished(): Boolean = isFetchFinished
-
 }

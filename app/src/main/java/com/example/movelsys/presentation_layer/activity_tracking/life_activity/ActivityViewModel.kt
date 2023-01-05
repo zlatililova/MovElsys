@@ -14,21 +14,21 @@ import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDa
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import kotlinx.coroutines.launch
 
-class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): ViewModel() {
+class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : ViewModel() {
     var steps by mutableStateOf(0)
-    var goalSteps: Int = googleFetchUseCase.getDefaultStepGoal()
+    var goalSteps by mutableStateOf(10000)
     var newGoal by mutableStateOf("")
 
-    fun subscribeToStepsListener(context: Context, activity: Activity){
+    fun subscribeToStepsListener(context: Context, activity: Activity) {
         googleFetchUseCase.getNecessaryParameters(activity = activity, context = context)
-        if(!googleFetchUseCase.isUserSubscribed()) {
-           googleFetchUseCase.subscribeToStepsListener()
-       }else{
-           Log.i(TAG, "User already subscribed to STEP_COUNT_DELTA")
-       }
+        if (!googleFetchUseCase.isUserSubscribed()) {
+            googleFetchUseCase.subscribeToStepsListener()
+        } else {
+            Log.i(TAG, "User already subscribed to STEP_COUNT_DELTA")
+        }
     }
 
-    fun listDataSources(context: Context, activity: Activity){
+    fun listDataSources(context: Context, activity: Activity) {
         val googleSensorDataImplementation = GoogleSensorDataImplementation()
         googleSensorDataImplementation.getActivityAndContext(activity = activity, context = context)
         googleSensorDataImplementation.listAvailableDataSources()
@@ -36,23 +36,20 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): Vie
     }
 
     fun updateStepCount() {
-            viewModelScope.launch {
-                steps = googleFetchUseCase.fetchCurrentSteps()
-            }
+        viewModelScope.launch {
+            steps = googleFetchUseCase.fetchCurrentSteps()
+        }
     }
 
-    fun calculatePersentageOfGoal(): Float{
-        return steps.toFloat()/goalSteps.toFloat()
+    fun calculatePersentageOfGoal(): Float {
+        return steps.toFloat() / goalSteps.toFloat()
     }
 
-    fun setNewGoalSteps(){
-        if(newGoal != ""){
-            if(newGoal.toInt() != 0 ){
+    fun setNewGoalSteps() {
+        if (newGoal != "") {
+            if (newGoal.toInt() != 0) {
                 goalSteps = newGoal.toInt()
-                googleFetchUseCase.setDefaultStepGoal(newGoal.toInt())
-                goalSteps = googleFetchUseCase.getDefaultStepGoal()
             }
         }
-
     }
 }

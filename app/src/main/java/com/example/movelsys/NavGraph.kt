@@ -56,7 +56,15 @@ fun SetupNavGraph(
         composable(
             route = Screen.History.route
         ) {
-            HistoryScreenFragment(navController, viewModel = HistoryViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation())))
+            HistoryScreenFragment(
+                navController,
+                viewModel = HistoryViewModel(
+                    googleFetchUseCase = GoogleFetchUseCase(
+                        googleFetchData = GoogleFetchDataImplementation(),
+                        googleSensorData = GoogleSensorDataImplementation()
+                    )
+                )
+            )
         }
         composable(
             route = Screen.Load.route
@@ -66,14 +74,21 @@ fun SetupNavGraph(
         composable(
             route = Screen.Activity.route
         ) {
-            ActivityScreenFragment(navController, viewModel = ActivityViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation())))
+            ActivityScreenFragment(
+                navController,
+                viewModel = ActivityViewModel(
+                    googleFetchUseCase = GoogleFetchUseCase(
+                        googleFetchData = GoogleFetchDataImplementation(),
+                        googleSensorData = GoogleSensorDataImplementation()
+                    )
+                )
+            )
         }
         composable(
             route = Screen.Ranking.route
         ) {
             RankingScreenFragment(navController)
         }
-
     }
 }
 

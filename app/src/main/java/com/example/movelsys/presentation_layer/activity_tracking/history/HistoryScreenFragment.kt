@@ -33,7 +33,6 @@ fun HistoryScreenFragment(
     navController: NavController,
     viewModel: HistoryViewModel
 ) {
-
     val context = LocalContext.current
     val activity = context as Activity
     viewModel.getActivityAndContext(context, activity)
@@ -49,7 +48,6 @@ fun HistoryScreenFragment(
             modifier = Modifier.padding(top = 15.dp)
         )
         Spacer(modifier = Modifier.padding(10.dp))
-
         OutlinedButton(
             onClick = { viewModel.startGoogleFit() },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
@@ -59,30 +57,24 @@ fun HistoryScreenFragment(
         ) {
             Text(text = "Refresh", textAlign = TextAlign.Center, color = Color.White)
         }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
         ) {
-
-
             if (viewModel.timesDataWasFetched > 0) {
-                HistoryRow(viewModel.googleFitDates, viewModel.googleFitSteps)
+                HistoryGrid(viewModel.googleFitDates, viewModel.googleFitSteps)
             }
         }
-
-
         Row {
             BottomBarFragment(navController = navController)
         }
     }
 }
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryRow(dates: List<String>, steps: List<Int>) {
+fun HistoryGrid(dates: List<String>, steps: List<Int>) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(1),
         verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -93,7 +85,6 @@ fun HistoryRow(dates: List<String>, steps: List<Int>) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "Date", fontFamily = FontFamily.Serif,
@@ -123,7 +114,6 @@ fun HistoryRow(dates: List<String>, steps: List<Int>) {
         }
         items(dates.size) { index ->
             HistoryRow(dates[index], steps[index])
-
         }
     }
 }
@@ -157,7 +147,6 @@ fun HistoryRow(date: String, steps: Int) {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewHistory() {
@@ -165,7 +154,8 @@ fun DefaultPreviewHistory() {
         HistoryScreenFragment(
             navController = rememberNavController(), viewModel = HistoryViewModel(
                 googleFetchUseCase = GoogleFetchUseCase(
-                    GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation()
+                    GoogleFetchDataImplementation(),
+                    googleSensorData = GoogleSensorDataImplementation()
                 )
             )
         )

@@ -28,7 +28,6 @@ import com.example.movelsys.presentation_layer.activity_tracking.life_activity.A
 
 @Composable
 fun ActivityScreenFragment(navController: NavController, viewModel: ActivityViewModel) {
-
     viewModel.subscribeToStepsListener(
         context = LocalContext.current,
         activity = LocalContext.current as Activity
@@ -39,8 +38,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
     )
     Column {
         LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally
-            ,modifier = Modifier
+            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
 
@@ -77,10 +75,10 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     OutlinedTextField(
                         value = viewModel.newGoal,
                         onValueChange = {
-                            if(it.isNotEmpty() ){
+                            if (it.isNotEmpty()) {
                                 viewModel.newGoal = it
                             }
-                                        },
+                        },
                         label = { Text("Current goal: ${viewModel.goalSteps}") },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = MaterialTheme.colors.secondary,
@@ -88,8 +86,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         ),
                         modifier = Modifier
                             .padding(start = 0.dp)
-                            .size(width = 200.dp, height = 60.dp)
-                        ,
+                            .size(width = 200.dp, height = 60.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                     OutlinedButton(
@@ -98,7 +95,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         modifier = Modifier
                             .padding(start = 25.dp, end = 0.dp)
                             //.fillMaxWidth()
-                        .size(width = 250.dp, height = 60.dp)
+                            .size(width = 250.dp, height = 60.dp)
                     ) {
                         Text(
                             text = "Change step goal",
@@ -110,14 +107,8 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
 
             }
         }
-
-
         Row {
             BottomBarFragment(navController = navController)
         }
     }
-
 }
-
-
-

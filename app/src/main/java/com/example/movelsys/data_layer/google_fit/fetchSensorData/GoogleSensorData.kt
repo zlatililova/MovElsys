@@ -9,6 +9,4 @@ interface GoogleSensorData {
     fun addRawDataListener()
     fun getDailySteps()
     fun getCurrentSteps(): Int
-    fun getDefaultStepGoal(): Int
-    fun setDefaultStepGoal(newGoal: Int)
 }

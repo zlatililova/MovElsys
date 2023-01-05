@@ -18,27 +18,30 @@ import com.google.android.gms.fitness.request.OnDataPointListener
 import com.google.android.gms.fitness.request.SensorRequest
 import java.util.concurrent.TimeUnit
 
-class GoogleSensorDataImplementation: GoogleSensorData {
+class GoogleSensorDataImplementation : GoogleSensorData {
     private lateinit var activity: Activity
     private lateinit var context: Context
-    private val fitnessOptions = FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
+    private val fitnessOptions =
+        FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
     private var addStepCount by mutableStateOf(0)
     private var currentStepCount by mutableStateOf(0)
 
-    private var defaultStepGoal = 10500
-
-    override fun getActivityAndContext(activity: Activity, context: Context){
+    override fun getActivityAndContext(activity: Activity, context: Context) {
         this.activity = activity
         this.context = context
     }
 
-    override fun listAvailableDataSources(){
-        Fitness.getSensorsClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+    override fun listAvailableDataSources() {
+        Fitness.getSensorsClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .findDataSources(
                 DataSourcesRequest.Builder()
                     .setDataTypes(DataType.TYPE_STEP_COUNT_DELTA)
                     .setDataSourceTypes(DataSource.TYPE_RAW)
-                    .build())
+                    .build()
+            )
             .addOnSuccessListener { dataSources ->
                 dataSources.forEach {
                     Log.i(TAG, "Data source found: ${it.streamIdentifier}")
@@ -54,23 +57,22 @@ class GoogleSensorDataImplementation: GoogleSensorData {
             }
     }
 
-    override fun addRawDataListener(){
+    override fun addRawDataListener() {
         val listener = OnDataPointListener { dataPoint ->
             for (field in dataPoint.dataType.fields) {
                 val value = dataPoint.getValue(field)
-                addStepCount += value.asInt()
                 Log.i(TAG, "Detected DataPoint field: ${field.name}")
                 Log.i(TAG, "Detected DataPoint value: $value")
-                Log.i(TAG, "Detected DataPoint value: $addStepCount")
                 getDailySteps()
             }
         }
-        Fitness.getSensorsClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+        Fitness.getSensorsClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .add(
                 SensorRequest.Builder()
-                   // .setDataSource(listAvailableDataSources()) // Optional but recommended for custom
-                    // data sets.
-                    .setDataType(DataType.TYPE_STEP_COUNT_DELTA) // Can't be omitted.
+                    .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
                     .setSamplingRate(3, TimeUnit.SECONDS)
                     .build(),
                 listener
@@ -83,8 +85,11 @@ class GoogleSensorDataImplementation: GoogleSensorData {
             }
     }
 
-    override fun getDailySteps(){
-        Fitness.getHistoryClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+    override fun getDailySteps() {
+        Fitness.getHistoryClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
             .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
             .addOnSuccessListener { result ->
                 val totalSteps =
@@ -97,16 +102,7 @@ class GoogleSensorDataImplementation: GoogleSensorData {
             }
     }
 
-    override fun getCurrentSteps(): Int{
+    override fun getCurrentSteps(): Int {
         return currentStepCount
-    }
-
-    override fun getDefaultStepGoal(): Int{
-        return defaultStepGoal
-    }
-
-    override fun setDefaultStepGoal(newGoal: Int){
-        Log.i(TAG, newGoal.toString())
-        defaultStepGoal = newGoal
     }
 }

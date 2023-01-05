@@ -28,7 +28,6 @@ class GoogleFetchUseCase(
     fun getDataPoints() = googleFetchData.getDataPointList()
     fun isUserSubscribed() = googleFetchData.isUserSubscribedToStepsListener()
     fun fetchCurrentSteps(): Int {
-        Log.e("Daily steps in UC", googleSensorData.getDailySteps().toString())
         val timer = Timer()
         timer.scheduleAtFixedRate(
             object : TimerTask() {
@@ -39,7 +38,4 @@ class GoogleFetchUseCase(
         )
         return googleSensorData.getCurrentSteps()
     }
-
-    fun getDefaultStepGoal() = googleSensorData.getDefaultStepGoal()
-    fun setDefaultStepGoal(newGoal: Int) = googleSensorData.setDefaultStepGoal(newGoal)
 }

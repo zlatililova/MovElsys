@@ -31,8 +31,8 @@ class GoogleFitPermissions(
 
         if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
-                activity, // your activity
-                googleFitPermissionsRequestCode, // e.g. 1
+                activity,
+                googleFitPermissionsRequestCode,
                 account,
                 fitnessOptions
             )

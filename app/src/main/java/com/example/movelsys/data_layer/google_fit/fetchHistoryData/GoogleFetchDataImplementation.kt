@@ -23,7 +23,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
     var dataPointMap = mutableMapOf<String, Int>()
     private lateinit var activity: Activity
     private lateinit var context: Context
-
     private val fitnessOptions = FitnessOptions.builder()
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
@@ -41,7 +40,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             .addOnFailureListener { e ->
                 Log.w(TAG, "There was a problem subscribing to STEP_COUNT_DELTA.", e)
             }
-
     }
 
     override fun isUserSubscribedToStepsListener(): Boolean {
@@ -72,8 +70,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
-        Log.e("End time", endTime.toString())
-
         val startTime = endTime.minusWeeks(4)
         val readRequest =
             DataReadRequest.Builder()
@@ -104,18 +100,14 @@ class GoogleFetchDataImplementation : GoogleFetchData {
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
             var startTimeMillis = dp.getStartTimeString()
-            //Log.e("Start TIME", startTimeMillis)
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
             dataPointMap.put(startTimeMillis, steps)
-            //dataPointsList.add(dp)
         }
-
     }
 
     private fun DataPoint.getStartTimeString() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          //  Log.e("GET START TIME", this.getStartTime(TimeUnit.DAYS).toString())
             Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().toString()
@@ -133,6 +125,5 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         val json = gson.toJson(dataPointMap)
         Log.i(TAG, json.toString())
         return json
-
     }
 }

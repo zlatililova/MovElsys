@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): ViewModel() {
     var steps by mutableStateOf(0)
-    var goalSteps by mutableStateOf(10000)
+    var goalSteps by mutableStateOf(300)
+    var newGoal by mutableStateOf(0)
 
     fun subscribeToStepsListener(context: Context, activity: Activity){
         googleFetchUseCase.getNecessaryParameters(activity = activity, context = context)
@@ -41,5 +42,9 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): Vie
 
     fun calculatePersentageOfGoal(): Float{
         return steps.toFloat()/goalSteps.toFloat()
+    }
+
+    fun setNewGoalSteps(){
+        goalSteps = newGoal
     }
 }

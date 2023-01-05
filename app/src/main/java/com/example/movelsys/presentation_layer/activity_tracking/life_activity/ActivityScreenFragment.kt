@@ -39,9 +39,11 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
     )
     Column {
         LazyColumn(
-            modifier = Modifier
+            horizontalAlignment = Alignment.CenterHorizontally
+            ,modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+
         ) {
             item {
                 TopBarFragment()
@@ -51,7 +53,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(20.dp)
                 )
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     Text(
@@ -63,21 +65,49 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     CircularProgressIndicator(
                         progress = viewModel.calculatePersentageOfGoal(),
                         strokeWidth = 20.dp,
-                        modifier = Modifier.size(350.dp)
+                        modifier = Modifier.size(350.dp),
+                        color = MaterialTheme.colors.secondary
                     )
                 }
-                OutlinedTextField(
-                    value = viewModel.newGoal.toString(),
-                    onValueChange = { v. },
-                    label = { "Current step goal: ${viewModel.goalSteps}" },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = MaterialTheme.colors.secondary,
-                        unfocusedBorderColor = MaterialTheme.colors.primary,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.padding(30.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.newGoal,
+                        onValueChange = {
+                            if(it.isNotEmpty() ){
+                                viewModel.newGoal = it
+                            }
+                                        },
+                        label = { Text("Current goal: ${viewModel.goalSteps}") },
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colors.secondary,
+                            unfocusedBorderColor = MaterialTheme.colors.primary,
+                        ),
+                        modifier = Modifier
+                            .padding(start = 0.dp)
+                            .size(width = 200.dp, height = 60.dp)
+                        ,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                    OutlinedButton(
+                        onClick = { viewModel.setNewGoalSteps() },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                        modifier = Modifier
+                            .padding(start = 25.dp, end = 0.dp)
+                            //.fillMaxWidth()
+                        .size(width = 250.dp, height = 60.dp)
+                    ) {
+                        Text(
+                            text = "Change step goal",
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+                        )
+                    }
+                }
+
             }
         }
 
@@ -88,5 +118,6 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
     }
 
 }
+
 
 

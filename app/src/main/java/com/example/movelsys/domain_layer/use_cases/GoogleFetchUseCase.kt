@@ -39,4 +39,7 @@ class GoogleFetchUseCase(
         )
         return googleSensorData.getCurrentSteps()
     }
+
+    fun getDefaultStepGoal() = googleSensorData.getDefaultStepGoal()
+    fun setDefaultStepGoal(newGoal: Int) = googleSensorData.setDefaultStepGoal(newGoal)
 }

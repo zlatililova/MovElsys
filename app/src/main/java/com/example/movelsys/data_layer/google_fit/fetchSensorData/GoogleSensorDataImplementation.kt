@@ -25,6 +25,8 @@ class GoogleSensorDataImplementation: GoogleSensorData {
     private var addStepCount by mutableStateOf(0)
     private var currentStepCount by mutableStateOf(0)
 
+    private var defaultStepGoal = 10500
+
     override fun getActivityAndContext(activity: Activity, context: Context){
         this.activity = activity
         this.context = context
@@ -97,5 +99,14 @@ class GoogleSensorDataImplementation: GoogleSensorData {
 
     override fun getCurrentSteps(): Int{
         return currentStepCount
+    }
+
+    override fun getDefaultStepGoal(): Int{
+        return defaultStepGoal
+    }
+
+    override fun setDefaultStepGoal(newGoal: Int){
+        Log.i(TAG, newGoal.toString())
+        defaultStepGoal = newGoal
     }
 }

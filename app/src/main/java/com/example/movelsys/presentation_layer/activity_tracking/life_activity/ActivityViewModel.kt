@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,8 +16,8 @@ import kotlinx.coroutines.launch
 
 class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): ViewModel() {
     var steps by mutableStateOf(0)
-    var goalSteps by mutableStateOf(300)
-    var newGoal by mutableStateOf(0)
+    var goalSteps: Int = googleFetchUseCase.getDefaultStepGoal()
+    var newGoal by mutableStateOf("")
 
     fun subscribeToStepsListener(context: Context, activity: Activity){
         googleFetchUseCase.getNecessaryParameters(activity = activity, context = context)
@@ -45,6 +46,13 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase): Vie
     }
 
     fun setNewGoalSteps(){
-        goalSteps = newGoal
+        if(newGoal != ""){
+            if(newGoal.toInt() != 0 ){
+                goalSteps = newGoal.toInt()
+                googleFetchUseCase.setDefaultStepGoal(newGoal.toInt())
+                goalSteps = googleFetchUseCase.getDefaultStepGoal()
+            }
+        }
+
     }
 }

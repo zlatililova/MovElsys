@@ -5,9 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
+import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.*
-import com.example.movelsys.presentation_layer.HistoryScreenFragment
+import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
 import com.example.movelsys.presentation_layer.activity_tracking.RankingScreenFragment
@@ -55,7 +56,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.History.route
         ) {
-            HistoryScreenFragment(navController, viewModel = HistoryViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation())))
+            HistoryScreenFragment(navController, viewModel = HistoryViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation())))
         }
         composable(
             route = Screen.Load.route
@@ -65,7 +66,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.Activity.route
         ) {
-            ActivityScreenFragment(navController, viewModel = ActivityViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation())))
+            ActivityScreenFragment(navController, viewModel = ActivityViewModel(googleFetchUseCase = GoogleFetchUseCase(googleFetchData = GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation())))
         }
         composable(
             route = Screen.Ranking.route

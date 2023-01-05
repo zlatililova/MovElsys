@@ -1,4 +1,4 @@
-package com.example.movelsys.data_layer.google_fit
+package com.example.movelsys.data_layer.google_fit.fetchSensorData
 
 import android.app.Activity
 import android.content.ContentValues.TAG
@@ -12,24 +12,25 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataSource
 import com.google.android.gms.fitness.data.DataType
+import com.google.android.gms.fitness.data.Field
 import com.google.android.gms.fitness.request.DataSourcesRequest
 import com.google.android.gms.fitness.request.OnDataPointListener
 import com.google.android.gms.fitness.request.SensorRequest
 import java.util.concurrent.TimeUnit
 
-class GoogleSensorDataImplementation {
-
+class GoogleSensorDataImplementation: GoogleSensorData {
     private lateinit var activity: Activity
     private lateinit var context: Context
     private val fitnessOptions = FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
     private var addStepCount by mutableStateOf(0)
+    private var currentStepCount by mutableStateOf(0)
 
-    fun getActivityAndContext(activity: Activity, context: Context){
+    override fun getActivityAndContext(activity: Activity, context: Context){
         this.activity = activity
         this.context = context
     }
 
-    fun listAvailableDataSources(){
+    override fun listAvailableDataSources(){
         Fitness.getSensorsClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
             .findDataSources(
                 DataSourcesRequest.Builder()
@@ -51,14 +52,15 @@ class GoogleSensorDataImplementation {
             }
     }
 
-    fun addRawDataListener(){
+    override fun addRawDataListener(){
         val listener = OnDataPointListener { dataPoint ->
             for (field in dataPoint.dataType.fields) {
                 val value = dataPoint.getValue(field)
                 addStepCount += value.asInt()
                 Log.i(TAG, "Detected DataPoint field: ${field.name}")
+                Log.i(TAG, "Detected DataPoint value: $value")
                 Log.i(TAG, "Detected DataPoint value: $addStepCount")
-
+                getDailySteps()
             }
         }
         Fitness.getSensorsClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
@@ -79,7 +81,21 @@ class GoogleSensorDataImplementation {
             }
     }
 
-    fun getAddStepValue(): Int{
-        return addStepCount
+    override fun getDailySteps(){
+        Fitness.getHistoryClient(activity, GoogleSignIn.getAccountForExtension(context, fitnessOptions))
+            .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
+            .addOnSuccessListener { result ->
+                val totalSteps =
+                    result.dataPoints.firstOrNull()?.getValue(Field.FIELD_STEPS)?.asInt() ?: 0
+                currentStepCount = totalSteps
+                Log.i("Daily Steps", totalSteps.toString())
+            }
+            .addOnFailureListener { e ->
+                Log.i(TAG, "There was a problem getting steps.", e)
+            }
+    }
+
+    override fun getCurrentSteps(): Int{
+        return currentStepCount
     }
 }

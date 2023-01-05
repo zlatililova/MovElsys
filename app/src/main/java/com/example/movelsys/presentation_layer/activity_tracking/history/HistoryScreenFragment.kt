@@ -1,13 +1,15 @@
-package com.example.movelsys.presentation_layer
+package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
-import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 import com.example.movelsys.ui.theme.MovelsysTheme
 
@@ -63,10 +65,13 @@ fun HistoryScreenFragment(
                 .fillMaxWidth()
                 .weight(1f),
         ) {
+
+
             if (viewModel.timesDataWasFetched > 0) {
-                HistoryGrid(dates = viewModel.googleFitDates, steps = viewModel.googleFitSteps)
+                HistoryRow(viewModel.googleFitDates, viewModel.googleFitSteps)
             }
         }
+
 
         Row {
             BottomBarFragment(navController = navController)
@@ -74,79 +79,82 @@ fun HistoryScreenFragment(
     }
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryGrid(dates: List<String>, steps: List<Int>) {
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
+fun HistoryRow(dates: List<String>, steps: List<Int>) {
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(1),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         item {
-            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    Text(
-                        text = "Date",
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                    dates.forEach() { i ->
-                        Text(
-                            text = i,
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.primary
-                        )
-                    }
-                }
-                Divider(
-                    color = Color.Red,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp)
-                )
-                Spacer(modifier = Modifier.padding(horizontal = 10.dp))
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Steps",
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                    steps.forEach { i ->
-                        Text(
-                            text = i.toString(),
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.primary
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Goal",
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                    steps.forEach { i ->
-                        if (i > 5500) {
-                            Icon(Icons.Filled.Check, contentDescription = "Done")
-                        } else {
-                            Icon(Icons.Filled.Close, contentDescription = "Not done")
-                        }
-                    }
-                }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
 
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Date", fontFamily = FontFamily.Serif,
+                        fontSize = 23.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.primary
+                    )
+                }
+                Spacer(modifier = Modifier.padding(25.dp))
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Steps", fontFamily = FontFamily.Serif,
+                        fontSize = 23.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.primary
+                    )
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = "Goal", fontFamily = FontFamily.Serif,
+                        fontSize = 23.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.primary
+                    )
+                }
             }
         }
+        items(dates.size) { index ->
+            HistoryRow(dates[index], steps[index])
 
+        }
+    }
+}
+
+@Composable
+fun HistoryRow(date: String, steps: Int) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Text(
+            text = date,
+            fontFamily = FontFamily.Serif,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary
+        )
+        Spacer(modifier = Modifier.padding(5.dp))
+        Text(
+            text = steps.toString(),
+            fontFamily = FontFamily.Serif,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary
+        )
+        Spacer(modifier = Modifier.padding(5.dp))
+        if (steps > 5500) {
+            Icon(Icons.Filled.Check, contentDescription = "Done")
+        } else {
+            Icon(Icons.Filled.Close, contentDescription = "Not done")
+        }
     }
 }
 
@@ -157,7 +165,7 @@ fun DefaultPreviewHistory() {
         HistoryScreenFragment(
             navController = rememberNavController(), viewModel = HistoryViewModel(
                 googleFetchUseCase = GoogleFetchUseCase(
-                    GoogleFetchDataImplementation()
+                    GoogleFetchDataImplementation(), googleSensorData = GoogleSensorDataImplementation()
                 )
             )
         )

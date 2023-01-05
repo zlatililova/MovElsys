@@ -25,6 +25,7 @@ class HistoryViewModel(
     var googleFitDates: List<String> by mutableStateOf(listOf())
     var googleFitSteps: List<Int> by mutableStateOf(listOf())
 
+
     fun getActivityAndContext(activity: Activity, context: Context) {
         googleFetchUseCase.getNecessaryParameters(activity, context)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -38,7 +39,7 @@ class HistoryViewModel(
         }
     }
     fun startGoogleFit() {
-        googleFetchUseCase.startBusinessLogic(responses = object : Responses {
+        googleFetchUseCase.fetchPastMonthSteps(responses = object : Responses {
             override fun onSuccess() {
                 Log.i(TAG, "OnSuccess - viewModel")
             }
@@ -64,4 +65,10 @@ class HistoryViewModel(
         googleFitSteps = googleFitHistory.values.toList()
         googleFitSteps = googleFitSteps.reversed()
     }
+
+    /*fun incrementRowIndex(){
+        rowIndex++
+    }*/
+
+
 }

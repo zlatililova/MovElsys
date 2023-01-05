@@ -68,10 +68,12 @@ class GoogleFetchDataImplementation : GoogleFetchData {
     override fun fetchPastWeekStepCount(responses: Responses) {
         // Read the data that's been collected throughout the past 4 weeks.
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now().atZone(ZoneId.systemDefault()).minusDays(1)
+            LocalDateTime.now().atZone(ZoneId.systemDefault()).minusHours(10)
         } else {
             TODO("VERSION.SDK_INT < O")
         }
+        Log.e("End time", endTime.toString())
+
         val startTime = endTime.minusWeeks(4)
         val readRequest =
             DataReadRequest.Builder()
@@ -102,7 +104,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
             var startTimeMillis = dp.getStartTimeString()
-            Log.e("Start TIME", startTimeMillis)
+            //Log.e("Start TIME", startTimeMillis)
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
             dataPointMap.put(startTimeMillis, steps)
@@ -113,7 +115,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
 
     private fun DataPoint.getStartTimeString() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.e("GET START TIME", this.getStartTime(TimeUnit.DAYS).toString())
+          //  Log.e("GET START TIME", this.getStartTime(TimeUnit.DAYS).toString())
             Instant.ofEpochSecond(this.getStartTime(TimeUnit.SECONDS))
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate().toString()

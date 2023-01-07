@@ -19,14 +19,14 @@ fun BottomBarFragment(
     navController: NavController,
 ) {
     val tabData = listOf(
-        "ACTIVITY" to Icons.Filled.Person to Screen.Activity.route,
-        "RANKING" to Icons.Filled.CheckCircle to Screen.Ranking.route,
-        "HISTORY" to Icons.Filled.Menu to Screen.History.route,
+        "ACTIVITY" to Icons.Filled.EmojiPeople to Screen.Activity.route,
+        "RANKING" to Icons.Filled.EmojiEvents to Screen.Ranking.route,
+        "HISTORY" to Icons.Filled.AccessTime to Screen.History.route,
         )
 
     TabRow(selectedTabIndex = BottomBarHelper.getLocalTabIndex()) {
         tabData.forEachIndexed { index, pair ->
-            Tab(selected = index == BottomBarHelper.getLocalTabIndex(), onClick = {
+            Tab(selected = checkIndexOfHighlightedTab(index), onClick = {
                 BottomBarHelper.setLocalTabName(pair.second)
                 navController.navigate(pair.second)
                 BottomBarHelper.setLocalTabIndex(index)
@@ -50,14 +50,14 @@ object BottomBarHelper {
     fun setLocalTabIndex(index: Int) {
         tabIndex = index
     }
-    fun getLocalTabName(): String {
-        return tabName
-    }
     fun setLocalTabName(name: String) {
         tabName = name
     }
 }
 
+fun checkIndexOfHighlightedTab(index: Int): Boolean{
+    return index == BottomBarHelper.getLocalTabIndex()
+}
 
 @Preview(showBackground = true)
 @Composable

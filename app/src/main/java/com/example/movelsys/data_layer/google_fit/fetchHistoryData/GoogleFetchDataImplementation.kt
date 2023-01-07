@@ -20,13 +20,15 @@ import java.time.ZoneId
 import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation : GoogleFetchData {
-    var dataPointMap = mutableMapOf<String, Int>()
+    private var dataPointMap = mutableMapOf<String, Int>()
     private lateinit var activity: Activity
     private lateinit var context: Context
     private val fitnessOptions = FitnessOptions.builder()
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .build()
+
+    override var isUserSubscribedToStepsListener = false
 
     override fun subscribeToStepsListener() {
         Fitness.getRecordingClient(
@@ -36,34 +38,14 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             .subscribe(DataType.TYPE_STEP_COUNT_DELTA)
             .addOnSuccessListener {
                 Log.i(TAG, "Successfully subscribed to STEP_COUNT_DELTA!")
+                isUserSubscribedToStepsListener = true
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "There was a problem subscribing to STEP_COUNT_DELTA.", e)
             }
     }
 
-    override fun isUserSubscribedToStepsListener(): Boolean {
-        var isSubscribed = false
-        Fitness.getRecordingClient(
-            activity,
-            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
-        )
-            .listSubscriptions()
-            .addOnSuccessListener { subscriptions ->
-                for (sc in subscriptions) {
-                    val dt = sc.dataType
-                    if (dt != null) {
-                        if (dt.name == "TYPE_STEP_COUNT_DELTA") {
-                            isSubscribed = true
-                        }
-                        Log.i(TAG, "Active subscription for data type: ${dt.name}")
-                    }
-                }
-            }
-        return isSubscribed
-    }
-
-    override fun fetchPastWeekStepCount(responses: Responses) {
+    override fun fetchPastMonthStepCount(responses: Responses) {
         // Read the data that's been collected throughout the past 4 weeks.
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneId.systemDefault()).minusHours(10)
@@ -99,10 +81,10 @@ class GoogleFetchDataImplementation : GoogleFetchData {
 
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
-            var startTimeMillis = dp.getStartTimeString()
+            val startTimeMillis = dp.getStartTimeString()
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
-            dataPointMap.put(startTimeMillis, steps)
+            dataPointMap[startTimeMillis] = steps
         }
     }
 

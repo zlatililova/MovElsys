@@ -31,7 +31,6 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     fun listDataSources(context: Context, activity: Activity) {
         val googleSensorDataImplementation = GoogleSensorDataImplementation()
         googleSensorDataImplementation.getActivityAndContext(activity = activity, context = context)
-        googleSensorDataImplementation.listAvailableDataSources()
         googleSensorDataImplementation.addRawDataListener()
     }
 

@@ -17,6 +17,8 @@ import com.example.movelsys.presentation_layer.authentication.LoginScreenFragmen
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
 import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun SetupNavGraph(
@@ -24,7 +26,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Welcome.route
+        startDestination = checkIfUserIsLoggedIn()
     ) {
         composable(
             route = Screen.Welcome.route
@@ -92,3 +94,10 @@ fun SetupNavGraph(
     }
 }
 
+fun checkIfUserIsLoggedIn(): String{
+    val user = Firebase.auth.currentUser
+    if(user != null){
+        return Screen.Activity.route
+    }
+    return Screen.Welcome.route
+}

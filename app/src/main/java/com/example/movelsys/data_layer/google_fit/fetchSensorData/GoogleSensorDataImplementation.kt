@@ -10,10 +10,8 @@ import androidx.compose.runtime.setValue
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
-import com.google.android.gms.fitness.data.DataSource
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.data.Field
-import com.google.android.gms.fitness.request.DataSourcesRequest
 import com.google.android.gms.fitness.request.OnDataPointListener
 import com.google.android.gms.fitness.request.SensorRequest
 import java.util.concurrent.TimeUnit
@@ -23,38 +21,11 @@ class GoogleSensorDataImplementation : GoogleSensorData {
     private lateinit var context: Context
     private val fitnessOptions =
         FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
-    private var addStepCount by mutableStateOf(0)
     private var currentStepCount by mutableStateOf(0)
 
     override fun getActivityAndContext(activity: Activity, context: Context) {
         this.activity = activity
         this.context = context
-    }
-
-    override fun listAvailableDataSources() {
-        Fitness.getSensorsClient(
-            activity,
-            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
-        )
-            .findDataSources(
-                DataSourcesRequest.Builder()
-                    .setDataTypes(DataType.TYPE_STEP_COUNT_DELTA)
-                    .setDataSourceTypes(DataSource.TYPE_RAW)
-                    .build()
-            )
-            .addOnSuccessListener { dataSources ->
-                dataSources.forEach {
-                    Log.i(TAG, "Data source found: ${it.streamIdentifier}")
-                    Log.i(TAG, "Data Source type: ${it.dataType.name}")
-
-                    if (it.dataType == DataType.TYPE_STEP_COUNT_DELTA) {
-                        Log.i(TAG, "Data source for STEP_COUNT_DELTA found!")
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.e(TAG, "Find data sources request failed", e)
-            }
     }
 
     override fun addRawDataListener() {

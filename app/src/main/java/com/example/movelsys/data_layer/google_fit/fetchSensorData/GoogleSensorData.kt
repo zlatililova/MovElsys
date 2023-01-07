@@ -5,7 +5,6 @@ import android.content.Context
 
 interface GoogleSensorData {
     fun getActivityAndContext(activity: Activity, context: Context)
-    fun listAvailableDataSources()
     fun addRawDataListener()
     fun getDailySteps()
     fun getCurrentSteps(): Int

@@ -2,7 +2,6 @@ package com.example.movelsys.domain_layer.use_cases
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorData
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchData
@@ -13,7 +12,7 @@ class GoogleFetchUseCase(
     private val googleSensorData: GoogleSensorData
 ) {
     fun fetchPastMonthSteps(responses: Responses) {
-        googleFetchData.fetchPastWeekStepCount(responses)
+        googleFetchData.fetchPastMonthStepCount(responses)
     }
 
     fun subscribeToStepsListener() {
@@ -26,7 +25,7 @@ class GoogleFetchUseCase(
     }
 
     fun getDataPoints() = googleFetchData.getDataPointList()
-    fun isUserSubscribed() = googleFetchData.isUserSubscribedToStepsListener()
+    fun isUserSubscribed() = googleFetchData.isUserSubscribedToStepsListener
     fun fetchCurrentSteps(): Int {
         val timer = Timer()
         timer.scheduleAtFixedRate(

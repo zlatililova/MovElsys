@@ -223,7 +223,7 @@ private fun observeViewModel(
                             "Success",
                             Toast.LENGTH_LONG
                         ).show()
-                        navController.navigate(Screen.Main.route)
+                        navController.navigate(Screen.Activity.route)
                     }
                     is RegisterUIState.Error -> {
                         navController.navigate(Screen.Register.route)

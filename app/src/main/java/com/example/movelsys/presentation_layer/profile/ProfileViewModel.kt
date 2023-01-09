@@ -171,5 +171,9 @@ class ProfileViewModel(
         isChangeMade = false
     }
 
+    fun signOut(){
+        val auth = Firebase.auth
+        auth.signOut()
+    }
 
 }

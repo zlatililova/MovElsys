@@ -51,6 +51,20 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
             item {
                 TopBarFragment(navController)
                 viewModel.updateUI()
+
+                OutlinedButton(
+                    onClick = {
+                        viewModel.signOut()
+                        navController.navigate(Screen.Welcome.route)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 100.dp)
+                        .padding(bottom = 50.dp)
+                ) {
+                    Text(text = "Sign out", textAlign = TextAlign.Center, color = Color.White)
+                }
+
                 Text(
                     text = "Current name: ${viewModel.name.value} ", fontFamily = FontFamily.Serif,
                     fontSize = 30.sp,

@@ -10,9 +10,8 @@ interface AuthData {
     fun register(
         email: String,
         password: String,
-        firstName: String,
-        lastName: String,
-        confirmationPassword: String,
+        name: String,
+        profilePictureURL: String,
         onRegister: OnRegister
     )
 }

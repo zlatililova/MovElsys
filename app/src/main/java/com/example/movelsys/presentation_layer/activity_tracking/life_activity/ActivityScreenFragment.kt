@@ -32,10 +32,6 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
         context = LocalContext.current,
         activity = LocalContext.current as Activity
     )
-    viewModel.listDataSources(
-        context = LocalContext.current,
-        activity = LocalContext.current as Activity
-    )
     Column {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier

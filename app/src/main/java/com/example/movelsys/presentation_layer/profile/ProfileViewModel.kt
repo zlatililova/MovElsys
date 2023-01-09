@@ -1,6 +1,8 @@
 package com.example.movelsys.presentation_layer.profile
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,13 +13,15 @@ import com.example.movelsys.data_layer.authentication.Errors
 import com.example.movelsys.data_layer.profileManagement.OnUpdate
 import com.example.movelsys.domain_layer.use_cases.ProfileUpdateUseCase
 import com.example.movelsys.domain_layer.use_cases.ValidateCredentials
-import com.example.movelsys.presentation_layer.states.LoginUIState
 import com.example.movelsys.presentation_layer.states.ProfileUIState
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 
 class ProfileViewModel(
     val profileUpdateUseCase: ProfileUpdateUseCase,
@@ -27,6 +31,7 @@ class ProfileViewModel(
     var name = mutableStateOf(user!!.displayName)
     var newName: String by mutableStateOf("")
     var profilePicture = mutableStateOf(user!!.photoUrl)
+    var newProfilePicture:String by mutableStateOf("")
     var newEmail: String by mutableStateOf("")
     var email = mutableStateOf(user!!.email)
     var password: String by mutableStateOf("")
@@ -93,11 +98,26 @@ class ProfileViewModel(
         }
     }
 
+    var profilePictureError: String? by mutableStateOf("Enter a valid picture url")
+    var profilePictureErrorCheck: Boolean = false
+    fun errorCheckProfilePicture() {
+        val error: Errors? = validateCredentials.nameErrorCheck(newProfilePicture)
+
+        if (error != null) {
+            profilePictureError = error.Message
+            profilePictureErrorCheck = true
+        } else {
+            profilePictureError = null
+            profilePictureErrorCheck = false
+        }
+    }
+
     fun enableButton(code: String): Boolean {
         when(code){
             "email" -> return emailError == null
             "name" -> return nameError == null
             "password" -> return passwordError == null && confirmationPasswordError == null
+            "profile_picture" -> return profilePictureError == null
         }
         return false
     }
@@ -161,19 +181,47 @@ class ProfileViewModel(
             })
     }
 
+    fun updateProfilePicture() {
+        profileUpdateUseCase.updateUserProfilePic(
+            url = newProfilePicture,
+            onUpdate = object : OnUpdate {
+                override fun onSuccess() {
+                    viewModelScope.launch {
+                        _uiStateFlow.emit(ProfileUIState.Success)
+                    }
+                }
+
+                override fun onError(string: String?) {
+                    viewModelScope.launch {
+                        _uiStateFlow.emit(ProfileUIState.Error(string))
+                    }
+                }
+            })
+        isChangeMade = true
+    }
+
     fun updateUI() {
         val user = Firebase.auth.currentUser
-        Log.i(TAG, user!!.uid)
+        Log.i("URI", user!!.photoUrl.toString())
         name.value = user.displayName
         email.value = user.email
         profilePicture.value = user.photoUrl
-        Log.i("Credentials: ", name.value!!)
+        Log.i("Credentials", name.value!!)
         isChangeMade = false
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private lateinit var context: Context
+    fun getContext(context: Context){
+        this.context = context
     }
 
     fun signOut(){
         val auth = Firebase.auth
         auth.signOut()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+        googleSignInClient.signOut()
     }
 
 }

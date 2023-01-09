@@ -29,7 +29,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Welcome.route //checkIfUserIsLoggedIn()
+        startDestination = checkIfUserIsLoggedIn()//Screen.Welcome.route //
     ) {
         composable(
             route = Screen.Welcome.route

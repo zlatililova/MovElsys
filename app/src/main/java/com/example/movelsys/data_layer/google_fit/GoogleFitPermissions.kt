@@ -28,7 +28,6 @@ class GoogleFitPermissions(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun detectIfPermissionIsGiven() {
-
         if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
                 activity,

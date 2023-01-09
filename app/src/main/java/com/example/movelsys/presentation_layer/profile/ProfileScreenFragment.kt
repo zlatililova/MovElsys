@@ -2,18 +2,23 @@ package com.example.movelsys.presentation_layer.profile
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.movelsys.Screen
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
@@ -42,15 +48,37 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewModel) {
     Column {
+        TopBarFragment(navController)
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
+                .padding(20.dp)
 
         ) {
             item {
-                TopBarFragment(navController)
                 viewModel.updateUI()
+                viewModel.getContext(LocalContext.current)
+                Text(
+                    text = "Your profile", fontFamily = FontFamily.Serif,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(20.dp)
+                )
+
+                Image(
+                    painter = rememberAsyncImagePainter(viewModel.profilePicture.value),
+                    contentDescription = "Profile picture",
+                    modifier = Modifier.size(150.dp).clip(CircleShape)                )
+
+                Text(
+                    text = "${viewModel.name.value}", fontFamily = FontFamily.Serif,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(30.dp)
+                )
 
                 OutlinedButton(
                     onClick = {
@@ -65,12 +93,22 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     Text(text = "Sign out", textAlign = TextAlign.Center, color = Color.White)
                 }
 
+                Divider(color = MaterialTheme.colors.primary, thickness = 2.dp, modifier = Modifier.padding(bottom = 20.dp))
+
                 Text(
-                    text = "Current name: ${viewModel.name.value} ", fontFamily = FontFamily.Serif,
+                    text = "Update your profile", fontFamily = FontFamily.Serif,
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(20.dp, bottom = 20.dp)
+                )
+
+                Text(
+                    text = "Current name: ${viewModel.name.value} ", fontFamily = FontFamily.Serif,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
                     value = viewModel.newName,
@@ -87,11 +125,11 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     isError = viewModel.nameErrorCheck,
                     leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Email") },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 100.dp)
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 20.dp),
                     placeholder = { Text("Update your name") },
+                    singleLine = true
                     )
-
                 OutlinedButton(
                     onClick = {
                         viewModel.updateName()
@@ -110,10 +148,10 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
 
                 Text(
                     text = "Current email: ${viewModel.email.value} ", fontFamily = FontFamily.Serif,
-                    fontSize = 30.sp,
+                    fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
                     value = viewModel.newEmail,
@@ -131,10 +169,10 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
 
                     leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 100.dp)
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 20.dp),
                     placeholder = { Text("Update your email") },
-
+                    singleLine = true
                     )
                 OutlinedButton(
                     onClick = {
@@ -153,11 +191,55 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 }
 
                 Text(
-                    text = "Change your password ", fontFamily = FontFamily.Serif,
-                    fontSize = 30.sp,
+                    text = "Change profile picture", fontFamily = FontFamily.Serif,
+                    fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(20.dp, bottom = 10.dp)
+                )
+                OutlinedTextField(
+                    value = viewModel.newProfilePicture,
+                    onValueChange = {
+                        viewModel.newProfilePicture = it
+                        viewModel.errorCheckProfilePicture()
+                    },
+                    label = { viewModel.profilePictureError?.let { Text(text = it) } },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = MaterialTheme.colors.secondary,
+                        unfocusedBorderColor = MaterialTheme.colors.primary,
+                        errorBorderColor = Color.Red
+                    ),
+                    isError = viewModel.profilePictureErrorCheck,
+
+                    leadingIcon = { Icon(Icons.Filled.PhotoCamera, contentDescription = "Profile Picture") },
+                    modifier = Modifier
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 20.dp),
+                    placeholder = { Text("Update your profile picture") },
+                    singleLine = true
+                )
+                OutlinedButton(
+                    onClick = {
+                        viewModel.updateProfilePicture()
+                        if(viewModel.isChangeMade){
+                            viewModel.updateUI()
+                        }
+                    },
+                    enabled = viewModel.enableButton("profile_picture"),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 100.dp)
+                        .padding(bottom = 50.dp)
+                ) {
+                    Text(text = "Update profile Pic", textAlign = TextAlign.Center, color = Color.White)
+                }
+
+                Text(
+                    text = "Change your password", fontFamily = FontFamily.Serif,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
                     value = viewModel.password,
@@ -176,10 +258,11 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         Icon(Icons.Default.Info, contentDescription = "Password")
                     },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 100.dp)
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 20.dp),
                     visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    singleLine = true
                 )
                 OutlinedTextField(
                     value = viewModel.confirmationPass,
@@ -198,8 +281,8 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         Icon(Icons.Default.Info, contentDescription = "Password")
                     },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 100.dp)
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 18.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
@@ -210,8 +293,8 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     enabled = viewModel.enableButton("password"),
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
                     modifier = Modifier
-                        .size(width = 150.dp, height = 100.dp)
-                        .padding(bottom = 50.dp)
+                        .size(width = 180.dp, height = 80.dp)
+                        .padding(bottom = 30.dp)
                 ) {
                     Text(text = "Update password", textAlign = TextAlign.Center, color = Color.White)
                 }

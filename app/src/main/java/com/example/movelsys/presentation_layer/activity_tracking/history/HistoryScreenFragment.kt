@@ -38,7 +38,7 @@ fun HistoryScreenFragment(
     viewModel.getActivityAndContext(context, activity)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TopBarFragment()
+        TopBarFragment(navController)
         Text(
             text = "History",
             fontFamily = FontFamily.Serif,

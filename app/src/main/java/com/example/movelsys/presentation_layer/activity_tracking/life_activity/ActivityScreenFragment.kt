@@ -44,7 +44,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
 
         ) {
             item {
-                TopBarFragment()
+                TopBarFragment(navController)
                 viewModel.updateStepCount()
                 Text(
                     text = "Today's steps: ", fontFamily = FontFamily.Serif,

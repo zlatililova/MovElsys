@@ -16,7 +16,7 @@ fun RankingScreenFragment(navController: NavController){
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            TopBarFragment()
+            TopBarFragment(navController)
             Text(text = "Ranking!")
         }
         Row {

@@ -17,6 +17,7 @@ import com.example.movelsys.presentation_layer.authentication.LoginScreenFragmen
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
 import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
+import com.example.movelsys.presentation_layer.profile.ProfileScreenFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -26,7 +27,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = checkIfUserIsLoggedIn()
+        startDestination = Screen.Welcome.route //checkIfUserIsLoggedIn()
     ) {
         composable(
             route = Screen.Welcome.route
@@ -90,6 +91,11 @@ fun SetupNavGraph(
             route = Screen.Ranking.route
         ) {
             RankingScreenFragment(navController)
+        }
+        composable(
+            route = Screen.Profile.route
+        ) {
+            ProfileScreenFragment(navController)
         }
     }
 }

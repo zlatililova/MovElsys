@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
+import com.example.movelsys.data_layer.profileManagement.ProfileUpdateImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment
@@ -18,6 +19,7 @@ import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
 import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
 import com.example.movelsys.presentation_layer.profile.ProfileScreenFragment
+import com.example.movelsys.presentation_layer.profile.ProfileViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -95,7 +97,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.Profile.route
         ) {
-            ProfileScreenFragment(navController)
+            ProfileScreenFragment(navController, viewModel = ProfileViewModel(profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()), validateCredentials = ValidateCredentials()))
         }
     }
 }

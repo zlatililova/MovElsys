@@ -11,7 +11,7 @@ class ProfileUpdateImplementation() : ProfileUpdate{
 
     private val user = Firebase.auth.currentUser
 
-    override fun updateUserName(name: String){
+    override fun updateUserName(name: String, onUpdate: OnUpdate){
         val profileUpdates = userProfileChangeRequest {
             displayName = name
         }
@@ -19,11 +19,15 @@ class ProfileUpdateImplementation() : ProfileUpdate{
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User profile updated.")
+                    onUpdate.onSuccess()
+                }
+                else{
+                    onUpdate.onError(task.exception.toString())
                 }
             }
     }
 
-    override fun updateUserProfilePicture(url: String){
+    override fun updateUserProfilePicture(url: String, onUpdate: OnUpdate){
         val profileUpdates = userProfileChangeRequest {
             photoUri = Uri.parse(url)
         }
@@ -31,24 +35,36 @@ class ProfileUpdateImplementation() : ProfileUpdate{
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User profile updated.")
+                    onUpdate.onSuccess()
+                }
+                else{
+                    onUpdate.onError(task.exception.toString())
                 }
             }
     }
 
-    override fun updateUserEmail(email: String){
+    override fun updateUserEmail(email: String, onUpdate: OnUpdate){
         user!!.updateEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User email address updated.")
+                    onUpdate.onSuccess()
+                }
+                else{
+                    onUpdate.onError(task.exception.toString())
                 }
             }
     }
 
-    override fun updateUserPassword(newPassword: String){
+    override fun updateUserPassword(newPassword: String, onUpdate: OnUpdate){
         user!!.updatePassword(newPassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User password updated.")
+                    onUpdate.onSuccess()
+                }
+                else{
+                    onUpdate.onError(task.exception.toString())
                 }
             }
     }

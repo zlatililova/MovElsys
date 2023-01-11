@@ -14,6 +14,7 @@ import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenF
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
 import com.example.movelsys.presentation_layer.activity_tracking.RankingScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityViewModel
+import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingViewModel
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
@@ -92,7 +93,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.Ranking.route
         ) {
-            RankingScreenFragment(navController)
+            RankingScreenFragment(navController, viewModel = RankingViewModel())
         }
         composable(
             route = Screen.Profile.route

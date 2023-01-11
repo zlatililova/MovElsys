@@ -104,8 +104,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
 
     override fun getDataPointList(): String {
         val gson = Gson()
-        val json = gson.toJson(dataPointMap)
-        Log.i(TAG, json.toString())
-        return json
+        return gson.toJson(dataPointMap)
     }
 }

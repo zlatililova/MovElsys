@@ -11,11 +11,11 @@ class ProfileUpdateUseCase(
     fun updateUserProfilePic(url: String, onUpdate: OnUpdate) = profileUpdate.updateUserProfilePicture(url, onUpdate)
     fun updateUserEmail(email: String, onUpdate: OnUpdate) = profileUpdate.updateUserEmail(email, onUpdate)
     fun updateUserPassword(password: String, confirmationPassword: String, onUpdate: OnUpdate): Errors?{
-        if(password == confirmationPassword){
+        return if(password == confirmationPassword){
             profileUpdate.updateUserPassword(password, onUpdate)
-            return null
+            null
         }else{
-            return Errors.PASSWORDS_NOT_MATCHING
+            Errors.PASSWORDS_NOT_MATCHING
         }
     }
 

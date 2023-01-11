@@ -66,7 +66,6 @@ class GoogleSensorDataImplementation : GoogleSensorData {
                 val totalSteps =
                     result.dataPoints.firstOrNull()?.getValue(Field.FIELD_STEPS)?.asInt() ?: 0
                 currentStepCount = totalSteps
-                Log.i("Daily Steps", totalSteps.toString())
             }
             .addOnFailureListener { e ->
                 Log.i(TAG, "There was a problem getting steps.", e)

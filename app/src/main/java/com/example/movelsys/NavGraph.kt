@@ -8,11 +8,12 @@ import com.example.movelsys.data_layer.authentication.AuthDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.data_layer.profileManagement.ProfileUpdateImplementation
+import com.example.movelsys.data_layer.ranking.RankingFetchImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
-import com.example.movelsys.presentation_layer.activity_tracking.RankingScreenFragment
+import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityViewModel
 import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingViewModel
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
@@ -30,7 +31,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = checkIfUserIsLoggedIn()//Screen.Welcome.route //
+        startDestination = checkIfUserIsLoggedIn()
     ) {
         composable(
             route = Screen.Welcome.route
@@ -93,7 +94,9 @@ fun SetupNavGraph(
         composable(
             route = Screen.Ranking.route
         ) {
-            RankingScreenFragment(navController, viewModel = RankingViewModel())
+            RankingScreenFragment(navController, viewModel = RankingViewModel(RankingUseCase(
+                RankingFetchImplementation()
+            )))
         }
         composable(
             route = Screen.Profile.route

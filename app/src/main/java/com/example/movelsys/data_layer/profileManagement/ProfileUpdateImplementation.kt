@@ -7,7 +7,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
-class ProfileUpdateImplementation() : ProfileUpdate{
+class ProfileUpdateImplementation : ProfileUpdate{
 
     private val user = Firebase.auth.currentUser
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,11 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.movelsys.Screen
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
-import com.example.movelsys.presentation_layer.authentication.LoginViewModel
-import com.example.movelsys.presentation_layer.states.LoginUIState
 import com.example.movelsys.presentation_layer.states.ProfileUIState
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -1,9 +1,7 @@
 package com.example.movelsys.presentation_layer.profile
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -201,12 +199,10 @@ class ProfileViewModel(
     }
 
     fun updateUI() {
-        val user = Firebase.auth.currentUser
-        Log.i("URI", user!!.photoUrl.toString())
+        val user = Firebase.auth.currentUser!!
         name.value = user.displayName
         email.value = user.email
         profilePicture.value = user.photoUrl
-        Log.i("Credentials", name.value!!)
         isChangeMade = false
     }
 

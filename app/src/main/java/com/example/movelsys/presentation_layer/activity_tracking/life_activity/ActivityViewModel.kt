@@ -7,12 +7,10 @@ import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
-import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import kotlinx.coroutines.launch
 

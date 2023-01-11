@@ -1,32 +1,50 @@
 package com.example.movelsys.presentation_layer.activity_tracking.ranking
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.movelsys.data_layer.ranking.RankingFetchImplementation
+import com.example.movelsys.domain_layer.use_cases.RankingUseCase
 
-class RankingViewModel {
-    var userNames: MutableList<String>  = mutableListOf()
+class RankingViewModel(
+    private val rankingUseCase: RankingUseCase
+) {
+    var userNames: MutableList<String> = mutableListOf()
     var userProfilePictures: MutableList<String> = mutableListOf()
     var userWeeklySteps: MutableList<Int> = mutableListOf()
-    var teamRanking: Int by mutableStateOf(0)
+    var displayedTeam: Int by mutableStateOf(rankingUseCase.fetchCurrentTeamRanking().toInt())
+    var currentTeamRanking: Int by mutableStateOf(rankingUseCase.fetchCurrentTeamRanking().toInt())
+    var sliderPosition: Float by mutableStateOf(currentTeamRanking.toFloat() - 1)
 
-    private val rankingFetchImplementation = RankingFetchImplementation()
-    fun getUsersList(){
-        rankingFetchImplementation.getCurrentTeamRanking(4)
-        val usersList = rankingFetchImplementation.fetchFromAPI()
-        usersList.forEach{ person ->
-            Log.e("Person", person.toString())
+    private fun getCurrentUserTeam() {
+        val usersList = rankingUseCase.fetchCurrentUserTeam()
+        usersList.forEach { person ->
             userNames.add(person.name)
             userProfilePictures.add(person.profilePicture)
             userWeeklySteps.add(person.totalWeeklySteps)
         }
     }
 
-    fun getTeamPosition():String{
-        teamRanking = rankingFetchImplementation.currentTeamRanking.toInt()
-        return rankingFetchImplementation.currentTeamRanking
+    private fun getOtherTeam(teamRank: Int) {
+        val usersList = rankingUseCase.fetchDesiredTeam(teamRank)
+        usersList.forEach { person ->
+            userNames.add(person.name)
+            userProfilePictures.add(person.profilePicture)
+            userWeeklySteps.add(person.totalWeeklySteps)
+        }
+    }
+
+    fun fetchTeamBasedOnSlider() {
+        userNames.clear()
+        userProfilePictures.clear()
+        userWeeklySteps.clear()
+        if (displayedTeam == rankingUseCase.fetchCurrentTeamRanking().toInt()) {
+            getCurrentUserTeam()
+        } else {
+            getOtherTeam(displayedTeam)
+        }
+    }
+
+    fun getNumberOfTeamsInLeague(): Int {
+        return rankingUseCase.fetchTeamCountInLeague()
     }
 }

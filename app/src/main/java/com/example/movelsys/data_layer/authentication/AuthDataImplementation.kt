@@ -40,10 +40,10 @@ class AuthDataImplementation : AuthData {
                     val user = Firebase.auth.currentUser
                     val profileUpdates = userProfileChangeRequest {
                         displayName = name
-                        if(profilePictureURL == ""){
-                            photoUri = Uri.parse("https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg")
+                        photoUri = if(profilePictureURL == ""){
+                            Uri.parse("https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg")
                         }else{
-                            photoUri = Uri.parse(profilePictureURL)
+                            Uri.parse(profilePictureURL)
                         }
                     }
                     user!!.updateProfile(profileUpdates)

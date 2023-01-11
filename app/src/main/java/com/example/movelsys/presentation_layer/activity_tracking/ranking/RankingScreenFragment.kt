@@ -25,14 +25,16 @@ import kotlin.math.roundToInt
 @Composable
 fun RankingScreenFragment(navController: NavController, viewModel: RankingViewModel) {
     viewModel.fetchTeamBasedOnSlider()
-    LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column{
+        TopBarFragment(navController)
+
+        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
         item {
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TopBarFragment(navController)
                 Text(
                     text = "Ranking",
                     fontFamily = FontFamily.Serif,
@@ -70,11 +72,14 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
                 }
                 TableScreen(viewModel = viewModel)
             }
-            Row {
-                BottomBarFragment(navController = navController)
-            }
+
         }
     }
+        Row {
+            BottomBarFragment(navController = navController)
+        }
+    }
+
 }
 
 @Composable

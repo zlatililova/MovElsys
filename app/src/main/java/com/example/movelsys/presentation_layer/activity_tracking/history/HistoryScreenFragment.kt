@@ -4,17 +4,18 @@ import android.app.Activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,14 +58,17 @@ fun HistoryScreenFragment(
         ) {
             Text(text = "Refresh", textAlign = TextAlign.Center, color = Color.White)
         }
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
         ) {
-            if (viewModel.timesDataWasFetched > 0) {
-                HistoryGrid(viewModel.googleFitDates, viewModel.googleFitSteps)
+            item {
+                if (viewModel.timesDataWasFetched > 0) {
+                    HistoryGrid(viewModel)
+                }
             }
+
         }
         Row {
             BottomBarFragment(navController = navController)
@@ -72,81 +76,111 @@ fun HistoryScreenFragment(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryGrid(dates: List<String>, steps: List<Int>) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(1),
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        horizontalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Date", fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                }
-                Spacer(modifier = Modifier.padding(25.dp))
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Steps", fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                }
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = "Goal", fontFamily = FontFamily.Serif,
-                        fontSize = 23.sp,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colors.primary
-                    )
-                }
+fun RowScope.HistoryTableCell(
+    text: String,
+    weight: Float,
+    type: String,
+    steps: Int
+) {
+    if (type == "icon") {
+        Box(
+            modifier = Modifier
+                .weight(weight)
+                .padding(start = 30.dp)
+        ) {
+            if (steps >= 10000) {
+                Icon(
+                    imageVector = Icons.Filled.DirectionsRun,
+                    contentDescription = "goal met",
+                    modifier = Modifier.size(30.dp)
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Filled.EmojiPeople,
+                    contentDescription = "goal not met",
+                    modifier = Modifier.size(30.dp)
+                )
             }
+
         }
-        items(dates.size) { index ->
-            HistoryRow(dates[index], steps[index])
-        }
+    }
+    if (type == "heading") {
+        Text(
+            text = text,
+            fontFamily = FontFamily.Serif,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .weight(weight)
+        )
+    }
+    if (type == "text") {
+        Text(
+            text = text,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier
+                .weight(weight)
+                .padding(8.dp)
+        )
     }
 }
 
 @Composable
-fun HistoryRow(date: String, steps: Int) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+fun HistoryGrid(viewModel: HistoryViewModel) {
+    val dateColumnWeight = .4f
+    val stepsColumnWeight = .4f
+    val goalColumnWeight = .25f
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        Text(
-            text = date,
-            fontFamily = FontFamily.Serif,
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
-        Text(
-            text = steps.toString(),
-            fontFamily = FontFamily.Serif,
-            fontSize = 20.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
-        if (steps > 5500) {
-            Icon(Icons.Filled.Check, contentDescription = "Done")
-        } else {
-            Icon(Icons.Filled.Close, contentDescription = "Not done")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            HistoryTableCell(text = "Date", weight = dateColumnWeight, "heading", 0)
+            HistoryTableCell(text = "Steps", weight = stepsColumnWeight, "heading", 0)
+            HistoryTableCell(text = "Goal", weight = goalColumnWeight, "heading", 0)
+        }
+        viewModel.googleFitDates.forEachIndexed { index, date ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HistoryTableCell(
+                    text = date,
+                    weight = dateColumnWeight,
+                    "text",
+                    0
+                )
+                HistoryTableCell(
+                    text = viewModel.googleFitSteps[index].toString(),
+                    weight = stepsColumnWeight,
+                    "heading",
+                    0
+                )
+                HistoryTableCell(
+                    text = "Goal met",
+                    weight = goalColumnWeight,
+                    "icon",
+                    viewModel.googleFitSteps[index]
+                )
+            }
+            Divider(
+                color = MaterialTheme.colors.primary,
+                thickness = 2.dp,
+                modifier = Modifier.padding(bottom = 20.dp)
+            )
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreviewHistory() {

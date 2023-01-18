@@ -46,8 +46,8 @@ class AuthDataImplementation : AuthData {
                             Uri.parse(profilePictureURL)
                         }
                     }
-                    user!!.updateProfile(profileUpdates)
-                        .addOnCompleteListener { task1 ->
+                    user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener { task1 ->
                             if (task1.isSuccessful) {
                                 Log.d(TAG, "User profile created.")
                             }

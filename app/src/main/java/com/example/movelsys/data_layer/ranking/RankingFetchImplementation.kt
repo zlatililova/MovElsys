@@ -13,14 +13,15 @@ class RankingFetchImplementation : RankingFetch {
     override var currentTeamRanking: String = ""
 
     init {
-        currentTeamLeague = dummyAPIToFetchData.fetchCurrentUserLeague(user!!.uid)
-        currentTeamRanking = dummyAPIToFetchData.fetchCurrentUserTeamRanking(user.uid).toString()
+        currentTeamLeague = user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
+        currentTeamRanking =
+            user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }.toString()
     }
 
     override fun fetchCurrentUserTeam(): List<Person> {
         val gson = Gson()
         usersList = gson.fromJson(
-            dummyAPIToFetchData.fetchCurrentUserTeam(user!!.uid),
+            user?.let { dummyAPIToFetchData.fetchCurrentUserTeam(it.uid) },
             object : TypeToken<List<Person>>() {}.type
         )
         return usersList

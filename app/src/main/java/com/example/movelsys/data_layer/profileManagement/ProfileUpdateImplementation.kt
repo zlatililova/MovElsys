@@ -15,8 +15,8 @@ class ProfileUpdateImplementation : ProfileUpdate{
         val profileUpdates = userProfileChangeRequest {
             displayName = name
         }
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
+        user?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User profile updated.")
                     onUpdate.onSuccess()
@@ -31,21 +31,20 @@ class ProfileUpdateImplementation : ProfileUpdate{
         val profileUpdates = userProfileChangeRequest {
             photoUri = Uri.parse(url)
         }
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
+        user?.updateProfile(profileUpdates)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User profile updated.")
                     onUpdate.onSuccess()
-                }
-                else{
+                } else{
                     onUpdate.onError(task.exception.toString())
                 }
             }
     }
 
     override fun updateUserEmail(email: String, onUpdate: OnUpdate){
-        user!!.updateEmail(email)
-            .addOnCompleteListener { task ->
+        user?.updateEmail(email)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User email address updated.")
                     onUpdate.onSuccess()
@@ -57,8 +56,8 @@ class ProfileUpdateImplementation : ProfileUpdate{
     }
 
     override fun updateUserPassword(newPassword: String, onUpdate: OnUpdate){
-        user!!.updatePassword(newPassword)
-            .addOnCompleteListener { task ->
+        user?.updatePassword(newPassword)
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User password updated.")
                     onUpdate.onSuccess()

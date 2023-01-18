@@ -26,12 +26,12 @@ class ProfileViewModel(
     private val validateCredentials: ValidateCredentials
 ): ViewModel() {
     private val user = Firebase.auth.currentUser
-    var name = mutableStateOf(user!!.displayName)
+    var name = mutableStateOf(user?.displayName)
     var newName: String by mutableStateOf("")
-    var profilePicture = mutableStateOf(user!!.photoUrl)
+    var profilePicture = mutableStateOf(user?.photoUrl)
     var newProfilePicture:String by mutableStateOf("")
     var newEmail: String by mutableStateOf("")
-    var email = mutableStateOf(user!!.email)
+    var email = mutableStateOf(user?.email)
     var password: String by mutableStateOf("")
     var confirmationPass: String by mutableStateOf("")
 
@@ -199,10 +199,12 @@ class ProfileViewModel(
     }
 
     fun updateUI() {
-        val user = Firebase.auth.currentUser!!
-        name.value = user.displayName
-        email.value = user.email
-        profilePicture.value = user.photoUrl
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            name.value = user.displayName
+            email.value = user.email
+            profilePicture.value = user.photoUrl
+        }
         isChangeMade = false
     }
 

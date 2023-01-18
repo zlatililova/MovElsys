@@ -9,8 +9,8 @@ class DummyAPIToFetchData {
 
     fun fetchCurrentUserTeam(uid: String): String {
         //fetch json with the people of current user's group
-        val user = Firebase.auth.currentUser!!
-        val photo = user.photoUrl.toString()
+        val user = Firebase.auth.currentUser
+        val photo = user?.photoUrl.toString()
 
         val person1 = Person(
             name = "Ivan Ivanov",
@@ -28,7 +28,7 @@ class DummyAPIToFetchData {
             totalWeeklySteps = 30659
         )
         val person4 =
-            Person(name = user.displayName!!, profilePicture = photo, totalWeeklySteps = 28854)
+            user?.displayName?.let { Person(name = it, profilePicture = photo, totalWeeklySteps = 28854) }
         val person5 = Person(
             name = "Ivanina Georgieva",
             profilePicture = "https://w7.pngwing.com/pngs/396/737/png-transparent-infj-personality-type-myers-briggs-type-indicator-personality-test-infj-fictional-character-individual-advocate.png",

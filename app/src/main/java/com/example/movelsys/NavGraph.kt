@@ -7,16 +7,21 @@ import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
+import com.example.movelsys.data_layer.profileManagement.ProfileUpdateImplementation
+import com.example.movelsys.data_layer.ranking.RankingFetchImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
-import com.example.movelsys.presentation_layer.activity_tracking.RankingScreenFragment
+import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityViewModel
+import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingViewModel
 import com.example.movelsys.presentation_layer.authentication.LoginScreenFragment
 import com.example.movelsys.presentation_layer.authentication.LoginViewModel
 import com.example.movelsys.presentation_layer.authentication.RegisterScreenFragment
 import com.example.movelsys.presentation_layer.authentication.RegisterViewModel
+import com.example.movelsys.presentation_layer.profile.ProfileScreenFragment
+import com.example.movelsys.presentation_layer.profile.ProfileViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -89,7 +94,14 @@ fun SetupNavGraph(
         composable(
             route = Screen.Ranking.route
         ) {
-            RankingScreenFragment(navController)
+            RankingScreenFragment(navController, viewModel = RankingViewModel(RankingUseCase(
+                RankingFetchImplementation()
+            )))
+        }
+        composable(
+            route = Screen.Profile.route
+        ) {
+            ProfileScreenFragment(navController, viewModel = ProfileViewModel(profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()), validateCredentials = ValidateCredentials()))
         }
     }
 }

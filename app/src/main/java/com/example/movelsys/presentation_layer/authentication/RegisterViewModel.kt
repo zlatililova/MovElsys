@@ -19,8 +19,8 @@ class RegisterViewModel(
 ) : ViewModel() {
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
-    var firstName: String by mutableStateOf("")
-    var lastName: String by mutableStateOf("")
+    var name: String by mutableStateOf("")
+    var profilePicture: String by mutableStateOf("")
     var confirmationPass: String by mutableStateOf("")
     private val _uiStateFlow = MutableStateFlow<RegisterUIState>(RegisterUIState.Initial)
     val uiStateFlow: StateFlow<RegisterUIState> = _uiStateFlow
@@ -38,29 +38,29 @@ class RegisterViewModel(
         }
     }
 
-    var firstNameError: String? by mutableStateOf("Enter your first name")
-    var isFirstNameWrong: Boolean = false
+    var nameError: String? by mutableStateOf("Enter your first name")
+    var isNameWrong: Boolean = false
     fun errorCheckFirstName() {
-        val error: Errors? = validateCredentials.nameErrorCheck(firstName)
+        val error: Errors? = validateCredentials.nameErrorCheck(name)
         if (error != null) {
-            firstNameError = error.Message
-            isFirstNameWrong = true
+            nameError = error.Message
+            isNameWrong = true
         } else {
-            firstNameError = null
-            isFirstNameWrong = false
+            nameError = null
+            isNameWrong = false
         }
     }
 
-    var lastNameError: String? by mutableStateOf("Enter your last name")
-    var isLastNameWrong: Boolean = false
+    var profilePictureError: String? by mutableStateOf("Enter profile picture URL")
+    var isProfilePictureURLWrong: Boolean = false
     fun errorCheckLastName() {
-        val error: Errors? = validateCredentials.nameErrorCheck(lastName)
+        val error: Errors? = validateCredentials.nameErrorCheck(profilePicture)
         if (error != null) {
-            lastNameError = error.Message
-            isLastNameWrong = true
+            profilePictureError = error.Message
+            isProfilePictureURLWrong = true
         } else {
-            lastNameError = null
-            isLastNameWrong = false
+            profilePictureError = null
+            isProfilePictureURLWrong = false
         }
     }
 
@@ -95,7 +95,7 @@ class RegisterViewModel(
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =
-            emailError == null && firstNameError == null && lastNameError == null && passwordError == null && confirmationPasswordError == null
+            emailError == null && nameError == null && passwordError == null && confirmationPasswordError == null
     }
 
     fun register() {
@@ -105,9 +105,8 @@ class RegisterViewModel(
         registerUseCase.startBusinessLogic(
             email = email,
             password = password,
-            firstName = firstName,
-            lastName = lastName,
-            confirmationPassword = confirmationPass,
+            name = name,
+            profilePictureURL = profilePicture,
             onRegister = object : OnRegister {
                 override fun onSuccess() {
                     viewModelScope.launch {

@@ -17,6 +17,7 @@ class GoogleFetchUseCase(
 
     fun subscribeToStepsListener() {
         googleFetchData.subscribeToStepsListener()
+        googleSensorData.addRawDataListener()
     }
 
     fun getNecessaryParameters(activity: Activity, context: Context) {

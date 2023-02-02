@@ -58,7 +58,7 @@ fun LoadingAnimation() {
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
-        Row() {
+        Row {
             circlesValue.forEachIndexed { index, value ->
                 Box(
                     modifier = Modifier

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Photo
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,19 +60,19 @@ fun RegisterScreenFragment(
                     .size(300.dp)
             )
             OutlinedTextField(
-                value = viewModel.firstName,
+                value = viewModel.name,
                 onValueChange = {
-                    viewModel.firstName = it
+                    viewModel.name = it
                     viewModel.errorCheckFirstName()
                     viewModel.enableButton()
                 },
-                label = { viewModel.firstNameError?.let { Text(it) } },
+                label = { viewModel.nameError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isFirstNameWrong,
+                isError = viewModel.isNameWrong,
                 leadingIcon = {
                     Icon(Icons.Default.Person, contentDescription = "Person")
                 },
@@ -81,29 +82,7 @@ fun RegisterScreenFragment(
                 placeholder = { Text("Enter your first name") },
 
                 )
-            OutlinedTextField(
-                value = viewModel.lastName,
-                onValueChange = {
-                    viewModel.lastName = it
-                    viewModel.errorCheckLastName()
-                    viewModel.enableButton()
-                },
-                label = { viewModel.lastNameError?.let { Text(it) } },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colors.secondary,
-                    unfocusedBorderColor = MaterialTheme.colors.primary,
-                    errorBorderColor = Color.Red
-                ),
-                isError = viewModel.isLastNameWrong,
-                leadingIcon = {
-                    Icon(Icons.Default.Person, contentDescription = "Person")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp, top = 10.dp),
-                placeholder = { Text("Enter your first name") },
 
-                )
             OutlinedTextField(
                 value = viewModel.email,
                 onValueChange = {
@@ -175,6 +154,29 @@ fun RegisterScreenFragment(
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
+            OutlinedTextField(
+                value = viewModel.profilePicture,
+                onValueChange = {
+                    viewModel.profilePicture = it
+                    viewModel.errorCheckLastName()
+                    viewModel.enableButton()
+                },
+                label = { viewModel.profilePictureError?.let { Text(it) } },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = MaterialTheme.colors.secondary,
+                    unfocusedBorderColor = MaterialTheme.colors.primary,
+                    errorBorderColor = Color.Red
+                ),
+                isError = viewModel.isProfilePictureURLWrong,
+                leadingIcon = {
+                    Icon(Icons.Filled.Photo, contentDescription = "Profile_picture")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 10.dp),
+                placeholder = { Text("Enter profile picture URL") },
+
+                )
             OutlinedButton(
                 onClick = {
                     viewModel.register()

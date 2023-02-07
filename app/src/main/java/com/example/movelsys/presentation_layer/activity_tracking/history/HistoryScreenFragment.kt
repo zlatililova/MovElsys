@@ -97,7 +97,6 @@ fun RowScope.HistoryTableCell(
                 color = MaterialTheme.colors.secondary
             )
         }
-        Log.e("Progress", (steps.toFloat() / 10000.0F).toString())
     }
     if (type == "heading") {
         Text(

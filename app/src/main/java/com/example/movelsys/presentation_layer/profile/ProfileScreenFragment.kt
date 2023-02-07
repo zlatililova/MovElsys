@@ -47,7 +47,6 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(20.dp)
 
         ) {
             item {

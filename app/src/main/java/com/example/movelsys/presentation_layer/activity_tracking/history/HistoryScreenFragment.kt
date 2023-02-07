@@ -1,20 +1,15 @@
 package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +37,6 @@ fun HistoryScreenFragment(
         TopBarFragment(navController)
         Text(
             text = "History",
-            fontFamily = FontFamily.Serif,
             fontSize = 50.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -87,28 +81,19 @@ fun RowScope.HistoryTableCell(
         Box(
             modifier = Modifier
                 .weight(weight)
-                .padding(start = 30.dp)
+                .padding(start = 45.dp)
         ) {
-            if (steps >= 10000) {
-                Icon(
-                    imageVector = Icons.Filled.DirectionsRun,
-                    contentDescription = "goal met",
-                    modifier = Modifier.size(30.dp)
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Filled.EmojiPeople,
-                    contentDescription = "goal not met",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-        }
+          CircularProgressIndicator(
+            progress = (steps.toFloat()/10000.0F),
+            strokeWidth = 7.dp,
+            modifier = Modifier.size(30.dp),
+            color = MaterialTheme.colors.secondary
+        )}
+        Log.e("Progress", (steps.toFloat()/10000.0F).toString())
     }
     if (type == "heading") {
         Text(
             text = text,
-            fontFamily = FontFamily.Serif,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -121,6 +106,7 @@ fun RowScope.HistoryTableCell(
     if (type == "text") {
         Text(
             text = text,
+            fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -131,11 +117,12 @@ fun RowScope.HistoryTableCell(
     }
 }
 
+
 @Composable
 fun HistoryGrid(viewModel: HistoryViewModel) {
-    val dateColumnWeight = .4f
+    val dateColumnWeight = .3f
     val stepsColumnWeight = .4f
-    val goalColumnWeight = .25f
+    val goalColumnWeight = .3f
     Column(
         Modifier
             .fillMaxSize()
@@ -151,7 +138,8 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+
             ) {
                 HistoryTableCell(
                     text = date,
@@ -162,7 +150,7 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
                 HistoryTableCell(
                     text = viewModel.googleFitSteps[index].toString(),
                     weight = stepsColumnWeight,
-                    "heading",
+                    "text",
                     0
                 )
                 HistoryTableCell(

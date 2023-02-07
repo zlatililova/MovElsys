@@ -37,7 +37,6 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
             ) {
                 Text(
                     text = "Ranking",
-                    fontFamily = FontFamily.Serif,
                     fontSize = 50.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -48,7 +47,6 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
                     MotivationalMessage(viewModel = viewModel)
                     Text(
                         text = "You are viewing team in place:",
-                        fontFamily = FontFamily.Serif,
                         fontSize = 20.sp,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colors.primary,
@@ -88,7 +86,6 @@ fun MotivationalMessage(viewModel: RankingViewModel) {
         1 -> {
             Text(
                 text = "Congratulations! Your team is doing great! Current team place in league: ${viewModel.currentTeamRanking}",
-                fontFamily = FontFamily.Serif,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
@@ -98,7 +95,6 @@ fun MotivationalMessage(viewModel: RankingViewModel) {
         2 -> {
             Text(
                 text = "Good job! Keep up the good work! Current team place in league: ${viewModel.currentTeamRanking}",
-                fontFamily = FontFamily.Serif,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
@@ -109,7 +105,6 @@ fun MotivationalMessage(viewModel: RankingViewModel) {
         3 -> {
             Text(
                 text = "You are doing great! Walk a little bit more today and climb the rank list! Current team place in league: ${viewModel.currentTeamRanking}",
-                fontFamily = FontFamily.Serif,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
@@ -119,7 +114,6 @@ fun MotivationalMessage(viewModel: RankingViewModel) {
         else -> {
             Text(
                 text = "Take the stairs today! You still have time to perform better! Current team place in league: ${viewModel.currentTeamRanking}",
-                fontFamily = FontFamily.Serif,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
@@ -177,7 +171,6 @@ fun MedalWidget(color: Color, teamPosition: String, medalFontColor: Color) {
                     )
                 },
             text = teamPosition,
-            fontFamily = FontFamily.Serif,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
@@ -210,7 +203,6 @@ fun RowScope.TableCell(
     if (type == "heading") {
         Text(
             text = text,
-            fontFamily = FontFamily.Serif,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,

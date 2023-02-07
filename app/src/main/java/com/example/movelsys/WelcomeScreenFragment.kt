@@ -32,7 +32,7 @@ fun WelcomeScreenFragment(
                 .fillMaxWidth()
                 .size(350.dp)
         )
-        Text(text = "MovElsys", fontFamily = FontFamily.Serif, fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
+        Text(text = "MovElsys", fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedButton(
             onClick = {

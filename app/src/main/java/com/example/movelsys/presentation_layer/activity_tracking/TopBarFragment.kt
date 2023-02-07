@@ -34,9 +34,9 @@ fun TopBarFragment(navController: NavController) {
                 contentDescription = "MovElsys logo"
             )
         },
-        title = { Text(text = "Movelsys", fontFamily = FontFamily.Serif, modifier = Modifier.padding(start = 0.dp)) },
+        title = { Text(text = "Movelsys", modifier = Modifier.padding(start = 0.dp)) },
         actions = {
-            Text(text = Firebase.auth.currentUser?.displayName.toString(), fontFamily = FontFamily.Serif, modifier = Modifier.padding(end = 10.dp))
+            Text(text = Firebase.auth.currentUser?.displayName.toString(), modifier = Modifier.padding(end = 10.dp))
             IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
                 //Icon(Icons.Filled.Person, contentDescription = "Notification")
                 Image(

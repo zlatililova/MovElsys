@@ -54,7 +54,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 viewModel.updateUI()
                 viewModel.getContext(LocalContext.current)
                 Text(
-                    text = "Your profile", fontFamily = FontFamily.Serif,
+                    text = "Your profile",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -67,7 +67,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     modifier = Modifier.size(150.dp).clip(CircleShape)                )
 
                 Text(
-                    text = "${viewModel.name.value}", fontFamily = FontFamily.Serif,
+                    text = "${viewModel.name.value}",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -90,7 +90,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 Divider(color = MaterialTheme.colors.primary, thickness = 2.dp, modifier = Modifier.padding(bottom = 20.dp))
 
                 Text(
-                    text = "Update your profile", fontFamily = FontFamily.Serif,
+                    text = "Update your profile",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -98,7 +98,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 )
 
                 Text(
-                    text = "Current name: ${viewModel.name.value} ", fontFamily = FontFamily.Serif,
+                    text = "Current name: ${viewModel.name.value} ",
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -141,7 +141,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 }
 
                 Text(
-                    text = "Current email: ${viewModel.email.value} ", fontFamily = FontFamily.Serif,
+                    text = "Current email: ${viewModel.email.value} ",
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -185,7 +185,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 }
 
                 Text(
-                    text = "Change profile picture", fontFamily = FontFamily.Serif,
+                    text = "Change profile picture",
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -229,7 +229,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                 }
 
                 Text(
-                    text = "Change your password", fontFamily = FontFamily.Serif,
+                    text = "Change your password",
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,

@@ -18,6 +18,7 @@ class GoogleFitPermissions(
     private val fitnessOptions = FitnessOptions.builder()
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+        .addDataType(DataType.TYPE_CALORIES_EXPENDED, FitnessOptions.ACCESS_READ)
         .build()
     private val account = GoogleSignIn.getAccountForExtension(appContext, fitnessOptions)
 

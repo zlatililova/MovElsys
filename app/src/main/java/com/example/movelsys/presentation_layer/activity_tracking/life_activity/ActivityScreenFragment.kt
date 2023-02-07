@@ -35,7 +35,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                 TopBarFragment(navController)
                 viewModel.updateStepCount()
                 Text(
-                    text = "Today's steps: ", fontFamily = FontFamily.Serif,
+                    text = "Today's steps: ",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
@@ -43,7 +43,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                 )
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     Text(
-                        text = viewModel.steps.toString(), fontFamily = FontFamily.Serif,
+                        text = viewModel.steps.toString(),
                         fontSize = 100.sp,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colors.primary

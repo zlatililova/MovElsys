@@ -1,5 +1,6 @@
 package com.example.movelsys.data_layer.ranking
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -70,7 +71,9 @@ class DummyAPIToFetchData {
     }
 
     fun fetchDesiredTeam(teamRanking: Int, league: String): String {
+        Log.i("HERE", teamRanking.toString())
         if(teamRanking == 2){
+            Log.i("HERE", teamRanking.toString())
             return fetchCurrentUserTeam("0")
         }else{
         //the idea is to fetch data from Kalin Georgiev's API

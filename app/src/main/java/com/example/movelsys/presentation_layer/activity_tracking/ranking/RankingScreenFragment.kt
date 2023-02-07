@@ -202,6 +202,8 @@ fun TableScreen(viewModel: RankingViewModel, navController: NavController) {
                     .padding(bottom = 10.dp)
                     .clickable {
                         viewModel.detailedTeamRanking = index+1
+                        viewModel.selectIndexofDetailedTeam(index+1)
+                        Log.i("Team rank", viewModel.detailedTeamRanking.toString())
                         navController.navigate(Screen.TeamDetails.route) },
                 verticalAlignment = Alignment.CenterVertically
             ) {

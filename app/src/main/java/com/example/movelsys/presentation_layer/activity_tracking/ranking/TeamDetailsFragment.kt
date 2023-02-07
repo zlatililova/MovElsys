@@ -18,7 +18,7 @@ import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 
 @Composable
 fun TeamDetailsFragment(navController: NavController, viewModel: RankingViewModel) {
-    viewModel.getTeamDetails(viewModel.detailedTeamRanking)
+    viewModel.getTeamDetails()
     Column{
         TopBarFragment(navController)
 

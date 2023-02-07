@@ -14,7 +14,7 @@ class RankingViewModel(
     var userNames: MutableList<String> = mutableListOf()
     var userProfilePictures: MutableList<String> = mutableListOf()
     var userWeeklySteps: MutableList<Int> = mutableListOf()
-    var detailedTeamRanking: Int = 0
+    var detailedTeamRanking: Int by mutableStateOf(1)
 
 
     fun fetchLeagueName(): String{
@@ -28,13 +28,19 @@ class RankingViewModel(
             }
         }
 
-     fun getTeamDetails(teamRank: Int) {
-        val usersList = rankingUseCase.fetchDesiredTeam(teamRank)
+     fun getTeamDetails() {
+         Log.i("VMODEL", detailedTeamRanking.toString())
+        val usersList = rankingUseCase.fetchDesiredTeam()
         usersList.forEach { person ->
             userNames.add(person.name)
             userProfilePictures.add(person.profilePicture)
             userWeeklySteps.add(person.totalWeeklySteps)
         }
+    }
+
+    fun selectIndexofDetailedTeam(teamRanking: Int){
+        Log.i("VMODEL", teamRanking.toString())
+        rankingUseCase.selectTeamRanking(teamRanking)
     }
 
 }

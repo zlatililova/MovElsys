@@ -50,8 +50,8 @@ class HistoryViewModel(
         })
         Handler().postDelayed({
             fetchGoogleData()
+            timesDataWasFetched += 1
         }, 1500)
-        timesDataWasFetched += 1
     }
 
     private fun fetchGoogleData() {

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movelsys.LoadingAnimation
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
@@ -52,17 +53,23 @@ fun HistoryScreenFragment(
         ) {
             Text(text = "Refresh", textAlign = TextAlign.Center, color = Color.White)
         }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+        Column(
+            modifier = Modifier.weight(1f)
         ) {
-            item {
-                if (viewModel.timesDataWasFetched > 0) {
-                    HistoryGrid(viewModel)
+            if (viewModel.timesDataWasFetched <= 0) {
+                Column {
+                    LoadingAnimation()
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    item {
+                        HistoryGrid(viewModel)
+                    }
                 }
             }
-
         }
         Row {
             BottomBarFragment(navController = navController)
@@ -83,13 +90,14 @@ fun RowScope.HistoryTableCell(
                 .weight(weight)
                 .padding(start = 45.dp)
         ) {
-          CircularProgressIndicator(
-            progress = (steps.toFloat()/10000.0F),
-            strokeWidth = 7.dp,
-            modifier = Modifier.size(30.dp),
-            color = MaterialTheme.colors.secondary
-        )}
-        Log.e("Progress", (steps.toFloat()/10000.0F).toString())
+            CircularProgressIndicator(
+                progress = (steps.toFloat() / 10000.0F),
+                strokeWidth = 7.dp,
+                modifier = Modifier.size(30.dp),
+                color = MaterialTheme.colors.secondary
+            )
+        }
+        Log.e("Progress", (steps.toFloat() / 10000.0F).toString())
     }
     if (type == "heading") {
         Text(
@@ -140,7 +148,7 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
                     .padding(bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
 
-            ) {
+                ) {
                 HistoryTableCell(
                     text = date,
                     weight = dateColumnWeight,

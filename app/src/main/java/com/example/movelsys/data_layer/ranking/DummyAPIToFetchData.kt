@@ -53,6 +53,22 @@ class DummyAPIToFetchData {
         return "Golden"
     }
 
+    fun fetchCurrentLeagueTeams(league: String): String{
+        var mapOfTeams = mutableMapOf<Int, Pair<String, Int>>()
+        mapOfTeams[1] = Pair("12A", 65054)
+        mapOfTeams[2] = Pair("11A", 54054)
+        mapOfTeams[3] = Pair("12V", 63154)
+        mapOfTeams[4] = Pair("10A", 62254)
+        mapOfTeams[5] = Pair("9G", 61054)
+        mapOfTeams[6] = Pair("10B", 60054)
+        mapOfTeams[7] = Pair("10V", 60054)
+        mapOfTeams[8] = Pair("8A", 59054)
+        mapOfTeams[9] = Pair("9B", 58054)
+        mapOfTeams[10] = Pair("12B", 57054)
+        val gson = Gson()
+        return gson.toJson(mapOfTeams)
+    }
+
     fun fetchDesiredTeam(teamRanking: Int, league: String): String {
         //the idea is to fetch data from Kalin Georgiev's API
         //this class is a mock function from K.Georgiev's API that returns a JSON with the team on the teamRanking page

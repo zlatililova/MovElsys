@@ -91,10 +91,16 @@ fun RowScope.HistoryTableCell(
                 .padding(start = 45.dp)
         ) {
             CircularProgressIndicator(
+                progress = 1f,
+                strokeWidth = 7.dp,
+                modifier = Modifier.size(30.dp),
+                color = Color.LightGray,
+            )
+            CircularProgressIndicator(
                 progress = (steps.toFloat() / 10000.0F),
                 strokeWidth = 7.dp,
                 modifier = Modifier.size(30.dp),
-                color = MaterialTheme.colors.secondary
+                color = MaterialTheme.colors.secondary,
             )
         }
     }

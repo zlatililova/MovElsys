@@ -11,6 +11,11 @@ class RankingViewModel(
     private val rankingUseCase: RankingUseCase
 ) {
     val currentLeagueTeams = mutableListOf<Pair<String, Int>>()
+    var userNames: MutableList<String> = mutableListOf()
+    var userProfilePictures: MutableList<String> = mutableListOf()
+    var userWeeklySteps: MutableList<Int> = mutableListOf()
+    var detailedTeamRanking: Int = 0
+
 
     fun fetchLeagueName(): String{
         return rankingUseCase.fetchCurrentUserLeague()
@@ -22,4 +27,14 @@ class RankingViewModel(
                 currentLeagueTeams.add(pair)
             }
         }
+
+     fun getTeamDetails(teamRank: Int) {
+        val usersList = rankingUseCase.fetchDesiredTeam(teamRank)
+        usersList.forEach { person ->
+            userNames.add(person.name)
+            userProfilePictures.add(person.profilePicture)
+            userWeeklySteps.add(person.totalWeeklySteps)
+        }
+    }
+
 }

@@ -7,5 +7,5 @@ class RankingUseCase(
 ) {
     fun fetchCurrentUserLeague() = rankingFetch.fetchLeagueName()
     fun fetchCurrentLeagueTeams() = rankingFetch.fetchCurrentLeagueTeams()
-    fun fetchCurentLeagueSize() = rankingFetch.fetchLeagueNumberOfTeams()
+    fun fetchDesiredTeam(teamRank: Int) = rankingFetch.fetchDesiredTeam(teamRank)
 }

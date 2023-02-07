@@ -70,6 +70,9 @@ class DummyAPIToFetchData {
     }
 
     fun fetchDesiredTeam(teamRanking: Int, league: String): String {
+        if(teamRanking == 2){
+            return fetchCurrentUserTeam("0")
+        }else{
         //the idea is to fetch data from Kalin Georgiev's API
         //this class is a mock function from K.Georgiev's API that returns a JSON with the team on the teamRanking page
         val person1 = Person(
@@ -100,5 +103,6 @@ class DummyAPIToFetchData {
         val dummyJSON = listOf(person1, person2, person3, person4, person5)
         val gson = Gson()
         return gson.toJson(dummyJSON)
+    }
     }
 }

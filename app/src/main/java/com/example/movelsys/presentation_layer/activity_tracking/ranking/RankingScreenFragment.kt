@@ -2,6 +2,7 @@ package com.example.movelsys.presentation_layer.activity_tracking.ranking
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.movelsys.Screen
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 import kotlin.math.roundToInt
@@ -54,7 +56,7 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
                     )
                     Spacer(modifier = Modifier.padding(20.dp))
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        TableScreen(viewModel = viewModel)
+                        TableScreen(viewModel = viewModel, navController = navController)
                     }
                 }
             }
@@ -160,10 +162,26 @@ fun RowScope.TableCell(
                 .padding(start = 25.dp, end = 10.dp)
         )
     }
+    if (type == "picture") {
+        Box(
+            modifier = Modifier
+                .weight(weight)
+                .padding(start = 30.dp)
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(text),
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+            )
+        }
+    }
+
 }
 
 @Composable
-fun TableScreen(viewModel: RankingViewModel) {
+fun TableScreen(viewModel: RankingViewModel, navController: NavController) {
     val profilePictureColumnWeight = .3f
     val nameColumnWeight = .4f
     val weeklyStepsColumnWeight = .3f
@@ -181,7 +199,10 @@ fun TableScreen(viewModel: RankingViewModel) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 10.dp),
+                    .padding(bottom = 10.dp)
+                    .clickable {
+                        viewModel.detailedTeamRanking = index+1
+                        navController.navigate(Screen.TeamDetails.route) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TableCell(

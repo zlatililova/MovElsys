@@ -17,8 +17,8 @@ import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragme
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 
 @Composable
-fun TeamDetailsFragment(navController: NavController, viewModel: RankingViewModel) {
-    viewModel.getTeamDetails()
+fun TeamDetailsFragment(navController: NavController, viewModel: RankingViewModel, teamRank: Int) {
+    viewModel.getTeamDetails(teamRank)
     Column{
         TopBarFragment(navController)
 
@@ -31,6 +31,14 @@ fun TeamDetailsFragment(navController: NavController, viewModel: RankingViewMode
                 ) {
                     Text(
                         text = "Ranking",
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 50.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.primary,
+                        modifier = Modifier.padding(top = 15.dp)
+                    )
+                    Text(
+                        text = teamRank.toString(),
                         fontFamily = FontFamily.Serif,
                         fontSize = 50.sp,
                         textAlign = TextAlign.Center,

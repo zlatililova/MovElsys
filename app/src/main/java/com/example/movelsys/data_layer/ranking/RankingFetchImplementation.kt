@@ -19,11 +19,10 @@ class RankingFetchImplementation : RankingFetch {
             user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }.toString()
     }
 
-    override fun fetchDesiredTeam(): List<Person> {
+    override fun fetchDesiredTeam(ranking: Int): List<Person> {
         val gson = Gson()
-        Log.i("FETCH", currentTeamRanking)
         usersList = gson.fromJson(
-            dummyAPIToFetchData.fetchDesiredTeam(currentTeamRanking.toInt(), currentTeamLeague),
+            dummyAPIToFetchData.fetchDesiredTeam(ranking, currentTeamLeague),
             object : TypeToken<List<Person>>() {}.type
         )
         return usersList
@@ -43,9 +42,5 @@ class RankingFetchImplementation : RankingFetch {
             dummyAPIToFetchData.fetchCurrentLeagueTeams(currentTeamLeague),
             object : TypeToken<Map<Int, Pair<String, Int>>>() {}.type
         )
-    }
-
-    override fun setSelectedTeamRanking(teamRank: Int) {
-        currentTeamRanking = teamRank.toString()
     }
 }

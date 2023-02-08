@@ -5,16 +5,16 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import com.example.movelsys.domain_layer.use_cases.RankingUseCase
 
 class RankingViewModel(
     private val rankingUseCase: RankingUseCase
-) {
+): ViewModel() {
     val currentLeagueTeams = mutableListOf<Pair<String, Int>>()
     var userNames: MutableList<String> = mutableListOf()
     var userProfilePictures: MutableList<String> = mutableListOf()
     var userWeeklySteps: MutableList<Int> = mutableListOf()
-    var detailedTeamRanking: Int by mutableStateOf(1)
 
 
     fun fetchLeagueName(): String{
@@ -28,19 +28,13 @@ class RankingViewModel(
             }
         }
 
-     fun getTeamDetails() {
-         Log.i("VMODEL", detailedTeamRanking.toString())
-        val usersList = rankingUseCase.fetchDesiredTeam()
+     fun getTeamDetails(teamRanking: Int) {
+        val usersList = rankingUseCase.fetchDesiredTeam(teamRanking)
         usersList.forEach { person ->
             userNames.add(person.name)
             userProfilePictures.add(person.profilePicture)
             userWeeklySteps.add(person.totalWeeklySteps)
         }
-    }
-
-    fun selectIndexofDetailedTeam(teamRanking: Int){
-        Log.i("VMODEL", teamRanking.toString())
-        rankingUseCase.selectTeamRanking(teamRanking)
     }
 
 }

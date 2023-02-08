@@ -100,11 +100,17 @@ fun SetupNavGraph(
             )))
         }
         composable(
-            route = Screen.TeamDetails.route
-        ) {
-            TeamDetailsFragment(navController, viewModel = RankingViewModel(RankingUseCase(
-                RankingFetchImplementation()
-            )))
+            route = Screen.TeamDetails.route + "/{teamRank}"
+        ) {navBackStack ->
+            val counter = navBackStack.arguments?.getString("teamRank")
+
+            if (counter != null) {
+                TeamDetailsFragment(navController = navController, viewModel = RankingViewModel(RankingUseCase(
+                    RankingFetchImplementation())), teamRank = counter.toInt())
+            }else{
+                TeamDetailsFragment(navController = navController, viewModel = RankingViewModel(RankingUseCase(
+                    RankingFetchImplementation())), teamRank = 0)
+            }
         }
         composable(
             route = Screen.Profile.route

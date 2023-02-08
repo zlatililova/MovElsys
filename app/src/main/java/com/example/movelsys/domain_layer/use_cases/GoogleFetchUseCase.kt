@@ -38,4 +38,17 @@ class GoogleFetchUseCase(
         )
         return googleSensorData.getCurrentSteps()
     }
+
+    fun fetchWeeklySteps(): Int {
+        val timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    googleSensorData.getWeeklySteps()
+                }
+            }, 0, 1000
+        )
+        return googleSensorData.getWeeklySteps()
+    }
+
 }

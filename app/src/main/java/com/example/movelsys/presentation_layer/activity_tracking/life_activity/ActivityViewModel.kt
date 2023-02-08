@@ -15,9 +15,20 @@ import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import kotlinx.coroutines.launch
 
 class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : ViewModel() {
-    var steps by mutableStateOf(0)
-    var goalSteps by mutableStateOf(10000)
+    var steps: Int = 0
+    var weeklySteps: Int = 0
+    var goalSteps by mutableStateOf(0)
     var newGoal by mutableStateOf("")
+    lateinit var activity: Activity
+
+    fun fetchLastSavedSteps(){
+        val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
+        val defaultValue = 0
+        if (sharedPref != null) {
+            goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
+        }
+        Log.i("Steps", goalSteps.toString())
+    }
 
     fun subscribeToStepsListener(context: Context, activity: Activity) {
         googleFetchUseCase.getNecessaryParameters(activity = activity, context = context)
@@ -38,8 +49,10 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     fun updateStepCount() {
         viewModelScope.launch {
             steps = googleFetchUseCase.fetchCurrentSteps()
+            weeklySteps = googleFetchUseCase.fetchWeeklySteps()
         }
     }
+
 
     fun calculatePersentageOfGoal(): Float {
         return steps.toFloat() / goalSteps.toFloat()
@@ -49,6 +62,12 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         if (newGoal != "") {
             if (newGoal.toInt() != 0) {
                 goalSteps = newGoal.toInt()
+                val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)?: return
+                with (sharedPref.edit()) {
+                    putInt("newGoalSteps", goalSteps)
+                    apply()
+                }
+
             }
         }
     }

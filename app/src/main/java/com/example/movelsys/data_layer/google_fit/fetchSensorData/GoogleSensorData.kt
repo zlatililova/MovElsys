@@ -8,4 +8,6 @@ interface GoogleSensorData {
     fun addRawDataListener()
     fun getDailySteps()
     fun getCurrentSteps(): Int
+    fun getWeeklySteps(): Int
+    fun getMonthlySteps(): Int
 }

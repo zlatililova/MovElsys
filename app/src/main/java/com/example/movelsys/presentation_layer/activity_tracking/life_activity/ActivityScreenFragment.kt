@@ -24,6 +24,8 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
         context = LocalContext.current,
         activity = LocalContext.current as Activity
     )
+    viewModel.activity = LocalContext.current as Activity
+    viewModel.fetchLastSavedSteps()
     Column {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -34,7 +36,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
             item {
                 TopBarFragment(navController, false)
                 viewModel.updateStepCount()
-                Text(
+                /*Text(
                     text = "Today's steps: ",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
@@ -54,12 +56,13 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         modifier = Modifier.size(350.dp),
                         color = MaterialTheme.colors.secondary
                     )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.padding(30.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                }*/
+                ProgressBar(period = "Daily", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.steps)
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
+                ProgressBar(period = "Weekly", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.weeklySteps)
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
+                ProgressBar(period = "Monthly", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.weeklySteps)
+                Spacer(modifier = Modifier.padding(bottom = 20.dp))
                     OutlinedTextField(
                         value = viewModel.newGoal,
                         onValueChange = {
@@ -73,7 +76,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                             unfocusedBorderColor = MaterialTheme.colors.primary,
                         ),
                         modifier = Modifier
-                            .padding(start = 0.dp)
+                            .padding(start = 0.dp, end = 20.dp, bottom = 30.dp)
                             .size(width = 200.dp, height = 60.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
@@ -81,9 +84,9 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         onClick = { viewModel.setNewGoalSteps() },
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
                         modifier = Modifier
-                            .padding(start = 25.dp, end = 0.dp)
+                            .padding(start = 0.dp, end = 25.dp)
                             //.fillMaxWidth()
-                            .size(width = 250.dp, height = 60.dp)
+                            .size(width = 150.dp, height = 60.dp)
                     ) {
                         Text(
                             text = "Change step goal",
@@ -91,12 +94,35 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                             color = Color.White
                         )
                     }
-                }
-
             }
         }
         Row {
             BottomBarFragment(navController = navController)
         }
+    }
+}
+
+@Composable
+fun ProgressBar(period: String, persentage: Float, steps: Int){
+    Text(
+        text = "$period steps: ",
+        fontSize = 30.sp,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colors.primary,
+        modifier = Modifier.padding(20.dp)
+    )
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = steps.toString(),
+            fontSize = 100.sp,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.primary
+        )
+        CircularProgressIndicator(
+            progress = persentage,
+            strokeWidth = 25.dp,
+            modifier = Modifier.size(350.dp),
+            color = MaterialTheme.colors.secondary
+        )
     }
 }

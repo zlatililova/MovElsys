@@ -1,6 +1,5 @@
 package com.example.movelsys.data_layer.ranking
 
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson

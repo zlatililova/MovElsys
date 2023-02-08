@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewModel) {
     Column {
-        TopBarFragment(navController)
+        TopBarFragment(navController, true)
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
                 .fillMaxWidth()

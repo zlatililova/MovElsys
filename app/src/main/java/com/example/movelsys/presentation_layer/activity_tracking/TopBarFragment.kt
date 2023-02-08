@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,15 +26,22 @@ import com.google.firebase.ktx.Firebase
 
 
 @Composable
-fun TopBarFragment(navController: NavController) {
+fun TopBarFragment(navController: NavController, changeButton: Boolean) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         navigationIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.white_running_person),
-                contentDescription = "MovElsys logo"
-            )
+            if(!changeButton){
+                Image(
+                    painter = painterResource(id = R.drawable.white_running_person),
+                    contentDescription = "MovElsys logo"
+                )
+            }else{
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Filled.Backspace, "Pop backstack")
+                }
+            }
+            
         },
         title = { Text(text = "Movelsys", modifier = Modifier.padding(start = 0.dp)) },
         actions = {
@@ -42,7 +51,9 @@ fun TopBarFragment(navController: NavController) {
                 Image(
                     painter = rememberAsyncImagePainter(Firebase.auth.currentUser?.photoUrl),
                     contentDescription = "Profile picture",
-                    modifier = Modifier.size(35.dp).clip(CircleShape))
+                    modifier = Modifier
+                        .size(35.dp)
+                        .clip(CircleShape))
             }
         },
 
@@ -54,6 +65,6 @@ fun TopBarFragment(navController: NavController) {
 @Composable
 fun DefaultPreview() {
     MovelsysTheme {
-        TopBarFragment(navController = rememberNavController())
+        TopBarFragment(navController = rememberNavController(), true)
     }
 }

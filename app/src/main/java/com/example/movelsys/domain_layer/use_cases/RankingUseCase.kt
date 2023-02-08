@@ -1,6 +1,5 @@
 package com.example.movelsys.domain_layer.use_cases
 
-import android.util.Log
 import com.example.movelsys.data_layer.ranking.RankingFetch
 
 class RankingUseCase(

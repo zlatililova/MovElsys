@@ -29,7 +29,7 @@ import kotlin.math.roundToInt
 fun RankingScreenFragment(navController: NavController, viewModel: RankingViewModel) {
     viewModel.fetchCurrentLeagueTeams()
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TopBarFragment(navController)
+        TopBarFragment(navController, false)
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.weight(1f)
@@ -61,12 +61,12 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
                 }
             }
         }
-            Row {
-                BottomBarFragment(navController = navController)
-            }
+        Row {
+            BottomBarFragment(navController = navController)
         }
-
     }
+
+}
 
 
 @Composable
@@ -108,13 +108,18 @@ fun PlaceInRankList(place: Int) {
 fun MedalWidget(color: Color, teamPosition: String, medalFontColor: Color) {
     var startPadding = 16.dp
     var allSidesPadding = 16.dp
-    if(teamPosition.toInt() > 9){
+    if (teamPosition.toInt() > 9) {
         startPadding = 10.dp
     }
-    Column(modifier = Modifier.padding(start = 30.dp)){
+    Column(modifier = Modifier.padding(start = 30.dp)) {
         Text(
             modifier = Modifier
-                .padding(top = allSidesPadding, bottom = allSidesPadding, end = allSidesPadding, start = startPadding)
+                .padding(
+                    top = allSidesPadding,
+                    bottom = allSidesPadding,
+                    end = allSidesPadding,
+                    start = startPadding
+                )
                 .drawBehind {
                     drawCircle(
                         color = color,
@@ -201,11 +206,12 @@ fun TableScreen(viewModel: RankingViewModel, navController: NavController) {
                     .fillMaxWidth()
                     .padding(bottom = 10.dp)
                     .clickable {
-                        navController.navigate(Screen.TeamDetails.route + "/${index+1}") },
+                        navController.navigate(Screen.TeamDetails.route + "/${index + 1}")
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TableCell(
-                    text = (index+1).toString(),
+                    text = (index + 1).toString(),
                     weight = profilePictureColumnWeight,
                     type = "medal"
                 )
@@ -224,5 +230,5 @@ fun TableScreen(viewModel: RankingViewModel, navController: NavController) {
             )
         }
 
-        }
     }
+}

@@ -1,6 +1,5 @@
 package com.example.movelsys.data_layer.ranking
 
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -14,9 +13,11 @@ class RankingFetchImplementation : RankingFetch {
     override var currentTeamRanking: String = ""
 
     init {
-        currentTeamLeague = user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
+        currentTeamLeague =
+            user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
         currentTeamRanking =
-            user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }.toString()
+            user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }
+                .toString()
     }
 
     override fun fetchDesiredTeam(ranking: Int): List<Person> {
@@ -36,7 +37,7 @@ class RankingFetchImplementation : RankingFetch {
         return user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
     }
 
-    override fun fetchCurrentLeagueTeams(): Map<Int, Pair<String, Int>>{
+    override fun fetchCurrentLeagueTeams(): Map<Int, Pair<String, Int>> {
         val gson = Gson()
         return gson.fromJson(
             dummyAPIToFetchData.fetchCurrentLeagueTeams(currentTeamLeague),

@@ -40,15 +40,27 @@ class GoogleFetchUseCase(
     }
 
     fun fetchWeeklySteps(): Int {
-        val timer = Timer()
+        /*val timer = Timer()
         timer.scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
                     googleSensorData.getWeeklySteps()
                 }
             }, 0, 1000
-        )
+        )*/
         return googleSensorData.getWeeklySteps()
+    }
+
+    fun fetchMonthlySteps(): Int {
+        /*val timer = Timer()
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    googleSensorData.getMonthlySteps()
+                }
+            }, 0, 1000
+        )*/
+        return googleSensorData.getMonthlySteps()
     }
 
 }

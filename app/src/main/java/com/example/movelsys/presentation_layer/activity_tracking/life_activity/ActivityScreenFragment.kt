@@ -57,11 +57,11 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         color = MaterialTheme.colors.secondary
                     )
                 }*/
-                ProgressBar(period = "Daily", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.steps)
+                ProgressBar(period = "Daily", persentage = viewModel.calculatePersentageOfGoal(viewModel.steps, viewModel.goalSteps), steps = viewModel.steps)
                 Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                ProgressBar(period = "Weekly", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.weeklySteps)
+                ProgressBar(period = "Weekly", persentage = viewModel.calculatePersentageOfGoal(viewModel.weeklySteps, (viewModel.goalSteps*7)), steps = viewModel.weeklySteps)
                 Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                ProgressBar(period = "Monthly", persentage = viewModel.calculatePersentageOfGoal(), steps = viewModel.weeklySteps)
+                ProgressBar(period = "Monthly", persentage = viewModel.calculatePersentageOfGoal(viewModel.monthlySteps, (viewModel.goalSteps*30)), steps = viewModel.monthlySteps)
                 Spacer(modifier = Modifier.padding(bottom = 20.dp))
                     OutlinedTextField(
                         value = viewModel.newGoal,

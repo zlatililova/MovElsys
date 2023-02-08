@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : ViewModel() {
     var steps: Int = 0
     var weeklySteps: Int = 0
+    var monthlySteps: Int = 0
     var goalSteps by mutableStateOf(0)
     var newGoal by mutableStateOf("")
     lateinit var activity: Activity
@@ -50,11 +51,12 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         viewModelScope.launch {
             steps = googleFetchUseCase.fetchCurrentSteps()
             weeklySteps = googleFetchUseCase.fetchWeeklySteps()
+            monthlySteps = googleFetchUseCase.fetchMonthlySteps()
         }
     }
 
 
-    fun calculatePersentageOfGoal(): Float {
+    fun calculatePersentageOfGoal(steps: Int, goalSteps: Int): Float {
         return steps.toFloat() / goalSteps.toFloat()
     }
 

@@ -55,17 +55,13 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             TODO("VERSION.SDK_INT < O")
         }
         val startTime = endTime.minusWeeks(4)
-        val readRequest =
-            DataReadRequest.Builder()
+        val readRequest = DataReadRequest.Builder()
                 .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
                 .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(
-                    startTime.toEpochSecond(), endTime.toEpochSecond(),
+                .setTimeRange(startTime.toEpochSecond(), endTime.toEpochSecond(),
                     TimeUnit.SECONDS
-                )
-                .build()
-        Fitness.getHistoryClient(
-            activity,
+                ).build()
+        Fitness.getHistoryClient( activity,
             GoogleSignIn.getAccountForExtension(context, fitnessOptions)
         )
             .readData(readRequest)

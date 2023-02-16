@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +53,7 @@ fun HistoryScreenFragment(
                 .padding(top = 10.dp, bottom = 20.dp)
                 .size(width = 100.dp, height = 50.dp)
         ) {
-            Text(text = "Refresh", textAlign = TextAlign.Center, color = Color.White)
+            Icon(imageVector = Icons.Filled.Refresh, contentDescription = null)
         }
         Column(
             modifier = Modifier.weight(1f)

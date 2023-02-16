@@ -21,7 +21,6 @@ fun WelcomeScreenFragment(
     navController: NavController,
 ) {
     Column(
-        modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
@@ -41,7 +40,7 @@ fun WelcomeScreenFragment(
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 20.dp)
+                    .padding(top = 20.dp, bottom = 20.dp)
         ) {
             Text(
                 text = "Login",

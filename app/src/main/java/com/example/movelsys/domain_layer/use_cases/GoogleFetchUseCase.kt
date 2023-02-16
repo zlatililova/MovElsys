@@ -27,10 +27,10 @@ class GoogleFetchUseCase(
 
     fun getDataPoints() = googleFetchData.getDataPointList()
     fun isUserSubscribed() = googleFetchData.isUserSubscribedToStepsListener
+
     fun fetchCurrentSteps(): Int {
         val timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
+        timer.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     googleSensorData.getDailySteps()
                 }

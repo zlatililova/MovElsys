@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,7 +39,7 @@ fun TopBarFragment(navController: NavController, changeButton: Boolean) {
                 )
             }else{
                 IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(Icons.Filled.Backspace, "Pop backstack")
+                    Icon(Icons.Filled.ArrowBack, "Pop backstack")
                 }
             }
             
@@ -47,7 +48,6 @@ fun TopBarFragment(navController: NavController, changeButton: Boolean) {
         actions = {
             Text(text = Firebase.auth.currentUser?.displayName.toString(), modifier = Modifier.padding(end = 10.dp))
             IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
-                //Icon(Icons.Filled.Person, contentDescription = "Notification")
                 Image(
                     painter = rememberAsyncImagePainter(Firebase.auth.currentUser?.photoUrl),
                     contentDescription = "Profile picture",

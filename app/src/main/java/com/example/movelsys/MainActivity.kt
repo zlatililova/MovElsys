@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     private fun androidActivityRecognitionAccess() {
         val permissionRequestActivityRecognitionCode = 1
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)

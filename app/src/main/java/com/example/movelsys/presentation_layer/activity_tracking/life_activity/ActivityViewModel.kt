@@ -69,17 +69,5 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         return steps.toFloat() / goalSteps.toFloat()
     }
 
-    fun setNewGoalSteps() {
-        if (newGoal != "") {
-            if (newGoal.toInt() != 0) {
-                goalSteps = newGoal.toInt()
-                val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)?: return
-                with (sharedPref.edit()) {
-                    putInt("newGoalSteps", goalSteps)
-                    apply()
-                }
 
-            }
-        }
-    }
 }

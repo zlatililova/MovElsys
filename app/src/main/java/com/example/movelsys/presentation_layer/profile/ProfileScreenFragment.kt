@@ -1,5 +1,6 @@
 package com.example.movelsys.presentation_layer.profile
 
+import android.app.Activity
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -9,10 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +49,9 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
         ) {
             item {
                 viewModel.updateUI()
-                viewModel.getContext(LocalContext.current)
+                val context = LocalContext.current
+                val activity = context as Activity
+                viewModel.getActivityAndContext(context = context, activity = activity)
                 Text(
                     text = "Your profile",
                     fontSize = 30.sp,
@@ -290,6 +290,49 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         .padding(bottom = 30.dp)
                 ) {
                     Text(text = "Update password", textAlign = TextAlign.Center, color = Color.White)
+                }
+
+                Text(
+                    text = "Change your step goal",
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.padding(20.dp, bottom = 10.dp)
+                )
+
+                OutlinedTextField(
+                    value = viewModel.newGoal,
+                    onValueChange = {
+                        if (it.isNotEmpty()) {
+                            viewModel.newGoal = it
+                        }
+                    },
+                    label = { Text("Current goal: ${viewModel.goalSteps}") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = MaterialTheme.colors.secondary,
+                        unfocusedBorderColor = MaterialTheme.colors.primary,
+                    ),
+                    leadingIcon = { Icon(Icons.Filled.EmojiPeople, contentDescription = "Step Goal") },
+                    modifier = Modifier
+                        .size(width = 300.dp, height = 80.dp)
+                        .padding(bottom = 20.dp),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
+                OutlinedButton(
+                    onClick = { viewModel.setNewGoalSteps() },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    enabled = viewModel.enableButton("steps"),
+                    modifier = Modifier
+                        .size(width = 180.dp, height = 80.dp)
+                        .padding(bottom = 30.dp)
+                ) {
+                    Text(
+                        text = "Change step goal",
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
                 }
             }
 

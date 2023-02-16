@@ -24,7 +24,6 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
     )
     viewModel.activity = LocalContext.current as Activity
     viewModel.fetchLastSavedSteps()
-    //viewModel.fetchWeeklyAndMonthlySteps()
     Column {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -78,38 +77,8 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     }
                 }
                 )
-                /*Spacer(modifier = Modifier.padding(bottom = 20.dp))
 
-                OutlinedTextField(
-                        value = viewModel.newGoal,
-                        onValueChange = {
-                            if (it.isNotEmpty()) {
-                                viewModel.newGoal = it
-                            }
-                        },
-                        label = { Text("Current goal: ${viewModel.goalSteps}") },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = MaterialTheme.colors.secondary,
-                            unfocusedBorderColor = MaterialTheme.colors.primary,
-                        ),
-                        modifier = Modifier
-                            .padding(start = 0.dp, end = 20.dp, bottom = 30.dp)
-                            .size(width = 200.dp, height = 60.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                    OutlinedButton(
-                        onClick = { viewModel.setNewGoalSteps() },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                        modifier = Modifier
-                            .padding(start = 0.dp, end = 25.dp)
-                            .size(width = 150.dp, height = 60.dp)
-                    ) {
-                        Text(
-                            text = "Change step goal",
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                    }*/
+
             }
         }
         Row {

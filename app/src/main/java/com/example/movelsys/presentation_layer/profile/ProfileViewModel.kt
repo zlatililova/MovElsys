@@ -1,7 +1,9 @@
 package com.example.movelsys.presentation_layer.profile
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -34,6 +36,8 @@ class ProfileViewModel(
     var email = mutableStateOf(user?.email)
     var password: String by mutableStateOf("")
     var confirmationPass: String by mutableStateOf("")
+    var goalSteps by mutableStateOf(0)
+    var newGoal by mutableStateOf("")
 
     var isChangeMade = false
 
@@ -116,6 +120,7 @@ class ProfileViewModel(
             "name" -> return nameError == null
             "password" -> return passwordError == null && confirmationPasswordError == null
             "profile_picture" -> return profilePictureError == null
+            "steps" -> return newGoal.isNotEmpty()
         }
         return false
     }
@@ -210,8 +215,11 @@ class ProfileViewModel(
 
     @SuppressLint("StaticFieldLeak")
     private lateinit var context: Context
-    fun getContext(context: Context){
+    private lateinit var activity: Activity
+    fun getActivityAndContext(context: Context, activity: Activity){
         this.context = context
+        this.activity = activity
+        fetchLastSavedSteps()
     }
 
     fun signOut(){
@@ -220,6 +228,29 @@ class ProfileViewModel(
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
         val googleSignInClient = GoogleSignIn.getClient(context, gso)
         googleSignInClient.signOut()
+    }
+
+    fun setNewGoalSteps() {
+        if (newGoal != "") {
+            if (newGoal.toInt() != 0) {
+                goalSteps = newGoal.toInt()
+                val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)?: return
+                with (sharedPref.edit()) {
+                    putInt("newGoalSteps", goalSteps)
+                    apply()
+                }
+
+            }
+        }
+    }
+
+    fun fetchLastSavedSteps(){
+        val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
+        val defaultValue = 0
+        if (sharedPref != null) {
+            goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
+        }
+        Log.i("Steps", goalSteps.toString())
     }
 
 }

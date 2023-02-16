@@ -27,7 +27,6 @@ class GoogleSensorDataImplementation : GoogleSensorData {
         FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
     private var currentStepCount by mutableStateOf(0)
     private var weeklyStepCount by mutableStateOf(0)
-    private var monthlyStepCount by mutableStateOf(0)
 
     override fun getActivityAndContext(activity: Activity, context: Context) {
         this.activity = activity
@@ -78,7 +77,7 @@ class GoogleSensorDataImplementation : GoogleSensorData {
             }
     }
 
-    override fun getWeeklySteps(): Int{
+    override fun getWeeklySteps(): Int {
         var weeklySteps = 0
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneId.systemDefault()).minusHours(10)
@@ -105,7 +104,6 @@ class GoogleSensorDataImplementation : GoogleSensorData {
                     for (dp in dataSet.dataPoints) {
                         val field = dp.dataType.fields[0]
                         weeklySteps += dp.getValue(field).asInt()
-
                     }
                     weeklyStepCount = weeklySteps
                 }
@@ -115,8 +113,6 @@ class GoogleSensorDataImplementation : GoogleSensorData {
             }
         return weeklyStepCount
     }
-
-
 
     override fun getCurrentSteps(): Int {
         return currentStepCount

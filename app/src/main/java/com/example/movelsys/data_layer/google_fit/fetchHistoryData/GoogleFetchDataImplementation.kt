@@ -31,7 +31,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .build()
-
     override var isUserSubscribedToStepsListener = false
 
     override fun subscribeToStepsListener() {
@@ -58,12 +57,14 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         }
         val startTime = endTime.minusWeeks(4)
         val readRequest = DataReadRequest.Builder()
-                .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
-                .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(startTime.toEpochSecond(), endTime.toEpochSecond(),
-                    TimeUnit.SECONDS
-                ).build()
-        Fitness.getHistoryClient( activity,
+            .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
+            .bucketByTime(1, TimeUnit.DAYS)
+            .setTimeRange(
+                startTime.toEpochSecond(), endTime.toEpochSecond(),
+                TimeUnit.SECONDS
+            ).build()
+        Fitness.getHistoryClient(
+            activity,
             GoogleSignIn.getAccountForExtension(context, fitnessOptions)
         )
             .readData(readRequest)
@@ -108,7 +109,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         return gson.toJson(dataPointMap)
     }
 
-    fun changeDateSignature(string_date: String): String{
+    fun changeDateSignature(string_date: String): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val formatter: DateTimeFormatter =
                 DateTimeFormatter.ofPattern("MMM dd")

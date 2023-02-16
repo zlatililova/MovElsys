@@ -32,39 +32,32 @@ fun TopBarFragment(navController: NavController, changeButton: Boolean) {
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         navigationIcon = {
-            if(!changeButton){
+            if (!changeButton) {
                 Image(
                     painter = painterResource(id = R.drawable.white_running_person),
                     contentDescription = "MovElsys logo"
                 )
-            }else{
+            } else {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(Icons.Filled.ArrowBack, "Pop backstack")
                 }
             }
-            
         },
         title = { Text(text = "Movelsys", modifier = Modifier.padding(start = 0.dp)) },
         actions = {
-            Text(text = Firebase.auth.currentUser?.displayName.toString(), modifier = Modifier.padding(end = 10.dp))
+            Text(
+                text = Firebase.auth.currentUser?.displayName.toString(),
+                modifier = Modifier.padding(end = 10.dp)
+            )
             IconButton(onClick = { navController.navigate(Screen.Profile.route) }) {
                 Image(
                     painter = rememberAsyncImagePainter(Firebase.auth.currentUser?.photoUrl),
                     contentDescription = "Profile picture",
                     modifier = Modifier
                         .size(35.dp)
-                        .clip(CircleShape))
+                        .clip(CircleShape)
+                )
             }
         },
-
         )
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MovelsysTheme {
-        TopBarFragment(navController = rememberNavController(), true)
-    }
 }

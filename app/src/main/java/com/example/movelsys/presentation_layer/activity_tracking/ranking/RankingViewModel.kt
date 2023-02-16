@@ -18,7 +18,7 @@ class RankingViewModel(
 
     fun fetchCurrentLeagueTeams() {
         rankingUseCase.fetchCurrentLeagueTeams().forEach { (_, pair) ->
-                currentLeagueTeams.add(pair)
+            currentLeagueTeams.add(pair)
         }
     }
 
@@ -30,5 +30,4 @@ class RankingViewModel(
             userWeeklySteps.add(person.totalWeeklySteps)
         }
     }
-
 }

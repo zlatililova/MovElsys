@@ -95,34 +95,54 @@ fun SetupNavGraph(
         composable(
             route = Screen.Ranking.route
         ) {
-            RankingScreenFragment(navController, viewModel = RankingViewModel(RankingUseCase(
-                RankingFetchImplementation()
-            )))
+            RankingScreenFragment(
+                navController, viewModel = RankingViewModel(
+                    RankingUseCase(
+                        RankingFetchImplementation()
+                    )
+                )
+            )
         }
         composable(
             route = Screen.TeamDetails.route + "/{teamRank}"
-        ) {navBackStack ->
+        ) { navBackStack ->
             val counter = navBackStack.arguments?.getString("teamRank")
 
             if (counter != null) {
-                TeamDetailsFragment(navController = navController, viewModel = RankingViewModel(RankingUseCase(
-                    RankingFetchImplementation())), teamRank = counter.toInt())
-            }else{
-                TeamDetailsFragment(navController = navController, viewModel = RankingViewModel(RankingUseCase(
-                    RankingFetchImplementation())), teamRank = 0)
+                TeamDetailsFragment(
+                    navController = navController, viewModel = RankingViewModel(
+                        RankingUseCase(
+                            RankingFetchImplementation()
+                        )
+                    ), teamRank = counter.toInt()
+                )
+            } else {
+                TeamDetailsFragment(
+                    navController = navController, viewModel = RankingViewModel(
+                        RankingUseCase(
+                            RankingFetchImplementation()
+                        )
+                    ), teamRank = 0
+                )
             }
         }
         composable(
             route = Screen.Profile.route
         ) {
-            ProfileScreenFragment(navController, viewModel = ProfileViewModel(profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()), validateCredentials = ValidateCredentials()))
+            ProfileScreenFragment(
+                navController,
+                viewModel = ProfileViewModel(
+                    profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()),
+                    validateCredentials = ValidateCredentials()
+                )
+            )
         }
     }
 }
 
-fun checkIfUserIsLoggedIn(): String{
+fun checkIfUserIsLoggedIn(): String {
     val user = Firebase.auth.currentUser
-    if(user != null){
+    if (user != null) {
         return Screen.Activity.route
     }
     return Screen.Welcome.route

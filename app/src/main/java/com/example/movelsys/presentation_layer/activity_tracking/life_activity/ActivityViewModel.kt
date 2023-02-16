@@ -18,19 +18,20 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     var steps: Int = 0
     var weeklySteps: Int = 0
     var monthlySteps: Int = 0
-    var areWeeklyAndMonthlyStepsFetched = false
+    private var areWeeklyAndMonthlyStepsFetched = 0
     var goalSteps by mutableStateOf(0)
-    var newGoal by mutableStateOf("")
     lateinit var activity: Activity
 
 
-    fun fetchLastSavedSteps(){
+    fun fetchLastSavedSteps() {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
         val defaultValue = 0
         if (sharedPref != null) {
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }
         Log.i("Steps", goalSteps.toString())
+        fetchWeeklyAndMonthlySteps()
+        areWeeklyAndMonthlyStepsFetched += 1
     }
 
     fun subscribeToStepsListener(context: Context, activity: Activity) {
@@ -48,26 +49,20 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         }
     }
 
-
     fun updateStepCount() {
         viewModelScope.launch {
             steps = googleFetchUseCase.fetchCurrentSteps()
         }
     }
 
-    fun fetchWeeklyAndMonthlySteps(){
-        if(!areWeeklyAndMonthlyStepsFetched){
+    private fun fetchWeeklyAndMonthlySteps() {
+        viewModelScope.launch {
+            monthlySteps = googleFetchUseCase.fetchMonthlySteps(areWeeklyAndMonthlyStepsFetched)
             weeklySteps = googleFetchUseCase.fetchWeeklySteps()
-            monthlySteps = googleFetchUseCase.fetchMonthlySteps()
-            //areWeeklyAndMonthlyStepsFetched = true
         }
-
     }
 
-
-    fun calculatePersentageOfGoal(steps: Int, goalSteps: Int): Float {
+    fun calculatePercentageOfGoal(steps: Int, goalSteps: Int): Float {
         return steps.toFloat() / goalSteps.toFloat()
     }
-
-
 }

@@ -183,18 +183,3 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreviewHistory() {
-    MovelsysTheme {
-        HistoryScreenFragment(
-            navController = rememberNavController(), viewModel = HistoryViewModel(
-                googleFetchUseCase = GoogleFetchUseCase(
-                    GoogleFetchDataImplementation(),
-                    googleSensorData = GoogleSensorDataImplementation()
-                )
-            )
-        )
-    }
-}

@@ -19,10 +19,12 @@ import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 @Composable
 fun TeamDetailsFragment(navController: NavController, viewModel: RankingViewModel, teamRank: Int) {
     viewModel.getTeamDetails(teamRank)
-    Column{
+    Column {
         TopBarFragment(navController, changeButton = true)
-
-        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.weight(1f)) {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(1f)
+        ) {
             item {
                 Column(
                     modifier = Modifier

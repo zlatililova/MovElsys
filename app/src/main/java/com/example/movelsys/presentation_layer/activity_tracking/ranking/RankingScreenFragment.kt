@@ -65,7 +65,6 @@ fun RankingScreenFragment(navController: NavController, viewModel: RankingViewMo
             BottomBarFragment(navController = navController)
         }
     }
-
 }
 
 
@@ -182,7 +181,6 @@ fun RowScope.TableCell(
             )
         }
     }
-
 }
 
 @Composable
@@ -229,6 +227,5 @@ fun TableScreen(viewModel: RankingViewModel, navController: NavController) {
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
-
     }
 }

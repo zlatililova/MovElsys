@@ -80,9 +80,7 @@ fun RegisterScreenFragment(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
                 placeholder = { Text("Enter your first name") },
-
                 )
-
             OutlinedTextField(
                 value = viewModel.email,
                 onValueChange = {
@@ -175,7 +173,6 @@ fun RegisterScreenFragment(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
                 placeholder = { Text("Enter profile picture URL") },
-
                 )
             OutlinedButton(
                 onClick = {
@@ -204,7 +201,6 @@ fun RegisterScreenFragment(
             Spacer(modifier = Modifier.padding(100.dp))
         }
     }
-
     val lifecycleOwner = LocalLifecycleOwner.current
     observeViewModel(lifecycleOwner, viewModel, context, navController)
 }
@@ -234,7 +230,6 @@ private fun observeViewModel(
                             "Error: " + it.error,
                             Toast.LENGTH_LONG
                         ).show()
-
                     }
                     is RegisterUIState.Loading -> {
                         navController.navigate(Screen.Load.route)

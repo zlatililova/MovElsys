@@ -71,7 +71,6 @@ fun LoadingAnimation() {
                             shape = CircleShape
                         )
                 )
-
                 if (index != lastCircle) {
                     Spacer(modifier = Modifier.width(spaceBetween))
                 }

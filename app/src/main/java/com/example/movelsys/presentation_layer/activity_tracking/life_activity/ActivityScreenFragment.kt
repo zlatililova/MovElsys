@@ -49,7 +49,10 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         color = MaterialTheme.colors.primary
                     )
                     CircularProgressIndicator(
-                        progress = viewModel.calculatePersentageOfGoal(viewModel.steps, viewModel.goalSteps),
+                        progress = viewModel.calculatePercentageOfGoal(
+                            viewModel.steps,
+                            viewModel.goalSteps
+                        ),
                         strokeWidth = 20.dp,
                         modifier = Modifier.size(350.dp),
                         color = MaterialTheme.colors.secondary
@@ -59,16 +62,15 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     item {
                         ProgressBar(
                             period = "Weekly",
-                            percentage = viewModel.calculatePersentageOfGoal(
+                            percentage = viewModel.calculatePercentageOfGoal(
                                 viewModel.weeklySteps,
                                 (viewModel.goalSteps * 7)
                             ),
                             steps = viewModel.weeklySteps
                         )
-                        //Spacer(modifier = Modifier.padding(20.dp))
                         ProgressBar(
                             period = "Monthly",
-                            percentage = viewModel.calculatePersentageOfGoal(
+                            percentage = viewModel.calculatePercentageOfGoal(
                                 viewModel.monthlySteps,
                                 (viewModel.goalSteps * 30)
                             ),
@@ -77,8 +79,6 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                     }
                 }
                 )
-
-
             }
         }
         Row {
@@ -88,12 +88,11 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
 }
 
 @Composable
-fun ProgressBar(period: String, percentage: Float, steps: Int){
+fun ProgressBar(period: String, percentage: Float, steps: Int) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-
+    ) {
         Text(
             text = "$period steps: ",
             fontSize = 20.sp,

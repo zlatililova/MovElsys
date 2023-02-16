@@ -22,6 +22,8 @@ fun WelcomeScreenFragment(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(20.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.running_person_no_background),

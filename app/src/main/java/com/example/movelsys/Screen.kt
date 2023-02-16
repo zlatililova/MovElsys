@@ -10,5 +10,4 @@ sealed class Screen(val route: String){
     object Ranking: Screen(route = "ranking_screen")
     object TeamDetails: Screen(route = "team_details_screen")
     object Profile: Screen(route = "profile_screen")
-
 }

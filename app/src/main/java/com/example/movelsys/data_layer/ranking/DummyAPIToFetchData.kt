@@ -6,12 +6,10 @@ import com.google.gson.Gson
 
 //this whole class is a mock of an API. The concept of the project is to connect to a real API, created as a diploma paper by another student at ELSYS
 class DummyAPIToFetchData {
-
     private fun fetchCurrentUserTeam(uid: String): String {
         //fetch json with the people of current user's group
         val user = Firebase.auth.currentUser
         val photo = user?.photoUrl.toString()
-
         val person1 = Person(
             name = "Ivan Ivanov",
             profilePicture = "https://as1.ftcdn.net/v2/jpg/00/64/67/52/1000_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg",
@@ -28,7 +26,13 @@ class DummyAPIToFetchData {
             totalWeeklySteps = 30659
         )
         val person4 =
-            user?.displayName?.let { Person(name = it, profilePicture = photo, totalWeeklySteps = 28854) }
+            user?.displayName?.let {
+                Person(
+                    name = it,
+                    profilePicture = photo,
+                    totalWeeklySteps = 28854
+                )
+            }
         val person5 = Person(
             name = "Ivanina Georgieva",
             profilePicture = "https://w7.pngwing.com/pngs/396/737/png-transparent-infj-personality-type-myers-briggs-type-indicator-personality-test-infj-fictional-character-individual-advocate.png",
@@ -53,7 +57,7 @@ class DummyAPIToFetchData {
         return "Golden"
     }
 
-    fun fetchCurrentLeagueTeams(league: String): String{
+    fun fetchCurrentLeagueTeams(league: String): String {
         var mapOfTeams = mutableMapOf<Int, Pair<String, Int>>()
         mapOfTeams[1] = Pair("Soccer Stars", 65054)
         mapOfTeams[2] = Pair("Amazing team of 5", 54054)
@@ -70,12 +74,12 @@ class DummyAPIToFetchData {
     }
 
     fun fetchDesiredTeam(teamRanking: Int, league: String): String {
-        //the idea is to fetch data from Kalin Georgiev's API
-        //this class is a mock function from K.Georgiev's API that returns a JSON with the team on the teamRanking page
-        if(teamRanking == 2){
+        //the idea is to fetch data from other diploma project's API
+        //this class is a mock function from another diploma project's API that returns a JSON with the team on the teamRanking page
+        if (teamRanking == 2) {
             return fetchCurrentUserTeam("0")
         }
-        if(teamRanking == 1){
+        if (teamRanking == 1) {
             val person1 = Person(
                 name = "John Doe",
                 profilePicture = "https://as1.ftcdn.net/v2/jpg/00/64/67/52/1000_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg",
@@ -85,7 +89,7 @@ class DummyAPIToFetchData {
             val gson = Gson()
             return gson.toJson(dummyJSON)
         }
-        if(teamRanking == 3){
+        if (teamRanking == 3) {
             val person1 = Person(
                 name = "Jane Doe",
                 profilePicture = "https://www.graphicpie.com/wp-content/uploads/2020/11/cyan-among-us-character.png",
@@ -95,7 +99,7 @@ class DummyAPIToFetchData {
             val gson = Gson()
             return gson.toJson(dummyJSON)
         }
-        if(teamRanking == 4){
+        if (teamRanking == 4) {
             val person1 = Person(
                 name = "Maria Ivanova",
                 profilePicture = "https://www.graphicpie.com/wp-content/uploads/2020/11/among-us-green-png.png, ",
@@ -105,7 +109,7 @@ class DummyAPIToFetchData {
             val gson = Gson()
             return gson.toJson(dummyJSON)
         }
-        if(teamRanking == 5){
+        if (teamRanking == 5) {
             val person1 = Person(
                 name = "Dimitrichka Georgieva",
                 profilePicture = "https://w7.pngwing.com/pngs/396/737/png-transparent-infj-personality-type-myers-briggs-type-indicator-personality-test-infj-fictional-character-individual-advocate.png",
@@ -114,8 +118,7 @@ class DummyAPIToFetchData {
             val dummyJSON = listOf(person1, person1, person1, person1, person1, person1)
             val gson = Gson()
             return gson.toJson(dummyJSON)
-        }
-        else{
+        } else {
             val person1 = Person(
                 name = "Georgi Panchev",
                 profilePicture = "https://png.pngitem.com/pimgs/s/22-220435_transparent-history-icon-png-iconos-png-inventario-png.png ",
@@ -125,7 +128,5 @@ class DummyAPIToFetchData {
             val gson = Gson()
             return gson.toJson(dummyJSON)
         }
-
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.movelsys.presentation_layer.profile
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -26,19 +25,18 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(
     val profileUpdateUseCase: ProfileUpdateUseCase,
     private val validateCredentials: ValidateCredentials
-): ViewModel() {
+) : ViewModel() {
     private val user = Firebase.auth.currentUser
     var name = mutableStateOf(user?.displayName)
     var newName: String by mutableStateOf("")
     var profilePicture = mutableStateOf(user?.photoUrl)
-    var newProfilePicture:String by mutableStateOf("")
+    var newProfilePicture: String by mutableStateOf("")
     var newEmail: String by mutableStateOf("")
     var email = mutableStateOf(user?.email)
     var password: String by mutableStateOf("")
     var confirmationPass: String by mutableStateOf("")
     var goalSteps by mutableStateOf(0)
     var newGoal by mutableStateOf("")
-
     var isChangeMade = false
 
     private val _uiStateFlow = MutableStateFlow<ProfileUIState>(ProfileUIState.Initial)
@@ -46,7 +44,7 @@ class ProfileViewModel(
 
     var nameError: String? by mutableStateOf("Update your name")
     var nameErrorCheck: Boolean = false
-    fun errorCheckName(){
+    fun errorCheckName() {
         val error: Errors? = validateCredentials.nameErrorCheck(newName)
         if (error != null) {
             nameError = error.Message
@@ -55,7 +53,6 @@ class ProfileViewModel(
             nameError = null
             nameErrorCheck = false
         }
-
     }
 
     var emailError: String? by mutableStateOf("Update your email")
@@ -104,7 +101,6 @@ class ProfileViewModel(
     var profilePictureErrorCheck: Boolean = false
     fun errorCheckProfilePicture() {
         val error: Errors? = validateCredentials.nameErrorCheck(newProfilePicture)
-
         if (error != null) {
             profilePictureError = error.Message
             profilePictureErrorCheck = true
@@ -115,7 +111,7 @@ class ProfileViewModel(
     }
 
     fun enableButton(code: String): Boolean {
-        when(code){
+        when (code) {
             "email" -> return emailError == null
             "name" -> return nameError == null
             "password" -> return passwordError == null && confirmationPasswordError == null
@@ -141,7 +137,7 @@ class ProfileViewModel(
                     }
                 }
             })
-       isChangeMade = true
+        isChangeMade = true
     }
 
     fun updateEmail() {
@@ -213,16 +209,15 @@ class ProfileViewModel(
         isChangeMade = false
     }
 
-    @SuppressLint("StaticFieldLeak")
     private lateinit var context: Context
     private lateinit var activity: Activity
-    fun getActivityAndContext(context: Context, activity: Activity){
+    fun getActivityAndContext(context: Context, activity: Activity) {
         this.context = context
         this.activity = activity
         fetchLastSavedSteps()
     }
 
-    fun signOut(){
+    fun signOut() {
         val auth = Firebase.auth
         auth.signOut()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -234,8 +229,8 @@ class ProfileViewModel(
         if (newGoal != "") {
             if (newGoal.toInt() != 0) {
                 goalSteps = newGoal.toInt()
-                val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)?: return
-                with (sharedPref.edit()) {
+                val sharedPref = activity.getPreferences(Context.MODE_PRIVATE) ?: return
+                with(sharedPref.edit()) {
                     putInt("newGoalSteps", goalSteps)
                     apply()
                 }
@@ -244,7 +239,7 @@ class ProfileViewModel(
         }
     }
 
-    fun fetchLastSavedSteps(){
+    private fun fetchLastSavedSteps() {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
         val defaultValue = 0
         if (sharedPref != null) {
@@ -252,5 +247,4 @@ class ProfileViewModel(
         }
         Log.i("Steps", goalSteps.toString())
     }
-
 }

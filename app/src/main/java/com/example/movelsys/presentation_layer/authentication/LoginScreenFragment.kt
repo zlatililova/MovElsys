@@ -75,7 +75,6 @@ fun LoginScreenFragment(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
                 placeholder = { Text("Enter your email") },
-
                 )
             OutlinedTextField(
                 value = viewModel.password,
@@ -104,7 +103,6 @@ fun LoginScreenFragment(
                 onClick = {
                     viewModel.login()
                     viewModel.enableButton()
-
                 },
                 enabled = viewModel.areCredentialsRight,
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

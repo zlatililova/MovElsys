@@ -3,6 +3,8 @@ package com.example.movelsys.domain_layer.use_cases
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorData
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchData
@@ -31,7 +33,8 @@ class GoogleFetchUseCase(
 
     fun fetchCurrentSteps(): Int {
         val timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
                 override fun run() {
                     googleSensorData.getDailySteps()
                 }
@@ -45,8 +48,19 @@ class GoogleFetchUseCase(
         return googleSensorData.getWeeklySteps()
     }
 
-    fun fetchMonthlySteps(): Int {
-        Log.e("UC WEEKLY STEPS", googleFetchData.getMonthlySteps().toString())
+    fun fetchMonthlySteps(counter: Int): Int {
+        if (counter < 1) {
+            googleFetchData.fetchPastMonthStepCount(object : Responses {
+                override fun onSuccess() {
+                    Log.i("Success", "Success")
+                }
+
+                override fun onError(error: String) {
+                    Log.i("Error", error)
+                }
+            })
+        }
+        Log.e("UC MONTHLY STEPS", googleFetchData.getMonthlySteps().toString())
         return googleFetchData.getMonthlySteps()
     }
 

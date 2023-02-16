@@ -18,9 +18,11 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     var steps: Int = 0
     var weeklySteps: Int = 0
     var monthlySteps: Int = 0
+    var areWeeklyAndMonthlyStepsFetched = false
     var goalSteps by mutableStateOf(0)
     var newGoal by mutableStateOf("")
     lateinit var activity: Activity
+
 
     fun fetchLastSavedSteps(){
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
@@ -50,9 +52,16 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     fun updateStepCount() {
         viewModelScope.launch {
             steps = googleFetchUseCase.fetchCurrentSteps()
+        }
+    }
+
+    fun fetchWeeklyAndMonthlySteps(){
+        if(!areWeeklyAndMonthlyStepsFetched){
             weeklySteps = googleFetchUseCase.fetchWeeklySteps()
             monthlySteps = googleFetchUseCase.fetchMonthlySteps()
+            //areWeeklyAndMonthlyStepsFetched = true
         }
+
     }
 
 

@@ -1,22 +1,20 @@
-package com.example.movelsys.presentation_layer.activity_tracking
+package com.example.movelsys.presentation_layer.activity_tracking.life_activity
 
 import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityViewModel
+import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
+import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 
 @Composable
 fun ActivityScreenFragment(navController: NavController, viewModel: ActivityViewModel) {
@@ -26,6 +24,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
     )
     viewModel.activity = LocalContext.current as Activity
     viewModel.fetchLastSavedSteps()
+    //viewModel.fetchWeeklyAndMonthlySteps()
     Column {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
@@ -36,12 +35,12 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
             item {
                 TopBarFragment(navController, false)
                 viewModel.updateStepCount()
-                /*Text(
-                    text = "Today's steps: ",
+                Text(
+                    text = "Daily steps: ",
                     fontSize = 30.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(20.dp)
+                    modifier = Modifier.padding(top = 20.dp, bottom = 10.dp)
                 )
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     Text(
@@ -51,19 +50,37 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         color = MaterialTheme.colors.primary
                     )
                     CircularProgressIndicator(
-                        progress = viewModel.calculatePersentageOfGoal(),
+                        progress = viewModel.calculatePersentageOfGoal(viewModel.steps, viewModel.goalSteps),
                         strokeWidth = 20.dp,
                         modifier = Modifier.size(350.dp),
                         color = MaterialTheme.colors.secondary
                     )
-                }*/
-                ProgressBar(period = "Daily", persentage = viewModel.calculatePersentageOfGoal(viewModel.steps, viewModel.goalSteps), steps = viewModel.steps)
-                Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                ProgressBar(period = "Weekly", persentage = viewModel.calculatePersentageOfGoal(viewModel.weeklySteps, (viewModel.goalSteps*7)), steps = viewModel.weeklySteps)
-                Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                ProgressBar(period = "Monthly", persentage = viewModel.calculatePersentageOfGoal(viewModel.monthlySteps, (viewModel.goalSteps*30)), steps = viewModel.monthlySteps)
-                Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                    OutlinedTextField(
+                }
+                LazyRow(content = {
+                    item {
+                        ProgressBar(
+                            period = "Weekly",
+                            percentage = viewModel.calculatePersentageOfGoal(
+                                viewModel.weeklySteps,
+                                (viewModel.goalSteps * 7)
+                            ),
+                            steps = viewModel.weeklySteps
+                        )
+                        //Spacer(modifier = Modifier.padding(20.dp))
+                        ProgressBar(
+                            period = "Monthly",
+                            percentage = viewModel.calculatePersentageOfGoal(
+                                viewModel.monthlySteps,
+                                (viewModel.goalSteps * 30)
+                            ),
+                            steps = viewModel.monthlySteps
+                        )
+                    }
+                }
+                )
+                /*Spacer(modifier = Modifier.padding(bottom = 20.dp))
+
+                OutlinedTextField(
                         value = viewModel.newGoal,
                         onValueChange = {
                             if (it.isNotEmpty()) {
@@ -85,7 +102,6 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
                         modifier = Modifier
                             .padding(start = 0.dp, end = 25.dp)
-                            //.fillMaxWidth()
                             .size(width = 150.dp, height = 60.dp)
                     ) {
                         Text(
@@ -93,7 +109,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                             textAlign = TextAlign.Center,
                             color = Color.White
                         )
-                    }
+                    }*/
             }
         }
         Row {
@@ -103,26 +119,32 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
 }
 
 @Composable
-fun ProgressBar(period: String, persentage: Float, steps: Int){
-    Text(
-        text = "$period steps: ",
-        fontSize = 30.sp,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(20.dp)
-    )
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+fun ProgressBar(period: String, percentage: Float, steps: Int){
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+
         Text(
-            text = steps.toString(),
-            fontSize = 100.sp,
+            text = "$period steps: ",
+            fontSize = 20.sp,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier.padding(20.dp)
         )
-        CircularProgressIndicator(
-            progress = persentage,
-            strokeWidth = 25.dp,
-            modifier = Modifier.size(350.dp),
-            color = MaterialTheme.colors.secondary
-        )
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Text(
+                text = steps.toString(),
+                fontSize = 30.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colors.primary
+            )
+            CircularProgressIndicator(
+                progress = percentage,
+                strokeWidth = 15.dp,
+                modifier = Modifier.size(150.dp),
+                color = MaterialTheme.colors.secondary
+            )
+        }
     }
 }

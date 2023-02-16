@@ -12,4 +12,5 @@ interface GoogleFetchData {
     fun fetchPastMonthStepCount(responses: Responses)
     fun getActivityAndContext(activity: Activity, context: Context)
     fun getDataPointList(): String
+    fun getMonthlySteps(): Int
 }

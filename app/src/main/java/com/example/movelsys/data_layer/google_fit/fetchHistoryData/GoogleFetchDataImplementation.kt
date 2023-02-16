@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation : GoogleFetchData {
     private var dataPointMap = mutableMapOf<String, Int>()
+    private var monthlySteps = mutableStateOf(0)
     private lateinit var activity: Activity
     private lateinit var context: Context
     private val fitnessOptions = FitnessOptions.builder()
@@ -82,6 +84,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             val startTimeMillis = changeDateSignature(dp.getStartTimeString())
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
+            monthlySteps.value += steps
             dataPointMap[startTimeMillis] = steps
         }
     }
@@ -116,4 +119,8 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         }
     }
 
+    override fun getMonthlySteps(): Int {
+        Log.e("M STEPS", monthlySteps.value.toString())
+        return monthlySteps.value
+    }
 }

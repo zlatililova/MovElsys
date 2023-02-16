@@ -2,6 +2,7 @@ package com.example.movelsys.domain_layer.use_cases
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorData
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchData
@@ -40,27 +41,13 @@ class GoogleFetchUseCase(
     }
 
     fun fetchWeeklySteps(): Int {
-        /*val timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    googleSensorData.getWeeklySteps()
-                }
-            }, 0, 1000
-        )*/
+        Log.e("UC WEEKLY STEPS", googleSensorData.getWeeklySteps().toString())
         return googleSensorData.getWeeklySteps()
     }
 
     fun fetchMonthlySteps(): Int {
-        /*val timer = Timer()
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    googleSensorData.getMonthlySteps()
-                }
-            }, 0, 1000
-        )*/
-        return googleSensorData.getMonthlySteps()
+        Log.e("UC WEEKLY STEPS", googleFetchData.getMonthlySteps().toString())
+        return googleFetchData.getMonthlySteps()
     }
 
 }

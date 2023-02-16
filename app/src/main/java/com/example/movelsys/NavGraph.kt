@@ -11,7 +11,7 @@ import com.example.movelsys.data_layer.profileManagement.ProfileUpdateImplementa
 import com.example.movelsys.data_layer.ranking.RankingFetchImplementation
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryScreenFragment
-import com.example.movelsys.presentation_layer.activity_tracking.ActivityScreenFragment
+import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.history.HistoryViewModel
 import com.example.movelsys.presentation_layer.activity_tracking.ranking.RankingScreenFragment
 import com.example.movelsys.presentation_layer.activity_tracking.life_activity.ActivityViewModel

@@ -30,7 +30,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }
         Log.i("Steps", goalSteps.toString())
-        if((timesWeeklyAndMonthlyStepsWereFetched <= 1 && monthlySteps == 0) || weeklySteps == 0){
+        if ((timesWeeklyAndMonthlyStepsWereFetched <= 1 && monthlySteps == 0) || weeklySteps == 0) {
             fetchWeeklyAndMonthlySteps()
             timesWeeklyAndMonthlyStepsWereFetched += 1
         }
@@ -44,7 +44,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         } else {
             Log.i(TAG, "User already subscribed to STEP_COUNT_DELTA")
         }
-        googleFetchUseCase.detectGivenPermissions(activity,context)
+        googleFetchUseCase.detectGivenPermissions(activity, context)
     }
 
     fun updateStepCount() {
@@ -57,21 +57,20 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         viewModelScope.launch {
             monthlySteps = googleFetchUseCase.fetchMonthlySteps()
             weeklySteps = googleFetchUseCase.fetchWeeklySteps()
-            timesWeeklyAndMonthlyStepsWereFetched-=1
+            timesWeeklyAndMonthlyStepsWereFetched -= 1
         }
     }
 
     fun calculatePercentageOfGoal(steps: Int, goalSteps: Int): Pair<Int, Float> {
         var percentage = steps.toFloat() / goalSteps.toFloat()
         var index = 0
-        while(percentage > 1f){
+        while (percentage > 1f) {
             percentage -= 1f
-            index+=1
-            if(index >= 2){
+            index += 1
+            if (index >= 2) {
                 index = 0
             }
         }
         return Pair(index, percentage)
-
     }
 }

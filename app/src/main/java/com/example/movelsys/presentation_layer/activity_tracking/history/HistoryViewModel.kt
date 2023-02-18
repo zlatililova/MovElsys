@@ -27,7 +27,7 @@ class HistoryViewModel(
     fun getActivityAndContext(activity: Activity, context: Context) {
         fetchGoalSteps(activity)
         googleFetchUseCase.getNecessaryParameters(activity, context)
-        googleFetchUseCase.detectGivenPermissions(activity,context)
+        googleFetchUseCase.detectGivenPermissions(activity, context)
         if (timesDataWasFetched == 0) {
             startGoogleFit()
         }
@@ -62,7 +62,7 @@ class HistoryViewModel(
         googleFitSteps = googleFitSteps.reversed()
     }
 
-    private fun fetchGoalSteps(activity: Activity){
+    private fun fetchGoalSteps(activity: Activity) {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
         val defaultValue = 0
         if (sharedPref != null) {
@@ -73,14 +73,13 @@ class HistoryViewModel(
     fun calculatePercentageOfGoal(steps: Int): Pair<Int, Float> {
         var percentage = steps.toFloat() / goalSteps.toFloat()
         var index = 0
-        while(percentage > 1f){
+        while (percentage > 1f) {
             percentage -= 1f
-            index+=1
-            if(index >= 2){
+            index += 1
+            if (index >= 2) {
                 index = 0
             }
         }
         return Pair(index, percentage)
-
     }
 }

@@ -87,7 +87,8 @@ fun RowScope.HistoryTableCell(
     viewModel: HistoryViewModel
 ) {
 
-    val colorPalette = mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
+    val colorPalette =
+        mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
 
     if (type == "icon") {
         Box(
@@ -105,7 +106,7 @@ fun RowScope.HistoryTableCell(
                 progress = viewModel.calculatePercentageOfGoal(steps).second,
                 strokeWidth = 7.dp,
                 modifier = Modifier.size(30.dp),
-                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first+1],
+                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first + 1],
             )
         }
     }

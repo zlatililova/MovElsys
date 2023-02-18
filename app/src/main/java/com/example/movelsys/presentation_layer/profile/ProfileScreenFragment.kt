@@ -346,6 +346,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         color = Color.White
                     )
                 }
+                Spacer(modifier = Modifier.padding(120.dp))
             }
         }
         Row {

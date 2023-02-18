@@ -67,8 +67,8 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         while(percentage > 1f){
             percentage -= 1f
             index+=1
-            if(index > 2){
-                index = 1
+            if(index >= 2){
+                index = 0
             }
         }
         return Pair(index, percentage)

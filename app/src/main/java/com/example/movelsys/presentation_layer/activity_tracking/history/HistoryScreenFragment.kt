@@ -1,7 +1,6 @@
 package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -14,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.movelsys.LoadingAnimation
@@ -84,8 +83,12 @@ fun RowScope.HistoryTableCell(
     text: String,
     weight: Float,
     type: String,
-    steps: Int
+    steps: Int,
+    viewModel: HistoryViewModel
 ) {
+
+    val colorPalette = mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
+
     if (type == "icon") {
         Box(
             modifier = Modifier
@@ -96,13 +99,13 @@ fun RowScope.HistoryTableCell(
                 progress = 1f,
                 strokeWidth = 7.dp,
                 modifier = Modifier.size(30.dp),
-                color = Color.LightGray,
+                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first],
             )
             CircularProgressIndicator(
-                progress = (steps.toFloat() / 10000.0F),
+                progress = viewModel.calculatePercentageOfGoal(steps).second,
                 strokeWidth = 7.dp,
                 modifier = Modifier.size(30.dp),
-                color = MaterialTheme.colors.secondary,
+                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first+1],
             )
         }
     }
@@ -144,9 +147,9 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            HistoryTableCell(text = "Date", weight = dateColumnWeight, "heading", 0)
-            HistoryTableCell(text = "Steps", weight = stepsColumnWeight, "heading", 0)
-            HistoryTableCell(text = "Goal", weight = goalColumnWeight, "heading", 0)
+            HistoryTableCell(text = "Date", weight = dateColumnWeight, "heading", 0, viewModel)
+            HistoryTableCell(text = "Steps", weight = stepsColumnWeight, "heading", 0, viewModel)
+            HistoryTableCell(text = "Goal", weight = goalColumnWeight, "heading", 0, viewModel)
         }
         viewModel.googleFitDates.forEachIndexed { index, date ->
             Row(
@@ -160,19 +163,22 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
                     text = date,
                     weight = dateColumnWeight,
                     "text",
-                    0
+                    0,
+                    viewModel
                 )
                 HistoryTableCell(
                     text = viewModel.googleFitSteps[index].toString(),
                     weight = stepsColumnWeight,
                     "text",
-                    0
+                    0,
+                    viewModel
                 )
                 HistoryTableCell(
                     text = "Goal met",
                     weight = goalColumnWeight,
                     "icon",
-                    viewModel.googleFitSteps[index]
+                    viewModel.googleFitSteps[index],
+                    viewModel
                 )
             }
             Divider(

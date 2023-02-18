@@ -116,7 +116,7 @@ class GoogleSensorDataImplementation : GoogleSensorData {
     }
 
     override fun getMonthlySteps(): Int {
-        var monthlySteps = 0
+       var monthlySteps = 0
         val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneId.systemDefault()).minusHours(10)
         } else {

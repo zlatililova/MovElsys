@@ -19,13 +19,13 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     var weeklySteps: Int = 0
     var monthlySteps: Int = 0
     private var timesWeeklyAndMonthlyStepsWereFetched = 0
-    var goalSteps by mutableStateOf(0)
+    var goalSteps by mutableStateOf(10000)
     lateinit var activity: Activity
 
 
     fun fetchLastSavedSteps() {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
-        val defaultValue = 0
+        val defaultValue = 10000
         if (sharedPref != null) {
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }

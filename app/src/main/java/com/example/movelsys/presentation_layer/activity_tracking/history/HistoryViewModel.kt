@@ -22,7 +22,7 @@ class HistoryViewModel(
     private var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
     var googleFitDates: List<String> by mutableStateOf(listOf())
     var googleFitSteps: List<Int> by mutableStateOf(listOf())
-    var goalSteps by mutableStateOf(0)
+    var goalSteps by mutableStateOf(10000)
 
     fun getActivityAndContext(activity: Activity, context: Context) {
         fetchGoalSteps(activity)
@@ -64,7 +64,7 @@ class HistoryViewModel(
 
     private fun fetchGoalSteps(activity: Activity) {
         val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
-        val defaultValue = 0
+        val defaultValue = 10000
         if (sharedPref != null) {
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }

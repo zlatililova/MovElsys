@@ -21,8 +21,9 @@ fun WelcomeScreenFragment(
     navController: NavController,
 ) {
     Column(
-        modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(20.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.running_person_no_background),
@@ -32,7 +33,7 @@ fun WelcomeScreenFragment(
                 .fillMaxWidth()
                 .size(350.dp)
         )
-        Text(text = "MovElsys", fontFamily = FontFamily.Serif, fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
+        Text(text = "MovElsys", fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedButton(
             onClick = {
@@ -41,7 +42,7 @@ fun WelcomeScreenFragment(
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 20.dp)
+                    .padding(top = 20.dp, bottom = 20.dp)
         ) {
             Text(
                 text = "Login",

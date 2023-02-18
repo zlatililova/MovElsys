@@ -1,27 +1,24 @@
 package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movelsys.LoadingAnimation
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
@@ -39,10 +36,9 @@ fun HistoryScreenFragment(
     viewModel.getActivityAndContext(context, activity)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TopBarFragment(navController)
+        TopBarFragment(navController, false)
         Text(
             text = "History",
-            fontFamily = FontFamily.Serif,
             fontSize = 50.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -56,19 +52,25 @@ fun HistoryScreenFragment(
                 .padding(top = 10.dp, bottom = 20.dp)
                 .size(width = 100.dp, height = 50.dp)
         ) {
-            Text(text = "Refresh", textAlign = TextAlign.Center, color = Color.White)
+            Icon(imageVector = Icons.Filled.Refresh, contentDescription = null)
         }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+        Column(
+            modifier = Modifier.weight(1f)
         ) {
-            item {
-                if (viewModel.timesDataWasFetched > 0) {
-                    HistoryGrid(viewModel)
+            if (viewModel.timesDataWasFetched <= 0) {
+                Column {
+                    LoadingAnimation()
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    item {
+                        HistoryGrid(viewModel)
+                    }
                 }
             }
-
         }
         Row {
             BottomBarFragment(navController = navController)
@@ -81,34 +83,36 @@ fun RowScope.HistoryTableCell(
     text: String,
     weight: Float,
     type: String,
-    steps: Int
+    steps: Int,
+    viewModel: HistoryViewModel
 ) {
+
+    val colorPalette =
+        mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
+
     if (type == "icon") {
         Box(
             modifier = Modifier
                 .weight(weight)
-                .padding(start = 30.dp)
+                .padding(start = 45.dp)
         ) {
-            if (steps >= 10000) {
-                Icon(
-                    imageVector = Icons.Filled.DirectionsRun,
-                    contentDescription = "goal met",
-                    modifier = Modifier.size(30.dp)
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Filled.EmojiPeople,
-                    contentDescription = "goal not met",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
+            CircularProgressIndicator(
+                progress = 1f,
+                strokeWidth = 7.dp,
+                modifier = Modifier.size(30.dp),
+                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first],
+            )
+            CircularProgressIndicator(
+                progress = viewModel.calculatePercentageOfGoal(steps).second,
+                strokeWidth = 7.dp,
+                modifier = Modifier.size(30.dp),
+                color = colorPalette[viewModel.calculatePercentageOfGoal(steps).first + 1],
+            )
         }
     }
     if (type == "heading") {
         Text(
             text = text,
-            fontFamily = FontFamily.Serif,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -121,6 +125,7 @@ fun RowScope.HistoryTableCell(
     if (type == "text") {
         Text(
             text = text,
+            fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.primary,
@@ -131,45 +136,50 @@ fun RowScope.HistoryTableCell(
     }
 }
 
+
 @Composable
 fun HistoryGrid(viewModel: HistoryViewModel) {
-    val dateColumnWeight = .4f
+    val dateColumnWeight = .3f
     val stepsColumnWeight = .4f
-    val goalColumnWeight = .25f
+    val goalColumnWeight = .3f
     Column(
         Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            HistoryTableCell(text = "Date", weight = dateColumnWeight, "heading", 0)
-            HistoryTableCell(text = "Steps", weight = stepsColumnWeight, "heading", 0)
-            HistoryTableCell(text = "Goal", weight = goalColumnWeight, "heading", 0)
+            HistoryTableCell(text = "Date", weight = dateColumnWeight, "heading", 0, viewModel)
+            HistoryTableCell(text = "Steps", weight = stepsColumnWeight, "heading", 0, viewModel)
+            HistoryTableCell(text = "Goal", weight = goalColumnWeight, "heading", 0, viewModel)
         }
         viewModel.googleFitDates.forEachIndexed { index, date ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+                verticalAlignment = Alignment.CenterVertically,
+
+                ) {
                 HistoryTableCell(
                     text = date,
                     weight = dateColumnWeight,
                     "text",
-                    0
+                    0,
+                    viewModel
                 )
                 HistoryTableCell(
                     text = viewModel.googleFitSteps[index].toString(),
                     weight = stepsColumnWeight,
-                    "heading",
-                    0
+                    "text",
+                    0,
+                    viewModel
                 )
                 HistoryTableCell(
                     text = "Goal met",
                     weight = goalColumnWeight,
                     "icon",
-                    viewModel.googleFitSteps[index]
+                    viewModel.googleFitSteps[index],
+                    viewModel
                 )
             }
             Divider(
@@ -178,20 +188,5 @@ fun HistoryGrid(viewModel: HistoryViewModel) {
                 modifier = Modifier.padding(bottom = 20.dp)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreviewHistory() {
-    MovelsysTheme {
-        HistoryScreenFragment(
-            navController = rememberNavController(), viewModel = HistoryViewModel(
-                googleFetchUseCase = GoogleFetchUseCase(
-                    GoogleFetchDataImplementation(),
-                    googleSensorData = GoogleSensorDataImplementation()
-                )
-            )
-        )
     }
 }

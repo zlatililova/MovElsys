@@ -67,6 +67,7 @@ class LoginViewModel(
                         _uiStateFlow.emit(LoginUIState.Success)
                     }
                 }
+
                 override fun onError(string: String?) {
                     viewModelScope.launch {
                         _uiStateFlow.emit(LoginUIState.Error(string))

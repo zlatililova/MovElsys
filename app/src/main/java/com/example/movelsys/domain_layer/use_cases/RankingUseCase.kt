@@ -5,8 +5,7 @@ import com.example.movelsys.data_layer.ranking.RankingFetch
 class RankingUseCase(
     private val rankingFetch: RankingFetch
 ) {
-    fun fetchCurrentUserTeam() = rankingFetch.fetchCurrentUserTeam()
+    fun fetchCurrentUserLeague() = rankingFetch.fetchLeagueName()
+    fun fetchCurrentLeagueTeams() = rankingFetch.fetchCurrentLeagueTeams()
     fun fetchDesiredTeam(teamRank: Int) = rankingFetch.fetchDesiredTeam(teamRank)
-    fun fetchCurrentTeamRanking() = rankingFetch.currentTeamRanking
-    fun fetchTeamCountInLeague() = rankingFetch.fetchLeagueNumberOfTeams()
 }

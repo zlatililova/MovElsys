@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     private fun androidActivityRecognitionAccess() {
         val permissionRequestActivityRecognitionCode = 1
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun androidAccessFineLocation(){
+    private fun androidAccessFineLocation() {
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -51,13 +52,17 @@ class MainActivity : ComponentActivity() {
                     permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     }
                     permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    } else -> {}
+                    }
+                    else -> {}
                 }
             }
         }
-        locationPermissionRequest.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION))
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
 }
 

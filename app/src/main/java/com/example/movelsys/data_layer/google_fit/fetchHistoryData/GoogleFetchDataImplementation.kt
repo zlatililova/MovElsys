@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
@@ -15,8 +16,10 @@ import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.request.DataReadRequest
 import com.google.gson.Gson
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation : GoogleFetchData {
@@ -27,7 +30,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
         .build()
-
     override var isUserSubscribedToStepsListener = false
 
     override fun subscribeToStepsListener() {
@@ -53,15 +55,13 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             TODO("VERSION.SDK_INT < O")
         }
         val startTime = endTime.minusWeeks(4)
-        val readRequest =
-            DataReadRequest.Builder()
-                .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
-                .bucketByTime(1, TimeUnit.DAYS)
-                .setTimeRange(
-                    startTime.toEpochSecond(), endTime.toEpochSecond(),
-                    TimeUnit.SECONDS
-                )
-                .build()
+        val readRequest = DataReadRequest.Builder()
+            .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
+            .bucketByTime(1, TimeUnit.DAYS)
+            .setTimeRange(
+                startTime.toEpochSecond(), endTime.toEpochSecond(),
+                TimeUnit.SECONDS
+            ).build()
         Fitness.getHistoryClient(
             activity,
             GoogleSignIn.getAccountForExtension(context, fitnessOptions)
@@ -81,7 +81,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
 
     private fun dumpDataSet(dataSet: DataSet) {
         for (dp in dataSet.dataPoints) {
-            val startTimeMillis = dp.getStartTimeString()
+            val startTimeMillis = changeDateSignature(dp.getStartTimeString())
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
             dataPointMap[startTimeMillis] = steps
@@ -105,5 +105,16 @@ class GoogleFetchDataImplementation : GoogleFetchData {
     override fun getDataPointList(): String {
         val gson = Gson()
         return gson.toJson(dataPointMap)
+    }
+
+    private fun changeDateSignature(string_date: String): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val formatter: DateTimeFormatter =
+                DateTimeFormatter.ofPattern("MMM dd")
+            val date = LocalDate.parse(string_date)
+            date.format(formatter)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
     }
 }

@@ -22,8 +22,7 @@ fun BottomBarFragment(
         "ACTIVITY" to Icons.Filled.EmojiPeople to Screen.Activity.route,
         "RANKING" to Icons.Filled.EmojiEvents to Screen.Ranking.route,
         "HISTORY" to Icons.Filled.AccessTime to Screen.History.route,
-        )
-
+    )
     TabRow(selectedTabIndex = BottomBarHelper.getLocalTabIndex()) {
         tabData.forEachIndexed { index, pair ->
             Tab(selected = checkIndexOfHighlightedTab(index), onClick = {
@@ -36,7 +35,6 @@ fun BottomBarFragment(
                 Icon(imageVector = pair.first.second, contentDescription = null)
             })
         }
-
     }
 }
 
@@ -47,22 +45,16 @@ object BottomBarHelper {
     fun getLocalTabIndex(): Int {
         return tabIndex
     }
+
     fun setLocalTabIndex(index: Int) {
         tabIndex = index
     }
+
     fun setLocalTabName(name: String) {
         tabName = name
     }
 }
 
-fun checkIndexOfHighlightedTab(index: Int): Boolean{
+fun checkIndexOfHighlightedTab(index: Int): Boolean {
     return index == BottomBarHelper.getLocalTabIndex()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreviewBottom() {
-    MovelsysTheme {
-        BottomBarFragment(navController = rememberNavController())
-    }
 }

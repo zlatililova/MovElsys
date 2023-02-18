@@ -13,24 +13,17 @@ class RankingFetchImplementation : RankingFetch {
     override var currentTeamRanking: String = ""
 
     init {
-        currentTeamLeague = user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
+        currentTeamLeague =
+            user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
         currentTeamRanking =
-            user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }.toString()
+            user?.let { dummyAPIToFetchData.fetchCurrentUserTeamRanking(it.uid).toString() }
+                .toString()
     }
 
-    override fun fetchCurrentUserTeam(): List<Person> {
+    override fun fetchDesiredTeam(ranking: Int): List<Person> {
         val gson = Gson()
         usersList = gson.fromJson(
-            user?.let { dummyAPIToFetchData.fetchCurrentUserTeam(it.uid) },
-            object : TypeToken<List<Person>>() {}.type
-        )
-        return usersList
-    }
-
-    override fun fetchDesiredTeam(teamRank: Int): List<Person> {
-        val gson = Gson()
-        usersList = gson.fromJson(
-            dummyAPIToFetchData.fetchDesiredTeam(teamRank, currentTeamLeague),
+            dummyAPIToFetchData.fetchDesiredTeam(ranking, currentTeamLeague),
             object : TypeToken<List<Person>>() {}.type
         )
         return usersList
@@ -38,5 +31,17 @@ class RankingFetchImplementation : RankingFetch {
 
     override fun fetchLeagueNumberOfTeams(): Int {
         return dummyAPIToFetchData.fetchLeagueNumberOfTeams(currentTeamLeague)
+    }
+
+    override fun fetchLeagueName(): String {
+        return user?.let { dummyAPIToFetchData.fetchCurrentUserLeague(it.uid) }.toString()
+    }
+
+    override fun fetchCurrentLeagueTeams(): Map<Int, Pair<String, Int>> {
+        val gson = Gson()
+        return gson.fromJson(
+            dummyAPIToFetchData.fetchCurrentLeagueTeams(currentTeamLeague),
+            object : TypeToken<Map<Int, Pair<String, Int>>>() {}.type
+        )
     }
 }

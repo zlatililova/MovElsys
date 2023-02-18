@@ -92,6 +92,7 @@ class RegisterViewModel(
             isConfirmationPasswordWrong = false
         }
     }
+
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =

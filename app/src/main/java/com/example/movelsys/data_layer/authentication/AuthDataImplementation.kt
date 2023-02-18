@@ -9,7 +9,6 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 
 class AuthDataImplementation : AuthData {
-
     private lateinit var auth: FirebaseAuth
 
     override fun login(
@@ -40,9 +39,9 @@ class AuthDataImplementation : AuthData {
                     val user = Firebase.auth.currentUser
                     val profileUpdates = userProfileChangeRequest {
                         displayName = name
-                        photoUri = if(profilePictureURL == ""){
+                        photoUri = if (profilePictureURL == "") {
                             Uri.parse("https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg")
-                        }else{
+                        } else {
                             Uri.parse(profilePictureURL)
                         }
                     }
@@ -58,5 +57,4 @@ class AuthDataImplementation : AuthData {
                 }
             }
     }
-
 }

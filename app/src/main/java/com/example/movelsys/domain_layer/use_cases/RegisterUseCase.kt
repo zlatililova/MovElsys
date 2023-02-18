@@ -11,6 +11,12 @@ class RegisterUseCase(private val authData: AuthData) {
         profilePictureURL: String,
         onRegister: OnRegister
     ) {
-        authData.register(email = email, password = password, name = name, profilePictureURL = profilePictureURL, onRegister = onRegister)
+        authData.register(
+            email = email,
+            password = password,
+            name = name,
+            profilePictureURL = profilePictureURL,
+            onRegister = onRegister
+        )
     }
 }

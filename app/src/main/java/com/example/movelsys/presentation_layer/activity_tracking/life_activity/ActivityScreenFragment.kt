@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,9 @@ import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
 
 @Composable
 fun ActivityScreenFragment(navController: NavController, viewModel: ActivityViewModel) {
+
+    val colorPalette = mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
+
     viewModel.subscribeToStepsListener(
         context = LocalContext.current,
         activity = LocalContext.current as Activity
@@ -49,13 +53,25 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                         color = MaterialTheme.colors.primary
                     )
                     CircularProgressIndicator(
+                        progress = 1f,
+                        strokeWidth = 30.dp,
+                        modifier = Modifier.size(350.dp),
+                        color = colorPalette[viewModel.calculatePercentageOfGoal(
+                            viewModel.steps,
+                            viewModel.goalSteps
+                        ).first]
+                    )
+                    CircularProgressIndicator(
                         progress = viewModel.calculatePercentageOfGoal(
                             viewModel.steps,
                             viewModel.goalSteps
-                        ),
-                        strokeWidth = 20.dp,
+                        ).second,
+                        strokeWidth = 30.dp,
                         modifier = Modifier.size(350.dp),
-                        color = MaterialTheme.colors.secondary
+                        color = colorPalette[viewModel.calculatePercentageOfGoal(
+                            viewModel.steps,
+                            viewModel.goalSteps
+                        ).first+1]
                     )
                 }
                 LazyRow(content = {
@@ -65,16 +81,32 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
                             percentage = viewModel.calculatePercentageOfGoal(
                                 viewModel.weeklySteps,
                                 (viewModel.goalSteps * 7)
-                            ),
-                            steps = viewModel.weeklySteps
+                            ).second,
+                            steps = viewModel.weeklySteps,
+                            color = colorPalette[viewModel.calculatePercentageOfGoal(
+                                viewModel.weeklySteps,
+                                (viewModel.goalSteps * 7)
+                            ).first+1],
+                            bgColor = colorPalette[viewModel.calculatePercentageOfGoal(
+                                viewModel.weeklySteps,
+                                (viewModel.goalSteps * 7)
+                            ).first]
                         )
                         ProgressBar(
                             period = "Monthly",
                             percentage = viewModel.calculatePercentageOfGoal(
                                 viewModel.monthlySteps,
                                 (viewModel.goalSteps * 30)
-                            ),
-                            steps = viewModel.monthlySteps
+                            ).second,
+                            steps = viewModel.monthlySteps,
+                            color = colorPalette[viewModel.calculatePercentageOfGoal(
+                                viewModel.monthlySteps,
+                                (viewModel.goalSteps * 30)
+                            ).first+1],
+                            bgColor = colorPalette[viewModel.calculatePercentageOfGoal(
+                                viewModel.monthlySteps,
+                                (viewModel.goalSteps * 30)
+                            ).first]
                         )
                     }
                 }
@@ -88,7 +120,7 @@ fun ActivityScreenFragment(navController: NavController, viewModel: ActivityView
 }
 
 @Composable
-fun ProgressBar(period: String, percentage: Float, steps: Int) {
+fun ProgressBar(period: String, percentage: Float, steps: Int, color: Color, bgColor: Color) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -108,11 +140,18 @@ fun ProgressBar(period: String, percentage: Float, steps: Int) {
                 color = MaterialTheme.colors.primary
             )
             CircularProgressIndicator(
+                progress = 1f,
+                strokeWidth = 15.dp,
+                modifier = Modifier.size(150.dp),
+                color = bgColor
+            )
+            CircularProgressIndicator(
                 progress = percentage,
                 strokeWidth = 15.dp,
                 modifier = Modifier.size(150.dp),
-                color = MaterialTheme.colors.secondary
+                color = color
             )
         }
     }
 }
+

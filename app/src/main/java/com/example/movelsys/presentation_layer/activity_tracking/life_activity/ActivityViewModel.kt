@@ -4,9 +4,11 @@ import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
@@ -28,11 +30,9 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }
         Log.i("Steps", goalSteps.toString())
-        Log.e("W&MFetch", timesWeeklyAndMonthlyStepsWereFetched.toString())
         if((timesWeeklyAndMonthlyStepsWereFetched <= 1 && monthlySteps == 0) || weeklySteps == 0){
             fetchWeeklyAndMonthlySteps()
             timesWeeklyAndMonthlyStepsWereFetched += 1
-            Log.e("W&MFetch", timesWeeklyAndMonthlyStepsWereFetched.toString())
         }
 
     }
@@ -61,7 +61,17 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         }
     }
 
-    fun calculatePercentageOfGoal(steps: Int, goalSteps: Int): Float {
-        return steps.toFloat() / goalSteps.toFloat()
+    fun calculatePercentageOfGoal(steps: Int, goalSteps: Int): Pair<Int, Float> {
+        var percentage = steps.toFloat() / goalSteps.toFloat()
+        var index = 0
+        while(percentage > 1f){
+            percentage -= 1f
+            index+=1
+            if(index > 2){
+                index = 1
+            }
+        }
+        return Pair(index, percentage)
+
     }
 }

@@ -27,6 +27,7 @@ class GoogleSensorDataImplementation : GoogleSensorData {
         FitnessOptions.builder().addDataType(DataType.TYPE_STEP_COUNT_DELTA).build()
     private var currentStepCount by mutableStateOf(0)
     private var weeklyStepCount by mutableStateOf(0)
+    private var monthlyStepCount by mutableStateOf(0)
 
     override fun getActivityAndContext(activity: Activity, context: Context) {
         this.activity = activity
@@ -112,6 +113,43 @@ class GoogleSensorDataImplementation : GoogleSensorData {
                 Log.w(TAG, "There was an error reading data from Google Fit", e)
             }
         return weeklyStepCount
+    }
+
+    override fun getMonthlySteps(): Int {
+        var monthlySteps = 0
+        val endTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().atZone(ZoneId.systemDefault()).minusHours(10)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val startTime = endTime.minusWeeks(4)
+        val readRequest =
+            DataReadRequest.Builder()
+                .aggregate(DataType.AGGREGATE_STEP_COUNT_DELTA)
+                .bucketByTime(1, TimeUnit.DAYS)
+                .setTimeRange(
+                    startTime.toEpochSecond(), endTime.toEpochSecond(),
+                    TimeUnit.SECONDS
+                )
+                .build()
+        Fitness.getHistoryClient(
+            activity,
+            GoogleSignIn.getAccountForExtension(context, fitnessOptions)
+        )
+            .readData(readRequest)
+            .addOnSuccessListener { response ->
+                for (dataSet in response.buckets.flatMap { it.dataSets }) {
+                    for (dp in dataSet.dataPoints) {
+                        val field = dp.dataType.fields[0]
+                        monthlySteps += dp.getValue(field).asInt()
+                    }
+                    monthlyStepCount = monthlySteps
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "There was an error reading data from Google Fit", e)
+            }
+        return monthlyStepCount
     }
 
     override fun getCurrentSteps(): Int {

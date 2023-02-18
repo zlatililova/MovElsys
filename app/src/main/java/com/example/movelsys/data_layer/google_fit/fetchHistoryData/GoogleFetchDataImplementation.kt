@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit
 
 class GoogleFetchDataImplementation : GoogleFetchData {
     private var dataPointMap = mutableMapOf<String, Int>()
-    private var monthlySteps = mutableStateOf(0)
     private lateinit var activity: Activity
     private lateinit var context: Context
     private val fitnessOptions = FitnessOptions.builder()
@@ -85,7 +84,6 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             val startTimeMillis = changeDateSignature(dp.getStartTimeString())
             val field = dp.dataType.fields[0]
             val steps = dp.getValue(field).asInt()
-            monthlySteps.value += steps
             dataPointMap[startTimeMillis] = steps
         }
     }
@@ -109,7 +107,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         return gson.toJson(dataPointMap)
     }
 
-    fun changeDateSignature(string_date: String): String {
+    private fun changeDateSignature(string_date: String): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val formatter: DateTimeFormatter =
                 DateTimeFormatter.ofPattern("MMM dd")
@@ -118,10 +116,5 @@ class GoogleFetchDataImplementation : GoogleFetchData {
         } else {
             TODO("VERSION.SDK_INT < O")
         }
-    }
-
-    override fun getMonthlySteps(): Int {
-        Log.e("M STEPS", monthlySteps.value.toString())
-        return monthlySteps.value
     }
 }

@@ -9,4 +9,6 @@ interface GoogleSensorData {
     fun getDailySteps()
     fun getCurrentSteps(): Int
     fun getWeeklySteps(): Int
+    fun getMonthlySteps(): Int
+
 }

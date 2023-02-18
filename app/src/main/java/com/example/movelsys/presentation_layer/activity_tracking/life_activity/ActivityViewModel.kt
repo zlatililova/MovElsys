@@ -3,14 +3,12 @@ package com.example.movelsys.presentation_layer.activity_tracking.life_activity
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import kotlinx.coroutines.launch
 
@@ -18,7 +16,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
     var steps: Int = 0
     var weeklySteps: Int = 0
     var monthlySteps: Int = 0
-    private var areWeeklyAndMonthlyStepsFetched = 0
+    private var timesWeeklyAndMonthlyStepsWereFetched = 0
     var goalSteps by mutableStateOf(0)
     lateinit var activity: Activity
 
@@ -30,8 +28,13 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }
         Log.i("Steps", goalSteps.toString())
-        fetchWeeklyAndMonthlySteps()
-        areWeeklyAndMonthlyStepsFetched += 1
+        Log.e("W&MFetch", timesWeeklyAndMonthlyStepsWereFetched.toString())
+        if((timesWeeklyAndMonthlyStepsWereFetched <= 1 && monthlySteps == 0) || weeklySteps == 0){
+            fetchWeeklyAndMonthlySteps()
+            timesWeeklyAndMonthlyStepsWereFetched += 1
+            Log.e("W&MFetch", timesWeeklyAndMonthlyStepsWereFetched.toString())
+        }
+
     }
 
     fun subscribeToStepsListener(context: Context, activity: Activity) {
@@ -41,12 +44,7 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
         } else {
             Log.i(TAG, "User already subscribed to STEP_COUNT_DELTA")
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            GoogleFitPermissions(
-                appContext = context,
-                activity = activity
-            ).detectIfPermissionIsGiven()
-        }
+        googleFetchUseCase.detectGivenPermissions(activity,context)
     }
 
     fun updateStepCount() {
@@ -57,8 +55,9 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
 
     private fun fetchWeeklyAndMonthlySteps() {
         viewModelScope.launch {
-            monthlySteps = googleFetchUseCase.fetchMonthlySteps(areWeeklyAndMonthlyStepsFetched)
+            monthlySteps = googleFetchUseCase.fetchMonthlySteps()
             weeklySteps = googleFetchUseCase.fetchWeeklySteps()
+            timesWeeklyAndMonthlyStepsWereFetched-=1
         }
     }
 

@@ -3,14 +3,12 @@ package com.example.movelsys.presentation_layer.activity_tracking.history
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.os.Build
 import android.os.Handler
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import com.google.gson.Gson
@@ -27,12 +25,7 @@ class HistoryViewModel(
 
     fun getActivityAndContext(activity: Activity, context: Context) {
         googleFetchUseCase.getNecessaryParameters(activity, context)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            GoogleFitPermissions(
-                appContext = context,
-                activity = activity
-            ).detectIfPermissionIsGiven()
-        }
+        googleFetchUseCase.detectGivenPermissions(activity,context)
         if (timesDataWasFetched == 0) {
             startGoogleFit()
         }

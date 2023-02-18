@@ -2,9 +2,11 @@ package com.example.movelsys.domain_layer.use_cases
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import com.example.movelsys.data_layer.google_fit.GoogleFitPermissions
 import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorData
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchData
@@ -44,24 +46,20 @@ class GoogleFetchUseCase(
     }
 
     fun fetchWeeklySteps(): Int {
-        Log.e("UC WEEKLY STEPS", googleSensorData.getWeeklySteps().toString())
         return googleSensorData.getWeeklySteps()
     }
 
-    fun fetchMonthlySteps(counter: Int): Int {
-        if (counter < 1) {
-            googleFetchData.fetchPastMonthStepCount(object : Responses {
-                override fun onSuccess() {
-                    Log.i("Success", "Success")
-                }
+    fun fetchMonthlySteps(): Int {
+        return googleSensorData.getMonthlySteps()
+    }
 
-                override fun onError(error: String) {
-                    Log.i("Error", error)
-                }
-            })
+    fun detectGivenPermissions(activity: Activity, context: Context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            GoogleFitPermissions(
+                appContext = context,
+                activity = activity
+            ).detectIfPermissionIsGiven()
         }
-        Log.e("UC MONTHLY STEPS", googleFetchData.getMonthlySteps().toString())
-        return googleFetchData.getMonthlySteps()
     }
 
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -75,7 +76,7 @@ fun LoginScreenFragment(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
-                placeholder = { Text("Enter your email") },
+                placeholder = { Text(stringResource(R.string.enter_email)) },
                 )
             OutlinedTextField(
                 value = viewModel.password,
@@ -98,6 +99,7 @@ fun LoginScreenFragment(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
+                placeholder = { Text(stringResource(R.string.enter_password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
@@ -115,7 +117,7 @@ fun LoginScreenFragment(
                 Text(text = "Login", textAlign = TextAlign.Center, color = Color.White)
             }
             Text(
-                text = "Don't have an account? Sign up here!",
+                text = stringResource(R.string.sign_up_here),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.primary,
                 style = TextStyle(textDecoration = TextDecoration.Underline),

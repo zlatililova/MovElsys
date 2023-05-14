@@ -68,7 +68,7 @@ class ProfileViewModel(
         }
     }
 
-    var passwordError: String? by mutableStateOf("Enter a valid password")
+    var passwordError: String? by mutableStateOf("Update your password")
     var passwordErrorCheck: Boolean = false
     fun errorCheckPassword() {
         val error: Errors? = validateCredentials.passwordErrorCheck(password)
@@ -81,7 +81,7 @@ class ProfileViewModel(
         }
     }
 
-    var confirmationPasswordError: String? by mutableStateOf("Enter your password again")
+    var confirmationPasswordError: String? by mutableStateOf("Confirm the password")
     var isConfirmationPasswordWrong: Boolean = false
     fun errorCheckConfirmationPassword() {
         val error: Errors? = validateCredentials.confirmationPasswordErrorCheck(
@@ -97,7 +97,7 @@ class ProfileViewModel(
         }
     }
 
-    var profilePictureError: String? by mutableStateOf("Enter a valid picture url")
+    var profilePictureError: String? by mutableStateOf("Update profile picture")
     var profilePictureErrorCheck: Boolean = false
     fun errorCheckProfilePicture() {
         val error: Errors? = validateCredentials.nameErrorCheck(newProfilePicture)

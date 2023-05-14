@@ -77,7 +77,7 @@ class RegisterViewModel(
         }
     }
 
-    var confirmationPasswordError: String? by mutableStateOf("Enter your password again")
+    var confirmationPasswordError: String? by mutableStateOf("Confirm your password")
     var isConfirmationPasswordWrong: Boolean = false
     fun errorCheckConfirmationPassword() {
         val error: Errors? = validateCredentials.confirmationPasswordErrorCheck(

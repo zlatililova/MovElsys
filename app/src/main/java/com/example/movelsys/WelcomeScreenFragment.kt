@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 
@@ -33,7 +34,7 @@ fun WelcomeScreenFragment(
                 .fillMaxWidth()
                 .size(350.dp)
         )
-        Text(text = "MovElsys", fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
+        Text(text = stringResource(id = R.string.app_name), fontSize = 50.sp, textAlign = TextAlign.Center, color = MaterialTheme.colors.primary )
         Spacer(modifier = Modifier.padding(10.dp))
         OutlinedButton(
             onClick = {
@@ -42,7 +43,7 @@ fun WelcomeScreenFragment(
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             modifier = Modifier
                 .fillMaxWidth()
-                    .padding(top = 20.dp, bottom = 20.dp)
+                .padding(top = 20.dp, bottom = 20.dp)
         ) {
             Text(
                 text = "Login",

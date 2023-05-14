@@ -107,6 +107,8 @@ class GoogleSensorDataImplementation : GoogleSensorData {
                         weeklySteps += dp.getValue(field).asInt()
                     }
                     weeklyStepCount = weeklySteps
+                    Log.e(TAG, "Weekly steps: $weeklyStepCount")
+
                 }
             }
             .addOnFailureListener { e ->
@@ -144,6 +146,7 @@ class GoogleSensorDataImplementation : GoogleSensorData {
                         monthlySteps += dp.getValue(field).asInt()
                     }
                     monthlyStepCount = monthlySteps
+                    Log.e(TAG, "Monthly steps: $monthlyStepCount")
                 }
             }
             .addOnFailureListener { e ->

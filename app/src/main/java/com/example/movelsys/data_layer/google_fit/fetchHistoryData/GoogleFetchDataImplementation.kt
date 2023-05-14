@@ -70,6 +70,7 @@ class GoogleFetchDataImplementation : GoogleFetchData {
             .addOnSuccessListener { response ->
                 for (dataSet in response.buckets.flatMap { it.dataSets }) {
                     dumpDataSet(dataSet)
+                    Log.i(TAG,"Succesfully read from history")
                 }
                 responses.onSuccess()
             }

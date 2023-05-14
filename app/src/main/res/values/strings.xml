@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Movelsys</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="sign_up_here">Don\'t have an account? Sign up here!</string>
+    <string name="enter_first_name">Enter your first name</string>
+    <string name="confirm_password">Confirm the password</string>
+    <string name="enter_profile_pic">Enter profile picture URL</string>
+    <string name="sign_in_here">Already have an account? Sign in here!</string>
+    <string name="Profile_main_text">Your profile</string>
+    <string name="Update_profile">Update your profile</string>
+    <string name="update_name">Update your name</string>
+    <string name="update_email">Update your email</string>
+    <string name="update_profile_pic">Update profile picture</string>
+    <string name="update_password">Update your password</string>
 </resources>

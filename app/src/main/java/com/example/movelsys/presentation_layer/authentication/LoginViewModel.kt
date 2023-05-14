@@ -19,9 +19,9 @@ class LoginViewModel(
 ) : ViewModel() {
     var email: String by mutableStateOf("")
     var password: String by mutableStateOf("")
-    var emailError: String? by mutableStateOf("Enter a valid email")
+    var emailError: String? by mutableStateOf("Enter your email")
     var emailErrorCheck: Boolean = false
-    var passwordError: String? by mutableStateOf("Enter a valid password")
+    var passwordError: String? by mutableStateOf("Enter your password")
     var passwordErrorCheck: Boolean = false
     private val _uiStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Initial)
     val uiStateFlow: StateFlow<LoginUIState> = _uiStateFlow

@@ -66,6 +66,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckFirstName()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.nameError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
@@ -88,6 +89,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckEmail()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.emailError?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
@@ -111,6 +113,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckPassword()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.passwordError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
@@ -135,6 +138,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckConfirmationPassword()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.confirmationPasswordError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
@@ -159,6 +163,7 @@ fun RegisterScreenFragment(
                     viewModel.errorCheckLastName()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.profilePictureError?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,

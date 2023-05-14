@@ -109,6 +109,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         viewModel.newName = it
                         viewModel.errorCheckName()
                     },
+                    singleLine = true,
                     label = { viewModel.nameError?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
@@ -151,6 +152,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         viewModel.newEmail = it
                         viewModel.errorCheckEmail()
                     },
+                    singleLine = true,
                     label = { viewModel.emailError?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
@@ -194,6 +196,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         viewModel.newProfilePicture = it
                         viewModel.errorCheckProfilePicture()
                     },
+                    singleLine = true,
                     label = { viewModel.profilePictureError?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
@@ -246,6 +249,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         viewModel.password = it
                         viewModel.errorCheckPassword()
                     },
+                    singleLine = true,
                     label = { viewModel.passwordError?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
@@ -269,6 +273,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         viewModel.confirmationPass = it
                         viewModel.errorCheckConfirmationPassword()
                     },
+                    singleLine = true,
                     label = { viewModel.confirmationPasswordError?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
@@ -315,6 +320,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                             viewModel.newGoal = it
                         }
                     },
+                    singleLine = true,
                     label = { Text("Current goal: ${viewModel.goalSteps}") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,

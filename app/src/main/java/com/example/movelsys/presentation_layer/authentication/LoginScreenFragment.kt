@@ -62,6 +62,7 @@ fun LoginScreenFragment(
                     viewModel.errorCheckEmail()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.emailError?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
@@ -83,6 +84,7 @@ fun LoginScreenFragment(
                     viewModel.errorCheckPassword()
                     viewModel.enableButton()
                 },
+                singleLine = true,
                 label = { viewModel.passwordError?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,

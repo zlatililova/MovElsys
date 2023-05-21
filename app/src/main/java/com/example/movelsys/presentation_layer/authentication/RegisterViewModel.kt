@@ -112,4 +112,14 @@ class RegisterViewModel(
                 }
             })
     }
+
+    fun setPlaceholders(
+        email: String,
+        password: String,
+        confirmPass: String,
+        name: String,
+        profilePic: String
+    ) {
+        userAccount.setPlaceholders(email, password, confirmPass, name, profilePic)
+    }
 }

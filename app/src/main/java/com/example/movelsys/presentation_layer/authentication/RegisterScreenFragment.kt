@@ -47,6 +47,13 @@ fun RegisterScreenFragment(
     navController: NavController,
     viewModel: RegisterViewModel
 ) {
+
+    viewModel.setPlaceholders(email = stringResource(id = R.string.enter_email),
+        password = stringResource(id = R.string.enter_password),
+        confirmPass = stringResource(id = R.string.confirm_password),
+        name = stringResource(id = R.string.enter_first_name),
+        profilePic = stringResource(id = R.string.enter_profile_pic))
+
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.padding(20.dp),

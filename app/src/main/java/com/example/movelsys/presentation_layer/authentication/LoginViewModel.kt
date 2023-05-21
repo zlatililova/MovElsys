@@ -69,4 +69,11 @@ class LoginViewModel(
                 }
             })
     }
+
+    fun setPlaceholders(
+        email: String,
+        password: String,
+    ) {
+        userAccount.setPlaceholders(email, password, null, null, null)
+    }
 }

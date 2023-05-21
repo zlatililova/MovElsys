@@ -43,6 +43,12 @@ fun LoginScreenFragment(
     navController: NavController,
     viewModel: LoginViewModel
 ) {
+
+    viewModel.setPlaceholders(
+        email = stringResource(id = R.string.enter_email),
+        password = stringResource(id = R.string.enter_password)
+    )
+
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.padding(20.dp),
@@ -77,7 +83,7 @@ fun LoginScreenFragment(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp, top = 10.dp),
                 placeholder = { Text(stringResource(R.string.enter_email)) },
-                )
+            )
             OutlinedTextField(
                 value = viewModel.userAccount.getUserPassword(),
                 onValueChange = {

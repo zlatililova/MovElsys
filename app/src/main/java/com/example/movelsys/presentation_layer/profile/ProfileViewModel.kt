@@ -88,7 +88,8 @@ class ProfileViewModel(
     }
 
     fun errorCheckProfilePicture() {
-        val error: Errors? = validateCredentials.profilePictureErrorCheck(userAccount.getUserProfilePicture())
+        val error: Errors? =
+            validateCredentials.profilePictureErrorCheck(userAccount.getUserProfilePicture())
         if (error != null) {
             userAccount.setUserProfilePictureError(error.Message)
             userAccount.setIsProfilePictureWrong(true)
@@ -234,5 +235,15 @@ class ProfileViewModel(
             goalSteps = sharedPref.getInt("newGoalSteps", defaultValue)
         }
         Log.i("Steps", goalSteps.toString())
+    }
+
+    fun setPlaceholders(
+        email: String,
+        password: String,
+        confirmPass: String,
+        name: String,
+        profilePic: String
+    ) {
+        userAccount.setPlaceholders(email, password, confirmPass, name, profilePic)
     }
 }

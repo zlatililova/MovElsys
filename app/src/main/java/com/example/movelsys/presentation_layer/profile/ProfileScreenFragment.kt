@@ -40,6 +40,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewModel) {
+
+    viewModel.setPlaceholders(email = stringResource(id = R.string.update_email),
+        password = stringResource(id = R.string.update_password),
+        confirmPass = stringResource(id = R.string.confirm_password),
+        name = stringResource(id = R.string.update_name),
+        profilePic = stringResource(id = R.string.update_profile_pic))
+
+
     Column {
         TopBarFragment(navController, true)
         LazyColumn(
@@ -123,8 +131,8 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         Icon(Icons.Default.Person, contentDescription = "Person")
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+                        ,
                     placeholder = { Text(stringResource(R.string.update_name)) },
                 )
                 OutlinedButton(
@@ -167,8 +175,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         Icon(Icons.Default.Email, contentDescription = "Email")
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp),
                     placeholder = { Text(stringResource(R.string.update_email)) },
 
                     )
@@ -212,8 +219,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                         Icon(Icons.Filled.Photo, contentDescription = "Profile_picture")
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp),
                     placeholder = { Text(stringResource(R.string.update_profile_pic)) },
                 )
                 OutlinedButton(
@@ -261,8 +267,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     },
                     placeholder = { Text(stringResource(R.string.update_password)) },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .padding(start = 10.dp, end = 10.dp, bottom = 20.dp, top = 10.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
@@ -285,8 +290,7 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     },
                     placeholder = { Text(stringResource(R.string.confirm_password)) },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp, top = 10.dp),
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )

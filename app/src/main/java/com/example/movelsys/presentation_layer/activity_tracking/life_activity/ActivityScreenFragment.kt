@@ -22,9 +22,8 @@ import com.example.movelsys.presentation_layer.profile.findActivity
 fun ActivityScreenFragment(navController: NavController, viewModel: ActivityViewModel) {
 
     val colorPalette = mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
-
-    viewModel.subscribeToStepsListener()
     viewModel.activity = LocalContext.current.findActivity()
+    viewModel.subscribeToStepsListener()
     viewModel.fetchLastSavedSteps()
     Column {
         LazyColumn(

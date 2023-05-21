@@ -15,25 +15,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.movelsys.LoadingAnimation
-import com.example.movelsys.data_layer.google_fit.fetchSensorData.GoogleSensorDataImplementation
-import com.example.movelsys.data_layer.google_fit.fetchHistoryData.GoogleFetchDataImplementation
-import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
-import com.example.movelsys.ui.theme.MovelsysTheme
+import com.example.movelsys.presentation_layer.profile.findActivity
 
 @Composable
 fun HistoryScreenFragment(
     navController: NavController,
     viewModel: HistoryViewModel
 ) {
-    val context = LocalContext.current
-    val activity = context as Activity
-    viewModel.getActivityAndContext(context, activity)
+
+    viewModel.getActivity(LocalContext.current.findActivity())
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         TopBarFragment(navController, false)

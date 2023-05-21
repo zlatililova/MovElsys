@@ -1,6 +1,7 @@
 package com.example.movelsys.presentation_layer.activity_tracking.history
 
 import android.app.Activity
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Handler
@@ -8,6 +9,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.movelsys.data_layer.google_fit.Responses
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
@@ -15,8 +17,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class HistoryViewModel(
-    private val googleFetchUseCase: GoogleFetchUseCase
-) : ViewModel() {
+    private val googleFetchUseCase: GoogleFetchUseCase,
+    val appApplication: Application
+) : AndroidViewModel(appApplication) {
 
     var timesDataWasFetched: Int by mutableStateOf(0)
     private var googleFitHistory: Map<String, Int> by mutableStateOf(mapOf())
@@ -24,10 +27,10 @@ class HistoryViewModel(
     var googleFitSteps: List<Int> by mutableStateOf(listOf())
     var goalSteps by mutableStateOf(10000)
 
-    fun getActivityAndContext(activity: Activity, context: Context) {
+    fun getActivity(activity: Activity) {
         fetchGoalSteps(activity)
-        googleFetchUseCase.getNecessaryParameters(activity, context)
-        googleFetchUseCase.detectGivenPermissions(activity, context)
+        googleFetchUseCase.getNecessaryParameters(activity, appApplication.applicationContext)
+        googleFetchUseCase.detectGivenPermissions(activity, appApplication.applicationContext)
         if (timesDataWasFetched == 0) {
             startGoogleFit()
         }

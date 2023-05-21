@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MovelsysTheme {
                 navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+                SetupNavGraph(navController = navController, application = application)
                 androidActivityRecognitionAccess()
             }
         }

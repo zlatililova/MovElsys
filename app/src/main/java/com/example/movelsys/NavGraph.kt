@@ -32,6 +32,7 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
+    application: Application
 ) {
     NavHost(
         navController = navController,
@@ -74,6 +75,7 @@ fun SetupNavGraph(
                         googleFetchData = GoogleFetchDataImplementation(),
                         googleSensorData = GoogleSensorDataImplementation()
                     ),
+                    application
                 )
             )
         }
@@ -91,7 +93,8 @@ fun SetupNavGraph(
                     googleFetchUseCase = GoogleFetchUseCase(
                         googleFetchData = GoogleFetchDataImplementation(),
                         googleSensorData = GoogleSensorDataImplementation()
-                    )
+                    ),
+                    application
                 )
             )
         }
@@ -137,6 +140,7 @@ fun SetupNavGraph(
                 viewModel = ProfileViewModel(
                     profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()),
                     validateCredentials = ValidateCredentials(),
+                    appApplication = application
                 )
             )
         }

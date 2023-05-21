@@ -1,18 +1,23 @@
 package com.example.movelsys.presentation_layer.activity_tracking.life_activity
 
 import android.app.Activity
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.domain_layer.use_cases.GoogleFetchUseCase
 import kotlinx.coroutines.launch
 
-class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : ViewModel() {
+class ActivityViewModel(
+    private val googleFetchUseCase: GoogleFetchUseCase,
+    val appApplication: Application
+) : AndroidViewModel(appApplication) {
     var steps: Int = 0
     var weeklySteps: Int = 0
     var monthlySteps: Int = 0
@@ -35,14 +40,14 @@ class ActivityViewModel(private val googleFetchUseCase: GoogleFetchUseCase) : Vi
 
     }
 
-    fun subscribeToStepsListener(context: Context, activity: Activity) {
-        googleFetchUseCase.getNecessaryParameters(activity = activity, context = context)
+    fun subscribeToStepsListener() {
+        googleFetchUseCase.getNecessaryParameters(activity = activity, context = appApplication.applicationContext)
         if (!googleFetchUseCase.isUserSubscribed()) {
             googleFetchUseCase.subscribeToStepsListener()
         } else {
             Log.i(TAG, "User already subscribed to STEP_COUNT_DELTA")
         }
-        googleFetchUseCase.detectGivenPermissions(activity, context)
+        googleFetchUseCase.detectGivenPermissions(activity, appApplication.applicationContext)
     }
 
     fun updateStepCount() {

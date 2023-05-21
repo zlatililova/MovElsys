@@ -16,17 +16,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.movelsys.presentation_layer.activity_tracking.BottomBarFragment
 import com.example.movelsys.presentation_layer.activity_tracking.TopBarFragment
+import com.example.movelsys.presentation_layer.profile.findActivity
 
 @Composable
 fun ActivityScreenFragment(navController: NavController, viewModel: ActivityViewModel) {
 
     val colorPalette = mutableListOf(Color.LightGray, MaterialTheme.colors.secondary, MaterialTheme.colors.primary)
 
-    viewModel.subscribeToStepsListener(
-        context = LocalContext.current,
-        activity = LocalContext.current as Activity
-    )
-    viewModel.activity = LocalContext.current as Activity
+    viewModel.subscribeToStepsListener()
+    viewModel.activity = LocalContext.current.findActivity()
     viewModel.fetchLastSavedSteps()
     Column {
         LazyColumn(

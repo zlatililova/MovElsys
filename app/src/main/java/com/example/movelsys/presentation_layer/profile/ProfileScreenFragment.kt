@@ -2,6 +2,7 @@ package com.example.movelsys.presentation_layer.profile
 
 import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -58,9 +59,8 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
         ) {
             item {
                 viewModel.updateUI()
-                val context = LocalContext.current
-                val activity = context as Activity
-                viewModel.getActivityAndContext(context = context, activity = activity)
+                val activity = LocalContext.current.findActivity()
+                viewModel.getActivity(activity = activity)
                 Text(
                     text = stringResource(R.string.Profile_main_text),
                     fontSize = 30.sp,
@@ -398,4 +398,13 @@ private fun observeViewModel(
             }.launchIn(this)
         }
     }
+}
+
+fun Context.findActivity(): Activity {
+    var context = this
+    while (context is ContextWrapper) {
+        if (context is Activity) return context
+        context = context.baseContext
+    }
+    throw IllegalStateException("no activity")
 }

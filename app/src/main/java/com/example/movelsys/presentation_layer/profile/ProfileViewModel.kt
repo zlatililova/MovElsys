@@ -1,11 +1,13 @@
 package com.example.movelsys.presentation_layer.profile
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.Errors
@@ -25,8 +27,9 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     val profileUpdateUseCase: ProfileUpdateUseCase,
-    private val validateCredentials: ValidateCredentials
-) : ViewModel() {
+    private val validateCredentials: ValidateCredentials,
+    val appApplication: Application
+) : AndroidViewModel(appApplication) {
     private val user = Firebase.auth.currentUser
     var name = mutableStateOf(user?.displayName)
     var profilePicture = mutableStateOf(user?.photoUrl)
@@ -198,10 +201,8 @@ class ProfileViewModel(
         isChangeMade = false
     }
 
-    private lateinit var context: Context
     private lateinit var activity: Activity
-    fun getActivityAndContext(context: Context, activity: Activity) {
-        this.context = context
+    fun getActivity(activity: Activity) {
         this.activity = activity
         fetchLastSavedSteps()
     }
@@ -210,7 +211,7 @@ class ProfileViewModel(
         val auth = Firebase.auth
         auth.signOut()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+        val googleSignInClient = GoogleSignIn.getClient(appApplication.applicationContext, gso)
         googleSignInClient.signOut()
     }
 

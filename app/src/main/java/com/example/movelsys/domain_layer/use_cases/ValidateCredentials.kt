@@ -37,4 +37,8 @@ class ValidateCredentials {
         }
         return null
     }
+
+    fun profilePictureErrorCheck(profilePicture: String): Errors?{
+        return null
+    }
 }

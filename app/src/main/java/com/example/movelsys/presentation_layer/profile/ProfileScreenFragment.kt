@@ -106,25 +106,26 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
-                    value = viewModel.newName,
+                    value = viewModel.userAccount.getUserName(),
                     onValueChange = {
-                        viewModel.newName = it
+                        viewModel.userAccount.setUserName(it)
                         viewModel.errorCheckName()
                     },
-                    label = { viewModel.nameError?.let { Text(text = it) } },
-
+                    singleLine = true,
+                    label = { viewModel.userAccount.getUserNameError()?.let { Text(it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.primary,
                         errorBorderColor = Color.Red
                     ),
-                    isError = viewModel.nameErrorCheck,
-                    leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Name") },
+                    isError = viewModel.userAccount.getIsNameWrong(),
+                    leadingIcon = {
+                        Icon(Icons.Default.Person, contentDescription = "Person")
+                    },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 80.dp)
-                        .padding(bottom = 20.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp, top = 10.dp),
                     placeholder = { Text(stringResource(R.string.update_name)) },
-                    singleLine = true
                 )
                 OutlinedButton(
                     onClick = {
@@ -149,26 +150,28 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
-                    value = viewModel.newEmail,
+                    value = viewModel.userAccount.getUserEmail(),
                     onValueChange = {
-                        viewModel.newEmail = it
+                        viewModel.userAccount.setUserEmail(it)
                         viewModel.errorCheckEmail()
                     },
-                    label = { viewModel.emailError?.let { Text(text = it) } },
+                    singleLine = true,
+                    label = { viewModel.userAccount.getUserEmailError()?.let { Text(text = it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.primary,
                         errorBorderColor = Color.Red
                     ),
-                    isError = viewModel.emailErrorCheck,
-
-                    leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
+                    isError = viewModel.userAccount.getIsEmailWrong(),
+                    leadingIcon = {
+                        Icon(Icons.Default.Email, contentDescription = "Email")
+                    },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 80.dp)
-                        .padding(bottom = 20.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp, top = 10.dp),
                     placeholder = { Text(stringResource(R.string.update_email)) },
-                    singleLine = true
-                )
+
+                    )
                 OutlinedButton(
                     onClick = {
                         viewModel.updateEmail()
@@ -192,29 +195,26 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
-                    value = viewModel.newProfilePicture,
+                    value = viewModel.userAccount.getUserProfilePicture(),
                     onValueChange = {
-                        viewModel.newProfilePicture = it
+                        viewModel.userAccount.setUserProfilePicture(it)
                         viewModel.errorCheckProfilePicture()
                     },
-                    label = { viewModel.profilePictureError?.let { Text(text = it) } },
+                    singleLine = true,
+                    label = { viewModel.userAccount.getUserProfilePictureError()?.let { Text(it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.primary,
                         errorBorderColor = Color.Red
                     ),
-                    isError = viewModel.profilePictureErrorCheck,
+                    isError = viewModel.userAccount.getIsProfilePictureWrong(),
                     leadingIcon = {
-                        Icon(
-                            Icons.Filled.PhotoCamera,
-                            contentDescription = "Profile Picture"
-                        )
+                        Icon(Icons.Filled.Photo, contentDescription = "Profile_picture")
                     },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 80.dp)
-                        .padding(bottom = 20.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp, top = 10.dp),
                     placeholder = { Text(stringResource(R.string.update_profile_pic)) },
-                    singleLine = true
                 )
                 OutlinedButton(
                     onClick = {
@@ -243,56 +243,52 @@ fun ProfileScreenFragment(navController: NavController, viewModel: ProfileViewMo
                     modifier = Modifier.padding(20.dp, bottom = 10.dp)
                 )
                 OutlinedTextField(
-                    value = viewModel.password,
+                    value = viewModel.userAccount.getUserPassword(),
                     onValueChange = {
-                        viewModel.password = it
+                        viewModel.userAccount.setUserPassword(it)
                         viewModel.errorCheckPassword()
                     },
-                    label = { viewModel.passwordError?.let { Text(text = it) } },
+                    singleLine = true,
+                    label = { viewModel.userAccount.getUserPasswordError()?.let { Text(it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.primary,
                         errorBorderColor = Color.Red
                     ),
-                    isError = viewModel.passwordErrorCheck,
+                    isError = viewModel.userAccount.getIsPasswordWrong(),
                     leadingIcon = {
                         Icon(Icons.Default.Info, contentDescription = "Password")
                     },
+                    placeholder = { Text(stringResource(R.string.update_password)) },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 80.dp)
-                        .padding(bottom = 20.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp, top = 10.dp),
                     visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    singleLine = true, 
-                    placeholder = {
-                        Text(stringResource(id = R.string.update_password))
-                    }
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
                 OutlinedTextField(
-                    value = viewModel.confirmationPass,
+                    value = viewModel.userAccount.getUserConfirmationPassword(),
                     onValueChange = {
-                        viewModel.confirmationPass = it
+                        viewModel.userAccount.setUserConfirmationPassword(it)
                         viewModel.errorCheckConfirmationPassword()
                     },
                     singleLine = true,
-                    label = { viewModel.confirmationPasswordError?.let { Text(text = it) } },
+                    label = { viewModel.userAccount.getUserConfirmationPasswordError()?.let { Text(it) } },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.primary,
                         errorBorderColor = Color.Red
                     ),
-                    isError = viewModel.isConfirmationPasswordWrong,
+                    isError = viewModel.userAccount.getIsConfirmationPasswordWrong(),
                     leadingIcon = {
                         Icon(Icons.Default.Info, contentDescription = "Password")
                     },
+                    placeholder = { Text(stringResource(R.string.confirm_password)) },
                     modifier = Modifier
-                        .size(width = 300.dp, height = 80.dp)
-                        .padding(bottom = 18.dp),
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp, top = 10.dp),
                     visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    placeholder = {
-                        Text(stringResource(id = R.string.confirm_password))
-                    }
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
                 OutlinedButton(
                     onClick = {

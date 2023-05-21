@@ -57,20 +57,20 @@ fun LoginScreenFragment(
                     .size(300.dp)
             )
             OutlinedTextField(
-                value = viewModel.email,
+                value = viewModel.userAccount.getUserEmail(),
                 onValueChange = {
-                    viewModel.email = it
+                    viewModel.userAccount.setUserEmail(it)
                     viewModel.errorCheckEmail()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.emailError?.let { Text(text = it) } },
+                label = { viewModel.userAccount.getUserEmailError()?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.emailErrorCheck,
+                isError = viewModel.userAccount.getIsEmailWrong(),
 
                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email") },
                 modifier = Modifier
@@ -79,20 +79,20 @@ fun LoginScreenFragment(
                 placeholder = { Text(stringResource(R.string.enter_email)) },
                 )
             OutlinedTextField(
-                value = viewModel.password,
+                value = viewModel.userAccount.getUserPassword(),
                 onValueChange = {
-                    viewModel.password = it
+                    viewModel.userAccount.setUserPassword(it)
                     viewModel.errorCheckPassword()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.passwordError?.let { Text(text = it) } },
+                label = { viewModel.userAccount.getUserPasswordError()?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.passwordErrorCheck,
+                isError = viewModel.userAccount.getIsPasswordWrong(),
                 leadingIcon = {
                     Icon(Icons.Default.Info, contentDescription = "Password")
                 },

@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.Errors
+import com.example.movelsys.data_layer.models.UserAccount
 import com.example.movelsys.data_layer.profileManagement.OnUpdate
 import com.example.movelsys.domain_layer.use_cases.ProfileUpdateUseCase
 import com.example.movelsys.domain_layer.use_cases.ValidateCredentials
@@ -28,94 +29,81 @@ class ProfileViewModel(
 ) : ViewModel() {
     private val user = Firebase.auth.currentUser
     var name = mutableStateOf(user?.displayName)
-    var newName: String by mutableStateOf("")
     var profilePicture = mutableStateOf(user?.photoUrl)
-    var newProfilePicture: String by mutableStateOf("")
-    var newEmail: String by mutableStateOf("")
     var email = mutableStateOf(user?.email)
-    var password: String by mutableStateOf("")
-    var confirmationPass: String by mutableStateOf("")
     var goalSteps by mutableStateOf(0)
     var newGoal by mutableStateOf("")
     var isChangeMade = false
 
+    var userAccount = UserAccount()
+
     private val _uiStateFlow = MutableStateFlow<ProfileUIState>(ProfileUIState.Initial)
     val uiStateFlow: StateFlow<ProfileUIState> = _uiStateFlow
 
-    var nameError: String? by mutableStateOf("Update your name")
-    var nameErrorCheck: Boolean = false
     fun errorCheckName() {
-        val error: Errors? = validateCredentials.nameErrorCheck(newName)
+        val error: Errors? = validateCredentials.nameErrorCheck(userAccount.getUserName())
         if (error != null) {
-            nameError = error.Message
-            nameErrorCheck = true
+            userAccount.setUserNameError(error.Message)
+            userAccount.setIsNameWrong(true)
         } else {
-            nameError = null
-            nameErrorCheck = false
+            userAccount.setUserNameError(null)
+            userAccount.setIsNameWrong(false)
         }
     }
 
-    var emailError: String? by mutableStateOf("Update your email")
-    var emailErrorCheck: Boolean = false
     fun errorCheckEmail() {
-        val error: Errors? = validateCredentials.emailErrorCheck(newEmail)
+        val error: Errors? = validateCredentials.emailErrorCheck(userAccount.getUserEmail())
         if (error != null) {
-            emailError = error.Message
-            emailErrorCheck = true
+            userAccount.setUserEmailError(error.Message)
+            userAccount.setIsEmailWrong(true)
         } else {
-            emailError = null
-            emailErrorCheck = false
+            userAccount.setUserEmailError(null)
+            userAccount.setIsEmailWrong(false)
         }
     }
 
-    var passwordError: String? by mutableStateOf("Update your password")
-    var passwordErrorCheck: Boolean = false
     fun errorCheckPassword() {
-        val error: Errors? = validateCredentials.passwordErrorCheck(password)
+        val error: Errors? = validateCredentials.passwordErrorCheck(userAccount.getUserPassword())
         if (error != null) {
-            passwordError = error.Message
-            passwordErrorCheck = true
+            userAccount.setUserPasswordError(error.Message)
+            userAccount.setIsPasswordWrong(true)
         } else {
-            passwordError = null
-            passwordErrorCheck = false
+            userAccount.setUserPasswordError(null)
+            userAccount.setIsPasswordWrong(false)
         }
     }
 
-    var confirmationPasswordError: String? by mutableStateOf("Confirm the password")
-    var isConfirmationPasswordWrong: Boolean = false
     fun errorCheckConfirmationPassword() {
         val error: Errors? = validateCredentials.confirmationPasswordErrorCheck(
-            password = password,
-            confirmPassword = confirmationPass
+            password = userAccount.getUserPassword(),
+            confirmPassword = userAccount.getUserConfirmationPassword()
         )
         if (error != null) {
-            confirmationPasswordError = error.Message
-            isConfirmationPasswordWrong = true
+            userAccount.setUserConfirmationPassword(error.Message)
+            userAccount.setIsConfirmaitonPasswordWrong(true)
         } else {
-            confirmationPasswordError = null
-            isConfirmationPasswordWrong = false
+            userAccount.setUserConfirmationPasswordError(null)
+            userAccount.setIsConfirmaitonPasswordWrong(false)
         }
     }
 
-    var profilePictureError: String? by mutableStateOf("Update profile picture")
-    var profilePictureErrorCheck: Boolean = false
     fun errorCheckProfilePicture() {
-        val error: Errors? = validateCredentials.nameErrorCheck(newProfilePicture)
+        val error: Errors? = validateCredentials.profilePictureErrorCheck(userAccount.getUserProfilePicture())
         if (error != null) {
-            profilePictureError = error.Message
-            profilePictureErrorCheck = true
+            userAccount.setUserProfilePictureError(error.Message)
+            userAccount.setIsProfilePictureWrong(true)
         } else {
-            profilePictureError = null
-            profilePictureErrorCheck = false
+            userAccount.setUserProfilePictureError(null)
+            userAccount.setIsProfilePictureWrong(false)
         }
     }
 
     fun enableButton(code: String): Boolean {
         when (code) {
-            "email" -> return emailError == null
-            "name" -> return nameError == null
-            "password" -> return passwordError == null && confirmationPasswordError == null
-            "profile_picture" -> return profilePictureError == null
+            "email" -> return userAccount.getUserEmailError() == null
+            "name" -> return userAccount.getUserNameError() == null
+            "password" -> return userAccount.getUserPasswordError() == null && userAccount.getUserConfirmationPasswordError() == null
+            "profile_picture" -> return userAccount.getUserProfilePictureError() == null
             "steps" -> return newGoal.isNotEmpty()
         }
         return false
@@ -123,7 +111,7 @@ class ProfileViewModel(
 
     fun updateName() {
         profileUpdateUseCase.updateUserName(
-            name = newName,
+            name = userAccount.getUserName(),
             onUpdate = object : OnUpdate {
                 override fun onSuccess() {
                     viewModelScope.launch {
@@ -142,7 +130,7 @@ class ProfileViewModel(
 
     fun updateEmail() {
         profileUpdateUseCase.updateUserEmail(
-            email = newEmail,
+            email = userAccount.getUserEmail(),
             onUpdate = object : OnUpdate {
                 override fun onSuccess() {
                     viewModelScope.launch {
@@ -163,8 +151,8 @@ class ProfileViewModel(
 
     fun updatePassword() {
         profileUpdateUseCase.updateUserPassword(
-            password = password,
-            confirmationPassword = confirmationPass,
+            password = userAccount.getUserPassword(),
+            confirmationPassword = userAccount.getUserConfirmationPassword(),
             onUpdate = object : OnUpdate {
                 override fun onSuccess() {
                     viewModelScope.launch {
@@ -182,7 +170,7 @@ class ProfileViewModel(
 
     fun updateProfilePicture() {
         profileUpdateUseCase.updateUserProfilePic(
-            url = newProfilePicture,
+            url = userAccount.getUserProfilePicture(),
             onUpdate = object : OnUpdate {
                 override fun onSuccess() {
                     viewModelScope.launch {

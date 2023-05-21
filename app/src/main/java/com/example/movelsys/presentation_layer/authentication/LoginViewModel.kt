@@ -1,12 +1,10 @@
 package com.example.movelsys.presentation_layer.authentication
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.Errors
 import com.example.movelsys.data_layer.authentication.OnLogin
+import com.example.movelsys.data_layer.models.UserAccount
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.states.LoginUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,41 +15,37 @@ class LoginViewModel(
     private val validateCredentials: ValidateCredentials,
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
-    var email: String by mutableStateOf("")
-    var password: String by mutableStateOf("")
-    var emailError: String? by mutableStateOf("Enter your email")
-    var emailErrorCheck: Boolean = false
-    var passwordError: String? by mutableStateOf("Enter your password")
-    var passwordErrorCheck: Boolean = false
+    var userAccount = UserAccount()
+
     private val _uiStateFlow = MutableStateFlow<LoginUIState>(LoginUIState.Initial)
     val uiStateFlow: StateFlow<LoginUIState> = _uiStateFlow
 
     fun errorCheckEmail() {
-        val error: Errors? = validateCredentials.emailErrorCheck(email)
+        val error: Errors? = validateCredentials.emailErrorCheck(userAccount.getUserEmail())
         if (error != null) {
-            emailError = error.Message
-            emailErrorCheck = true
+            userAccount.setUserEmailError(error.Message)
+            userAccount.setIsEmailWrong(true)
         } else {
-            emailError = null
-            emailErrorCheck = false
+            userAccount.setUserEmailError(null)
+            userAccount.setIsEmailWrong(false)
         }
     }
 
     fun errorCheckPassword() {
-        val error: Errors? = validateCredentials.passwordErrorCheck(password)
+        val error: Errors? = validateCredentials.passwordErrorCheck(userAccount.getUserPassword())
         if (error != null) {
-            passwordError = error.Message
-            passwordErrorCheck = true
+            userAccount.setUserPasswordError(error.Message)
+            userAccount.setIsPasswordWrong(true)
         } else {
-            passwordError = null
-            passwordErrorCheck = false
+            userAccount.setUserPasswordError(null)
+            userAccount.setIsPasswordWrong(false)
         }
     }
 
     var areCredentialsRight: Boolean = false
     fun enableButton() {
         areCredentialsRight =
-            passwordError == null && emailError == null
+            userAccount.getUserPasswordError() == null && userAccount.getUserEmailError() == null
     }
 
     fun login() {
@@ -59,8 +53,8 @@ class LoginViewModel(
             _uiStateFlow.emit(LoginUIState.Loading)
         }
         loginUseCase.startBusinessLogic(
-            email = email,
-            password = password,
+            email = userAccount.getUserEmail(),
+            password = userAccount.getUserPassword(),
             onLogin = object : OnLogin {
                 override fun onSuccess() {
                     viewModelScope.launch {

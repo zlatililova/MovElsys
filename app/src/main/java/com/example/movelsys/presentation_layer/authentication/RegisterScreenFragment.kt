@@ -61,20 +61,20 @@ fun RegisterScreenFragment(
                     .size(300.dp)
             )
             OutlinedTextField(
-                value = viewModel.name,
+                value = viewModel.userAccount.getUserName(),
                 onValueChange = {
-                    viewModel.name = it
-                    viewModel.errorCheckFirstName()
+                    viewModel.userAccount.setUserName(it)
+                    viewModel.errorCheckName()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.nameError?.let { Text(it) } },
+                label = { viewModel.userAccount.getUserNameError()?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isNameWrong,
+                isError = viewModel.userAccount.getIsNameWrong(),
                 leadingIcon = {
                     Icon(Icons.Default.Person, contentDescription = "Person")
                 },
@@ -84,20 +84,20 @@ fun RegisterScreenFragment(
                 placeholder = { Text(stringResource(R.string.enter_first_name)) },
                 )
             OutlinedTextField(
-                value = viewModel.email,
+                value = viewModel.userAccount.getUserEmail(),
                 onValueChange = {
-                    viewModel.email = it
+                    viewModel.userAccount.setUserEmail(it)
                     viewModel.errorCheckEmail()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.emailError?.let { Text(text = it) } },
+                label = { viewModel.userAccount.getUserEmailError()?.let { Text(text = it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isEmailWrong,
+                isError = viewModel.userAccount.getIsEmailWrong(),
                 leadingIcon = {
                     Icon(Icons.Default.Email, contentDescription = "Email")
                 },
@@ -108,20 +108,20 @@ fun RegisterScreenFragment(
 
                 )
             OutlinedTextField(
-                value = viewModel.password,
+                value = viewModel.userAccount.getUserPassword(),
                 onValueChange = {
-                    viewModel.password = it
+                    viewModel.userAccount.setUserPassword(it)
                     viewModel.errorCheckPassword()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.passwordError?.let { Text(it) } },
+                label = { viewModel.userAccount.getUserPasswordError()?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isPasswordWrong,
+                isError = viewModel.userAccount.getIsPasswordWrong(),
                 leadingIcon = {
                     Icon(Icons.Default.Info, contentDescription = "Password")
                 },
@@ -133,20 +133,20 @@ fun RegisterScreenFragment(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             OutlinedTextField(
-                value = viewModel.confirmationPass,
+                value = viewModel.userAccount.getUserConfirmationPassword(),
                 onValueChange = {
-                    viewModel.confirmationPass = it
+                    viewModel.userAccount.setUserConfirmationPassword(it)
                     viewModel.errorCheckConfirmationPassword()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.confirmationPasswordError?.let { Text(it) } },
+                label = { viewModel.userAccount.getUserConfirmationPasswordError()?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isConfirmationPasswordWrong,
+                isError = viewModel.userAccount.getIsConfirmationPasswordWrong(),
                 leadingIcon = {
                     Icon(Icons.Default.Info, contentDescription = "Password")
                 },
@@ -158,20 +158,20 @@ fun RegisterScreenFragment(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
             OutlinedTextField(
-                value = viewModel.profilePicture,
+                value = viewModel.userAccount.getUserProfilePicture(),
                 onValueChange = {
-                    viewModel.profilePicture = it
-                    viewModel.errorCheckLastName()
+                    viewModel.userAccount.setUserProfilePicture(it)
+                    viewModel.errorCheckProfilePicture()
                     viewModel.enableButton()
                 },
                 singleLine = true,
-                label = { viewModel.profilePictureError?.let { Text(it) } },
+                label = { viewModel.userAccount.getUserProfilePictureError()?.let { Text(it) } },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = MaterialTheme.colors.secondary,
                     unfocusedBorderColor = MaterialTheme.colors.primary,
                     errorBorderColor = Color.Red
                 ),
-                isError = viewModel.isProfilePictureURLWrong,
+                isError = viewModel.userAccount.getIsProfilePictureWrong(),
                 leadingIcon = {
                     Icon(Icons.Filled.Photo, contentDescription = "Profile_picture")
                 },

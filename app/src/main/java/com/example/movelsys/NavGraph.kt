@@ -1,7 +1,10 @@
 package com.example.movelsys
 
+import android.app.Activity
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.movelsys.data_layer.authentication.AuthDataImplementation
@@ -28,7 +31,7 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun SetupNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavHost(
         navController = navController,
@@ -70,7 +73,7 @@ fun SetupNavGraph(
                     googleFetchUseCase = GoogleFetchUseCase(
                         googleFetchData = GoogleFetchDataImplementation(),
                         googleSensorData = GoogleSensorDataImplementation()
-                    )
+                    ),
                 )
             )
         }
@@ -133,7 +136,7 @@ fun SetupNavGraph(
                 navController,
                 viewModel = ProfileViewModel(
                     profileUpdateUseCase = ProfileUpdateUseCase(profileUpdate = ProfileUpdateImplementation()),
-                    validateCredentials = ValidateCredentials()
+                    validateCredentials = ValidateCredentials(),
                 )
             )
         }

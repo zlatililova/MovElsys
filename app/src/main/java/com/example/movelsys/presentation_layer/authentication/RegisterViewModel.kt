@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movelsys.data_layer.authentication.Errors
 import com.example.movelsys.data_layer.authentication.OnRegister
+import com.example.movelsys.data_layer.models.UserAccount
 import com.example.movelsys.domain_layer.use_cases.*
 import com.example.movelsys.presentation_layer.states.RegisterUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,86 +18,75 @@ class RegisterViewModel(
     val validateCredentials: ValidateCredentials,
     val registerUseCase: RegisterUseCase
 ) : ViewModel() {
-    var email: String by mutableStateOf("")
-    var password: String by mutableStateOf("")
-    var name: String by mutableStateOf("")
-    var profilePicture: String by mutableStateOf("")
-    var confirmationPass: String by mutableStateOf("")
+
+    var userAccount = UserAccount()
     private val _uiStateFlow = MutableStateFlow<RegisterUIState>(RegisterUIState.Initial)
     val uiStateFlow: StateFlow<RegisterUIState> = _uiStateFlow
 
-    var emailError: String? by mutableStateOf("Enter your email")
-    var isEmailWrong: Boolean = false
     fun errorCheckEmail() {
-        val error: Errors? = validateCredentials.emailErrorCheck(email)
+        val error: Errors? = validateCredentials.emailErrorCheck(userAccount.getUserEmail())
         if (error != null) {
-            emailError = error.Message
-            isEmailWrong = true
+            userAccount.setUserEmailError(error.Message)
+            userAccount.setIsEmailWrong(true)
         } else {
-            emailError = null
-            isEmailWrong = false
+            userAccount.setUserEmailError(null)
+            userAccount.setIsEmailWrong(false)
         }
     }
 
-    var nameError: String? by mutableStateOf("Enter your first name")
-    var isNameWrong: Boolean = false
-    fun errorCheckFirstName() {
-        val error: Errors? = validateCredentials.nameErrorCheck(name)
+    fun errorCheckName() {
+        val error: Errors? = validateCredentials.nameErrorCheck(userAccount.getUserName())
         if (error != null) {
-            nameError = error.Message
-            isNameWrong = true
+            userAccount.setUserNameError(error.Message)
+            userAccount.setIsNameWrong(true)
         } else {
-            nameError = null
-            isNameWrong = false
+            userAccount.setUserNameError(null)
+            userAccount.setIsNameWrong(false)
         }
     }
 
-    var profilePictureError: String? by mutableStateOf("Enter profile picture URL")
-    var isProfilePictureURLWrong: Boolean = false
-    fun errorCheckLastName() {
-        val error: Errors? = validateCredentials.nameErrorCheck(profilePicture)
+    fun errorCheckProfilePicture() {
+        val error: Errors? = validateCredentials.profilePictureErrorCheck(userAccount.getUserProfilePicture())
         if (error != null) {
-            profilePictureError = error.Message
-            isProfilePictureURLWrong = true
+            userAccount.setUserProfilePictureError(error.Message)
+            userAccount.setIsProfilePictureWrong(true)
         } else {
-            profilePictureError = null
-            isProfilePictureURLWrong = false
+            userAccount.setUserProfilePictureError(null)
+            userAccount.setIsProfilePictureWrong(false)
         }
     }
 
-    var passwordError: String? by mutableStateOf("Enter your password")
-    var isPasswordWrong: Boolean = false
     fun errorCheckPassword() {
-        val error: Errors? = validateCredentials.passwordErrorCheck(password)
+        val error: Errors? = validateCredentials.passwordErrorCheck(userAccount.getUserPassword())
         if (error != null) {
-            passwordError = error.Message
-            isPasswordWrong = true
+            userAccount.setUserPasswordError(error.Message)
+            userAccount.setIsPasswordWrong(true)
         } else {
-            passwordError = null
-            isPasswordWrong = false
+            userAccount.setUserPasswordError(null)
+            userAccount.setIsPasswordWrong(false)
         }
     }
 
-    var confirmationPasswordError: String? by mutableStateOf("Confirm your password")
-    var isConfirmationPasswordWrong: Boolean = false
     fun errorCheckConfirmationPassword() {
         val error: Errors? = validateCredentials.confirmationPasswordErrorCheck(
-            password = password,
-            confirmPassword = confirmationPass
+            password = userAccount.getUserPassword(),
+            confirmPassword = userAccount.getUserConfirmationPassword()
         )
         if (error != null) {
-            confirmationPasswordError = error.Message
-            isConfirmationPasswordWrong = true
+            userAccount.setUserConfirmationPassword(error.Message)
+            userAccount.setIsConfirmaitonPasswordWrong(true)
         } else {
-            confirmationPasswordError = null
-            isConfirmationPasswordWrong = false
+            userAccount.setUserConfirmationPasswordError(null)
+            userAccount.setIsConfirmaitonPasswordWrong(false)
         }
     }
 
     var areCredentialsRight: Boolean = false
     fun enableButton() {
-        areCredentialsRight =
-            emailError == null && nameError == null && passwordError == null && confirmationPasswordError == null
+        areCredentialsRight = userAccount.getUserEmailError() == null
+                    && userAccount.getUserNameError() == null
+                    && userAccount.getUserPasswordError() == null
+                    && userAccount.getUserConfirmationPasswordError() == null
     }
 
     fun register() {
@@ -104,10 +94,10 @@ class RegisterViewModel(
             _uiStateFlow.emit(RegisterUIState.Loading)
         }
         registerUseCase.startBusinessLogic(
-            email = email,
-            password = password,
-            name = name,
-            profilePictureURL = profilePicture,
+            email = userAccount.getUserEmail(),
+            password = userAccount.getUserPassword(),
+            name = userAccount.getUserName(),
+            profilePictureURL = userAccount.getUserProfilePicture(),
             onRegister = object : OnRegister {
                 override fun onSuccess() {
                     viewModelScope.launch {

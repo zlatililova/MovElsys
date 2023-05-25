@@ -1,4 +1,4 @@
-package com.example.movelsys.data_layer.ranking
+package com.example.movelsys.data_layer.models
 
 data class Person(
     val name: String,

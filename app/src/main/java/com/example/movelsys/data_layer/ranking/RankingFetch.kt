@@ -1,5 +1,7 @@
 package com.example.movelsys.data_layer.ranking
 
+import com.example.movelsys.data_layer.models.Person
+
 interface RankingFetch {
     var currentTeamRanking: String
     fun fetchDesiredTeam(ranking: Int): List<Person>

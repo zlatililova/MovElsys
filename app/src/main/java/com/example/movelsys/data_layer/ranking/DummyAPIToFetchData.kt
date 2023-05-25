@@ -1,5 +1,6 @@
 package com.example.movelsys.data_layer.ranking
 
+import com.example.movelsys.data_layer.models.Person
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson

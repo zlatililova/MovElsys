@@ -38,7 +38,25 @@ class ValidateCredentials {
         return null
     }
 
-    fun profilePictureErrorCheck(profilePicture: String): Errors?{
-        return null
+    fun profilePictureErrorCheck(profilePicture: String): Errors? {
+        val returnValue: Errors?
+        var extension = ""
+        try {
+            extension =
+                profilePicture.subSequence(
+                    profilePicture.lastIndexOf(".") + 1,
+                    profilePicture.length
+                )
+                    .toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        returnValue =
+            if (extension == "jpeg" || extension == "jpg" || extension == "gif" || extension == "png") {
+                null
+            } else {
+                Errors.INVALID_PROFILE_PICTURE
+            }
+        return returnValue
     }
 }
